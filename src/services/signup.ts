@@ -1,5 +1,4 @@
 import { SignupData, SignupRecord } from "../types";
-import { createClient } from "@supabase/supabase-js";
 import { getNextMonday } from "../utils/time";
 import { supabase } from "../utils/supabaseClient";
 
@@ -95,8 +94,10 @@ export const submitSignup = async (signup: SignupData) => {
       .eq('id', sid)
     if (error) {
       console.log(error);
+      console.log(data);
       return null;
     }
+
   } else {
     const { data, error } = await supabase
       .from('signups')
