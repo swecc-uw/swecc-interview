@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TimeSelector from '../TimeSelector/TimeSelector';
 import { hntotime, timetohn, getNextMonday } from '../../utils/time';
+import './Availability.css';
 
 function Availability() {
 
@@ -47,23 +48,28 @@ function Availability() {
 
     return (
       <div className="options">
-        <label>
-          Start Time:
-          <select value={hntotime(startTime)} onChange={handleStartTimeChange}>
-            {hours.map(hour => (
-              <option key={hour} value={`${hour}:00`}>{`${hour}:00`}</option>
-            ))}
-          </select>
-        </label>
+        <div className="opt-row">
+          <label className="time-label">
+            Start Time:
+            <select className="time-drop" value={hntotime(startTime)} onChange={handleStartTimeChange}>
+              {hours.map(hour => (
+                <option className="time-option" key={hour} value={`${hour}:00`}>{`${hour}:00`}</option>
+              ))}
+            </select>
+          </label>
+        </div>
         <br/>
-        <label>
-          End Time:
-          <select value={hntotime(endTime)} onChange={handleEndTimeChange}>
-            {hours.map(hour => (
-              <option key={hour} value={`${hour}:00`}>{`${hour}:00`}</option>
-            ))}
-          </select>
-        </label>
+
+        <div className="opt-row">
+          <label className="time-label">
+            End Time:
+            <select className="time-drop" value={hntotime(endTime)} onChange={handleEndTimeChange}>
+              {hours.map(hour => (
+                <option className="time-option" key={hour} value={`${hour}:00`}>{`${hour}:00`}</option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
     );
   };
@@ -71,7 +77,6 @@ function Availability() {
   return (
     <>
       <h2>Enter Availability</h2>
-      <Options />
       <TimeSelector
         startDate={nextMonday}
         numDays={numDays}
@@ -80,7 +85,8 @@ function Availability() {
         availability={availability}
         setAvailability={setAvailability}
       />
-      <button onClick={handleSave}>Save</button>
+      <Options />
+      <button className='save-button' onClick={handleSave}>Save</button>
     </>
   );
 }

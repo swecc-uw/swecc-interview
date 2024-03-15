@@ -51,25 +51,33 @@ const Personal = () => {
 
   return (
     <div className="personal-container">
-      <label className="input-label">
-        First Name:
-        <input className="input-field" value={firstName} onChange={handleFirstNameChange} />
-      </label>
+      <div className="form-row">
+        <label className="input-label">
+          First Name:
+          <input className="input-field" value={firstName} onChange={handleFirstNameChange} />
+        </label>
+      </div>
       {/* <br /> */}
-      <label className="input-label">
-        Last Name:
-        <input className="input-field" value={lastName} onChange={handleLastNameChange} />
-      </label>
+      <div className="form-row">
+        <label className="input-label">
+          Last Name:
+          <input className="input-field" value={lastName} onChange={handleLastNameChange} />
+        </label>
+      </div>
       {/* <br /> */}
-      <label className="input-label">
-        UW Email:
-        <input className="input-field" value={email} onChange={handleEmailChange} />
-      </label>
+      <div className="form-row">
+        <label className="input-label">
+          UW Email:
+          <input className="input-field" value={email} onChange={handleEmailChange} />
+        </label>
+      </div>
       {/* <br /> */}
-      <label className="input-label">
-        Discord:
-        <input className="input-field" value={discord} onChange={handleDiscordChange} />
-      </label>
+      <div className="form-row">
+        <label className="input-label">
+          Discord:
+          <input className="input-field" value={discord} onChange={handleDiscordChange} />
+        </label>
+      </div>
       {/* <br /> */}
       <button className="save-button" onClick={handleSave}>Save</button>
     </div>

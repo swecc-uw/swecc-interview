@@ -34,10 +34,16 @@ const TimeSelector: React.FC<TimeSelectorProps> = ({
   const renderTimeSlots = () => {
     const timeSlots: JSX.Element[] = [];
 
+    const dayAbr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
     for (let i = 0; i < numDays; i++) {
       const dayAvailability = availability[i];
 
-      const daySlots = [];
+      const daySlots = [
+        (<div key={`day-${i}-label`} className='day-label'>
+          {dayAbr[(startDate.getDay() + i) % 7]}
+        </div>)
+      ];
 
       for (let j = startTime; j <= endTime; j++) {
         const available = dayAvailability ? dayAvailability[j] : false;

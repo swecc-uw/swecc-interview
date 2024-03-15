@@ -1,4 +1,4 @@
-
+// import Auth from '../../utils/Auth';
 
 function Welcome() {
   return (
@@ -7,6 +7,7 @@ function Welcome() {
       <p>
         If you're looking to sign up for a mock interview, you're in the right place!
       </p>
+      {/* <Auth /> */}
 
     </div>
   );

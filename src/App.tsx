@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Availability from './components/Availability/Availability';
 import Personal from './components/Personal/Personal';
 import Welcome from './components/Welcome/Welcome';
+import Confirmation from './components/Confirmation/Confirmation';
 import { getNextMonday } from './utils/time';
 import './App.css';
 
@@ -18,7 +19,7 @@ const renderWarning = (lastSignup: any) => {
     <div className="warning">
       <h2>Warning</h2>
       <p>
-        You have already signed up for a mock interview on {lastSignup.date} at {lastSignup.time}. If you sign up again, your previous sign up will be overwritten.
+        You have already signed up for a mock interview for this week. If you sign up again, your previous sign up will be overwritten.
       </p>
     </div>
   );
@@ -35,12 +36,10 @@ function App() {
   }
   , []);
 
-  // Function to move to the next step
   const nextStep = () => {
     setStep(step + 1);
   };
 
-  // Function to move to the previous step
   const prevStep = () => {
     setStep(step - 1);
   };
@@ -49,15 +48,17 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Mock Interview Sign Up</h1>
+        <h2>for week of {getNextMonday(new Date()).toDateString()}</h2>
       </header>
       <div className="form-container">
         {step === 0 && <Welcome />} {/* Display Welcome component if step is 0 */}
         {step === 1 && <Personal />} {/* Display Personal component if step is 1 */}
         {step === 2 && <Availability />} {/* Display Availability component if step is 2 */}
+        {step === 3 && <Confirmation />} {/* Display Confirmation component if step is 3 */}
       </div>
       <div className="buttons">
         {step > 1 && <button onClick={prevStep}>Previous</button>} {/* Display previous button if step is greater than 1 */}
-        {step > 0 && step < 2 && <button onClick={nextStep}>Next</button>} {/* Display next button if step is less than 2 */}
+        {step > 0 && step < 3 && <button onClick={nextStep}>Next</button>} {/* Display next button if step is less than 2 */}
         {step === 0 && <button onClick={nextStep}>Sign Up</button>} {/* Display start button if step is 0 */}
       </div>
       {renderWarning(lastSignup)} {/* Display warning message */}
