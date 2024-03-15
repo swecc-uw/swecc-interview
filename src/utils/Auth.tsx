@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { supabase } from './supabaseClient'
 
+const isProduction = import.meta.env.PROD
+
+const redirectUrl = isProduction ? import.meta.env.VITE_AUTH_REDIRECT_URL : 'http://localhost:5173'
+
 export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
@@ -9,7 +13,10 @@ export default function Auth() {
     event.preventDefault()
 
     setLoading(true)
-    const { error } = await supabase.auth.signInWithOtp({ email })
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectUrl },
+    })
 
     if (error) {
       alert(error.message)

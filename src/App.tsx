@@ -4,6 +4,7 @@ import Personal from './components/Personal/Personal';
 import Welcome from './components/Welcome/Welcome';
 import Confirmation from './components/Confirmation/Confirmation';
 import { getNextMonday } from './utils/time';
+import { supabase } from './utils/supabaseClient';
 import './App.css';
 
 const renderWarning = (lastSignup: any) => {
@@ -11,6 +12,10 @@ const renderWarning = (lastSignup: any) => {
 
   const nextMonday = getNextMonday(new Date());
   const lastSignupDateForWeekOf = new Date(lastSignup.dateForWeekOf);
+
+  supabase.auth.getUser().then((user) => {
+    console.log(user);
+  })
 
   if (nextMonday.getDate() !== lastSignupDateForWeekOf.getDate())
     return null;
