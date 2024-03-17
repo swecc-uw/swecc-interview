@@ -1,20 +1,33 @@
 interface FormComponentProps {
-    nextStep: () => void;
-    prevStep: () => void;
+  nextStep: () => void
+  prevStep: () => void
 }
 
-interface DateRange {
-    startDate: Date;
-    endDate: Date;
+interface FormStartProps {
+  nextStep: () => void
+}
+
+interface FormStepProps {
+  nextStep: () => void
+  prevStep: () => void
+}
+
+interface FormEndProps {
+  prevStep: () => void
+}
+
+interface UserData {
+  firstName: string
+  lastName: string
+  email: string
+  discord: string
+  gradYear: number
+  major: string
 }
 
 interface SignupData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    discord: string;
-    availability: boolean[][];
-    startDate: Date;
+    user_id: string
+    availability: boolean[][]
 }
 
 /**
@@ -38,14 +51,17 @@ interface SignupData {
     */
 
 interface SignupRecord {
-    // id: number;
-    // created_at: string;
-    first_name: string;
-    email: string;
-    discord: string;
-    form_id: number;
-    availability: string;
-    last_name: string;
+  user_id: string
+  form_id: number
+  availability: string
 }
 
-export type { FormComponentProps, DateRange, SignupData, SignupRecord };
+export type {
+  FormComponentProps,
+  SignupData,
+  SignupRecord,
+  FormStartProps,
+  FormStepProps,
+  FormEndProps,
+  UserData
+}

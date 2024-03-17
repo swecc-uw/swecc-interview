@@ -21,103 +21,78 @@ export const getActiveFormID = async () => {
     .limit(1)
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 
-  let createFlag = false;
-  console.log(data)
+  console.log(data);
   if (data.length === 0) {
-    createFlag = true;
+    console.error('no forms found')
+    return null;
   }
 
-  if (data.length > 0) {
-    console.log('found a form')
-    const lastFormCreatedAt = new Date(data[0].created_at);
-    console.log(`checking if ${lastFormCreatedAt} is less than ${lastMonday}`)
-    if (lastFormCreatedAt.getDate() < lastMonday.getDate()) {
-      console.log('it was')
-      createFlag = true;
-    } else {
-      console.log('it was not')
-      return data[0].id;
-    }
-  }
-
-  if (createFlag) {
-    console.log('creating a new form')
-    const { data, error } = await supabase
-      .from('forms')
-      .insert({})
-      .select('id');
-    if (error) {
-      console.log(error);
-      return null;
-    }
+  console.log('found a form')
+  const lastFormCreatedAt = new Date(data[0].created_at);
+  console.log(`checking if ${lastFormCreatedAt} is less than ${lastMonday}`)
+  if (lastFormCreatedAt.getDate() < lastMonday.getDate()) {
+    console.log('it was')
+  } else {
+    console.log('it was not')
     return data[0].id;
   }
 }
 
 
-export const submitSignup = async (signup: SignupData) => {
+export const submitSignup = async (userId: string, availability: boolean[][]) => {
   const fid = await getActiveFormID();
-  let sr: SignupRecord = {
-    first_name: signup.firstName,
-    email: signup.email,
-    discord: signup.discord,
-    form_id: fid,
-    availability: JSON.stringify(signup.availability),
-    last_name: signup.lastName
+
+  if (!fid) {
+    console.error('no active form found');
+    return false;
   }
 
   // if signup for form_id and email exists, update it
   // else insert a new record
   const { data, error } = await supabase
     .from('signups')
-    .select('id')
-    .eq('email', signup.email)
+    .select('*')
+    .eq('user_id', userId)
     .eq('form_id', fid)
 
   if (error) {
-    console.log(error);
-    return null;
+    console.error(error);
+    return false;
   }
 
-  let sid = data.length > 0 ? data[0].id : null;
-
-  if (sid) {
-    const { data, error } = await supabase
+  if (data.length > 0) {
+    console.log('updating', data)
+    const res = await supabase
       .from('signups')
-      .update(sr)
-      .eq('email', signup.email)
+      .update({ availability })
+      .eq('user_id', userId)
       .eq('form_id', fid)
-      .eq('id', sid)
-    if (error) {
-      console.log(error);
-      console.log(data);
-      return null;
+    if (res.error) {
+      console.error(error);
+      return false;
     }
 
   } else {
-    const { data, error } = await supabase
+    console.log('inserting')
+    const { error } = await supabase
       .from('signups')
-      .insert(sr)
-      .select('id')
+      .insert({ user_id: userId, form_id: fid, availability })
     if (error) {
-      console.log(error);
-      return null;
+      console.error(error);
+      return false;
     }
-
-    sid = data[0].id;
 
   }
 
   if (error) {
-    console.log(error);
-    return null;
+    console.error(error);
+    return false;
   }
 
-  console.log(sid);
-  return sid;
+  return true;
 };
 
