@@ -1,4 +1,3 @@
-import { SignupData, SignupRecord } from "../types";
 import { getNextMonday } from "../utils/time";
 import { supabase } from "../utils/supabaseClient";
 

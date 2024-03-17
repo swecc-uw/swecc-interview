@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
 import { supabase } from '../utils/supabaseClient'
-import { getUser } from '../services/user'
 import styled from 'styled-components'
 
 const UpdateSecureDataContainer = styled.div`
@@ -15,9 +14,9 @@ const UpdateSecureDataForm = styled.form`
 
 interface UpdateSecureDataProps {
   type: 'password' | 'email'
-  setError: any
-  setLoading: any
-  loading: any
+  setError: (error: string) => void
+  setLoading: (loading: boolean) => void
+  loading: boolean
 }
 
 const UpdateSecureData = ({
@@ -26,10 +25,10 @@ const UpdateSecureData = ({
   setLoading,
   loading
 }: UpdateSecureDataProps) => {
-  const [newVal, setNewVal] = useState('')
-  const [confirmVal, setConfirmVal] = useState('')
+  const [newVal, setNewVal] = useState<string>('')
+  const [confirmVal, setConfirmVal] = useState<string>('')
 
-  const handleUpdateSecureData = async (event: any) => {
+  const handleUpdateSecureData = async (event: FormEvent) => {
     event.preventDefault()
 
     if (newVal !== confirmVal) {
@@ -58,13 +57,17 @@ const UpdateSecureData = ({
           type={type}
           placeholder={`New ${type}`}
           value={newVal}
-          onChange={e => setNewVal(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setNewVal(e.target.value)
+          }
         />
         <InputField
           type={type}
           placeholder={`Confirm new ${type}`}
           value={confirmVal}
-          onChange={e => setConfirmVal(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setConfirmVal(e.target.value)
+          }
         />
         <SubmitButton type='submit'>
           {loading ? 'Loading...' : 'Update'}
@@ -107,9 +110,9 @@ const SubmitButton = styled.button`
 interface UpdateAccountSectionProps {
   hide: () => void
   userRef: any
-  setError: any
-  setLoading: any
-  loading: any
+  setError: (error: string) => void
+  setLoading: (loading: boolean) => void
+  loading: boolean
 }
 
 const UpdateAccountData = ({
@@ -119,13 +122,13 @@ const UpdateAccountData = ({
   setLoading,
   loading
 }: UpdateAccountSectionProps) => {
-  const [firstName, setFirstName] = useState(userRef.current.first_name)
-  const [lastName, setLastName] = useState(userRef.current.last_name)
-  const [discord, setDiscord] = useState(userRef.current.discord)
-  const [gradYear, setGradYear] = useState(userRef.current.grad_year)
-  const [major, setMajor] = useState(userRef.current.major)
+  const [firstName, setFirstName] = useState<string>(userRef.current.first_name)
+  const [lastName, setLastName] = useState<string>(userRef.current.last_name)
+  const [discord, setDiscord] = useState<string>(userRef.current.discord)
+  const [gradYear, setGradYear] = useState<number>(userRef.current.grad_year)
+  const [major, setMajor] = useState<string>(userRef.current.major)
 
-  const handleUpdateAccount = async (event: any) => {
+  const handleUpdateAccount = async (event: FormEvent) => {
     event.preventDefault()
     const vals = {
       major,
@@ -158,31 +161,41 @@ const UpdateAccountData = ({
           type='text'
           placeholder='First Name'
           value={firstName}
-          onChange={e => setFirstName(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setFirstName(e.target.value)
+          }
         />
         <InputField
           type='text'
           placeholder='Last Name'
           value={lastName}
-          onChange={e => setLastName(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setLastName(e.target.value)
+          }
         />
         <InputField
           type='text'
           placeholder='Discord Username'
           value={discord}
-          onChange={e => setDiscord(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDiscord(e.target.value)
+          }
         />
         <InputField
           type='number'
           placeholder='Graduation Year'
           value={gradYear}
-          onChange={e => setGradYear(parseInt(e.target.value))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setGradYear(parseInt(e.target.value))
+          }
         />
         <InputField
           type='text'
           placeholder='Major'
           value={major}
-          onChange={e => setMajor(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setMajor(e.target.value)
+          }
         />
         <SubmitButton type='submit' disabled={loading}>
           {loading ? 'Loading...' : 'Update'}

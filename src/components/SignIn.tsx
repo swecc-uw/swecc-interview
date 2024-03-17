@@ -71,13 +71,13 @@ const SignIn = ({ setSignedIn }: SignInProps) => {
           type='email'
           placeholder='Email'
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e: any) => setEmail(e.target.value)}
         />
         <InputField
           type='password'
           placeholder='Password'
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e: any) => setPassword(e.target.value)}
         />
         <SubmitButton type='submit' disabled={loading}>
           {loading ? 'Signing In...' : 'Sign In'}

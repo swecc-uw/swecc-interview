@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 interface TimeSelectorProps {
@@ -40,7 +39,7 @@ const TimeSelector: React.FC<TimeSelectorProps> = ({
   endTime,
   availability,
   setAvailability,
-}) => {
+}: TimeSelectorProps) => {
   const timeLabels = Array.from({ length: endTime - startTime + 1 }, (_, i) => `${startTime + i}:00`);
 
   const toggleAvailability = (dayIndex: number, hourIndex: number) => {
