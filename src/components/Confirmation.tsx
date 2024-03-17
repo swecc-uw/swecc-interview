@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { SignupData, UserData } from '../types'
-import { getActiveFormID, submitSignup } from '../services/signup'
+import { submitSignup } from '../services/signup'
 import { getNextMonday } from '../utils/time'
 import { FormEndProps } from '../types'
 

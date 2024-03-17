@@ -68,7 +68,6 @@ const SignOutButton = styled.button`
 
 function App () {
   const [step, setStep] = useState(0)
-  const [lastSignup, setLastSignup] = useState(null)
   const [signedIn, setSignedIn] = useState(false)
   const [signinOrSignup, setSigninOrSignup] = useState('signin')
   const [updateAccountShowing, setUpdateAccountShowing] = useState(false)
@@ -170,7 +169,6 @@ function App () {
           ) : (
             <MIFormContainer />
           )}
-          {renderWarning(lastSignup)}
         </>
       ) : (
         <Card>
@@ -183,6 +181,7 @@ function App () {
 
 export default App
 
+// @ts-ignore
 const renderWarning = (lastSignup: any) => {
   if (!lastSignup) return null
 
