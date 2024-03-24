@@ -55,8 +55,12 @@ const UnsavedChangesWarning = styled.div`
   color: lightcoral;
 `;
 
+interface AvailabilityProps extends FormStepProps {
+  uid: string | undefined;
+}
 
-const Availability = ({ nextStep, prevStep }: FormStepProps) => {
+
+const Availability = ({ nextStep, prevStep, uid }: AvailabilityProps) => {
   const [startTime, setStartTime] = useState(7);
   const [endTime, setEndTime] = useState(17);
   const [availability, setAvailability] = useState<boolean[][]>([]);
@@ -66,7 +70,11 @@ const Availability = ({ nextStep, prevStep }: FormStepProps) => {
   const nextMonday = getNextMonday(today);
 
   useEffect(() => {
-    const availabilityString = localStorage.getItem('availability');
+    console.log(uid);
+    if (!uid)
+      prevStep();
+
+    const availabilityString = localStorage.getItem(`availability-${uid}`);
     if (availabilityString) {
       setAvailability(JSON.parse(availabilityString).map((day: number[]) => day.map(hour => hour === 1)));
     } else {
@@ -87,7 +95,9 @@ const Availability = ({ nextStep, prevStep }: FormStepProps) => {
   };
 
   const handleSave = () => {
-    localStorage.setItem('availability', JSON.stringify(availability.map(day => day.map(hour => hour ? 1 : 0))));
+    if (!uid)
+      return;
+    localStorage.setItem(`availability-${uid}`, JSON.stringify(availability.map(day => day.map(hour => hour ? 1 : 0))));
     setChangedSinceSave(false);
   };
 

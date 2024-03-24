@@ -100,7 +100,6 @@ function App () {
 
       const userData = await getUser()
       user.current = userData
-      console.log('user.current', user.current)
       setSignedIn(true)
       setViewing('form')
     }
@@ -129,6 +128,17 @@ function App () {
     fetchActiveFormId()
   }, [])
 
+  useEffect(() => {
+    if (signedIn) {
+      const fetchUser = async () => {
+        const userData = await getUser()
+        user.current = userData
+      }
+
+      fetchUser().then(() => setViewing('form'))
+    }
+  }, [signedIn])
+
   const nextStep = () => {
     setStep(step + 1)
   }
@@ -138,14 +148,24 @@ function App () {
   }
 
   const signOut = async () => {
+    const uid = user.current?.user_id
+    let avail: string | null = null;
+    if (uid)
+      avail = localStorage.getItem(`availability-${uid}`)
+
+    localStorage.clear()
+    if (uid && avail)
+      localStorage.setItem(`availability-${uid}`, avail)
+
     await supabase.auth.signOut()
     setSignedIn(false)
+    user.current = null
   }
 
   const MIFormContainer = () => (
     <FormContainer>
       {step === 0 && <Welcome nextStep={nextStep} />}
-      {step === 1 && <Availability nextStep={nextStep} prevStep={prevStep} />}
+      {step === 1 && <Availability nextStep={nextStep} prevStep={prevStep} uid={user.current?.user_id} />}
       {step === 2 && (
         <Confirmation prevStep={prevStep} userData={user.current} />
       )}

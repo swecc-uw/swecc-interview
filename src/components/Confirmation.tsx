@@ -41,6 +41,7 @@ interface ConirmationProps extends FormEndProps {
 function Confirmation ({ prevStep, userData }: ConirmationProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const availability: boolean[][] = readAvailabilityFromLocalStorage()
 
@@ -57,12 +58,14 @@ function Confirmation ({ prevStep, userData }: ConirmationProps) {
     const nextMonday = getNextMonday(new Date())
 
     localStorage.setItem(
-      'lastSignup',
+      `lastSignup-${userData.user_id}`,
       JSON.stringify({
         date: nextMonday.toDateString(),
         dateForWeekOf: nextMonday.toDateString()
       })
     )
+
+    setSuccess('Successfully signed up!')
 
     setLoading(false)
   }
@@ -80,6 +83,7 @@ function Confirmation ({ prevStep, userData }: ConirmationProps) {
       <ButtonsContainer>
         <SharedButton onClick={prevStep}>Previous</SharedButton>
       </ButtonsContainer>
+      {success && <p>{success}</p>}
       {error && <p>{error}</p>}
     </ConfirmationContainer>
   )
