@@ -122,12 +122,13 @@ const UpdateAccountData = ({
   setLoading,
   loading
 }: UpdateAccountSectionProps) => {
-  const [firstName, setFirstName] = useState<string>(userRef.current.first_name)
-  const [lastName, setLastName] = useState<string>(userRef.current.last_name)
-  const [discord, setDiscord] = useState<string>(userRef.current.discord)
-  const [gradYear, setGradYear] = useState<number>(userRef.current.grad_year)
-  const [major, setMajor] = useState<string>(userRef.current.major)
+  const [firstName, setFirstName] = useState<string>(userRef.current?.first_name)
+  const [lastName, setLastName] = useState<string>(userRef.current?.last_name)
+  const [discord, setDiscord] = useState<string>(userRef.current?.discord)
+  const [gradYear, setGradYear] = useState<number>(userRef.current?.grad_year)
+  const [major, setMajor] = useState<string>(userRef.current?.major)
 
+  if (!userRef.current) return null
   const handleUpdateAccount = async (event: FormEvent) => {
     event.preventDefault()
     const vals = {
