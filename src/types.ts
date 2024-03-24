@@ -17,12 +17,13 @@ interface FormEndProps {
 }
 
 interface UserData {
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   email: string
   discord: string
-  gradYear: number
+  grad_year: number
   major: string
+  user_id: string
 }
 
 interface SignupData {

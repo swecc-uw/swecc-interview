@@ -49,11 +49,18 @@ const ButtonsContainer = styled.div`
   justify-content: center;
 `;
 
+const UnsavedChangesWarning = styled.div`
+  margin-top: 20px;
+  font-size: .5em;
+  color: lightcoral;
+`;
+
+
 const Availability = ({ nextStep, prevStep }: FormStepProps) => {
   const [startTime, setStartTime] = useState(7);
   const [endTime, setEndTime] = useState(17);
   const [availability, setAvailability] = useState<boolean[][]>([]);
-
+  const [changedSinceSave, setChangedSinceSave] = useState(false);
   const numDays = 7;
   const today = new Date();
   const nextMonday = getNextMonday(today);
@@ -65,6 +72,8 @@ const Availability = ({ nextStep, prevStep }: FormStepProps) => {
     } else {
       setAvailability(Array.from({ length: numDays }, () => Array(24).fill(false)));
     }
+
+    setChangedSinceSave(false);
   }, []);
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -79,6 +88,7 @@ const Availability = ({ nextStep, prevStep }: FormStepProps) => {
 
   const handleSave = () => {
     localStorage.setItem('availability', JSON.stringify(availability.map(day => day.map(hour => hour ? 1 : 0))));
+    setChangedSinceSave(false);
   };
 
   const renderOptions = () => {
@@ -106,6 +116,12 @@ const Availability = ({ nextStep, prevStep }: FormStepProps) => {
     );
   };
 
+  const setAvailabilityWrapper = (availability: boolean[][]) => {
+    setChangedSinceSave(true);
+    setAvailability(availability);
+  }
+
+
   return (
     <Container>
       <Title>Enter Availability</Title>
@@ -115,10 +131,14 @@ const Availability = ({ nextStep, prevStep }: FormStepProps) => {
         startTime={startTime}
         endTime={endTime}
         availability={availability}
-        setAvailability={setAvailability}
+        setAvailability={setAvailabilityWrapper}
       />
       {renderOptions()}
-      <SaveButton onClick={handleSave}>Save</SaveButton>
+
+      <div>
+        {changedSinceSave && <UnsavedChangesWarning>Unsaved changes</UnsavedChangesWarning>}
+        <SaveButton onClick={handleSave}>Save</SaveButton>
+      </div>
       <ButtonsContainer>
         <button onClick={prevStep}>Previous</button>
         <button onClick={nextStep}>Next</button>

@@ -9,11 +9,14 @@ import { supabase } from './utils/supabaseClient'
 import SignIn from './components/SignIn'
 import UpdateAccount from './components/UpdateAccount'
 import { getUser } from './services/user'
+import ViewPairs from './components/ViewPairs'
+import { UserData } from './types'
 
 const RootContainer = styled.div`
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  margin-top: 40px;
 `
 
 const HeaderTitle = styled.header`
@@ -51,28 +54,35 @@ const WarningMessage = styled.p`
 `
 
 const TopBannerContainer = styled.div`
+  display: flex;
   position: fixed;
   top: 0;
-  padding: 10px;
+  left: 0;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  backdrop-filter: blur(5px);
 `
 
-const UpdateAccountButton = styled.button`
+const NavButton = styled.button`
   style: none;
   background: none;
-`
-
-const SignOutButton = styled.button`
-  style: none;
-  background: none;
+  @media (max-width: 600px) {
+    margin-bottom: 10px;
+    font-size: 0.8em;
+  }
 `
 
 function App () {
+  // const states = ['login', 'form', 'account', 'pairs']
+
   const [step, setStep] = useState(0)
   const [signedIn, setSignedIn] = useState(false)
   const [signinOrSignup, setSigninOrSignup] = useState('signin')
-  const [updateAccountShowing, setUpdateAccountShowing] = useState(false)
+  const [viewing, setViewing] = useState('login')
   const [loading, setLoading] = useState(true)
-  const user = useRef({})
+  const [activeFormId, setActiveFormId] = useState<string | null>(null)
+  const user = useRef<UserData | null>()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -90,11 +100,34 @@ function App () {
 
       const userData = await getUser()
       user.current = userData
+      console.log('user.current', user.current)
       setSignedIn(true)
+      setViewing('form')
+    }
+
+    const fetchActiveFormId = async () => {
+      const { data, error } = await supabase
+        .from('forms')
+        .select('id')
+        .order('created_at', { ascending: false })
+        .limit(1)
+
+      if (error) {
+        console.error(error)
+        return
+      }
+
+      if (data.length === 0) {
+        console.error('no active form found')
+        return
+      }
+
+      setActiveFormId(String(data[0].id))
     }
 
     fetchUser().then(() => setLoading(false))
-  })
+    fetchActiveFormId()
+  }, [])
 
   const nextStep = () => {
     setStep(step + 1)
@@ -113,7 +146,9 @@ function App () {
     <FormContainer>
       {step === 0 && <Welcome nextStep={nextStep} />}
       {step === 1 && <Availability nextStep={nextStep} prevStep={prevStep} />}
-      {step === 2 && <Confirmation prevStep={prevStep} userData={user.current} />}
+      {step === 2 && (
+        <Confirmation prevStep={prevStep} userData={user.current} />
+      )}
     </FormContainer>
   )
 
@@ -124,7 +159,7 @@ function App () {
           Sign In
         </LinkButton>{' '}
         or{' '}
-        <LinkButton onClick={() => setSigninOrSignup('signup')}>
+        <LinkButton id="signup" onClick={() => setSigninOrSignup('signup')}>
           Sign Up
         </LinkButton>{' '}
         to get started
@@ -141,40 +176,55 @@ function App () {
     return <></>
   }
 
+  const Content = () => {
+    switch (viewing) {
+      case 'login':
+        return <SigninContainer />
+      case 'form':
+        return <MIFormContainer />
+      case 'account':
+        return <UpdateAccount userRef={user} hide={() => setViewing('form')} />
+      case 'pairs':
+        return (
+          <ViewPairs
+            uuid={user?.current?.user_id}
+            active_formid={activeFormId}
+          />
+        )
+      default:
+        return <SigninContainer />
+    }
+  }
+
   return (
     <RootContainer>
       <TopBannerContainer>
         {signedIn && (
-          <UpdateAccountButton
-            onClick={() => setUpdateAccountShowing(!updateAccountShowing)}
+          <NavButton
+            onClick={() =>
+              viewing === 'account' ? setViewing('form') : setViewing('account')
+            }
           >
-            {updateAccountShowing ? 'Home' : 'Update Account'}
-          </UpdateAccountButton>
+            {viewing === 'account' ? 'Back to Form' : 'Update Account'}
+          </NavButton>
         )}
-        {signedIn && <SignOutButton onClick={signOut}>Sign Out</SignOutButton>}
+        {signedIn && <NavButton onClick={signOut}>Sign Out</NavButton>}
+        {signedIn && (
+          <NavButton
+            onClick={() =>
+              viewing === 'pairs' ? setViewing('form') : setViewing('pairs')
+            }
+          >
+            {viewing === 'pairs' ? 'Back to Form' : 'View Pairs'}
+          </NavButton>
+        )}
       </TopBannerContainer>
       <HeaderTitle>
-        <h1>
-          Mock Interview Sign Up
-        </h1>
+        <h1>Mock Interview Sign Up</h1>
         <i>{getNextMonday(new Date()).toDateString()}</i>
       </HeaderTitle>
-      {signedIn ? (
-        <>
-          {updateAccountShowing ? (
-            <UpdateAccount
-              userRef={user}
-              hide={() => setUpdateAccountShowing(false)}
-            />
-          ) : (
-            <MIFormContainer />
-          )}
-        </>
-      ) : (
-        <Card>
-          <SigninContainer />
-        </Card>
-      )}
+      <Card>{signedIn ? <Content /> : <SigninContainer />}</Card>
+      {renderWarning(null)}
     </RootContainer>
   )
 }

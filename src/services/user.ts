@@ -1,6 +1,7 @@
+import { UserData } from '../types';
 import { supabase } from '../utils/supabaseClient';
 
-const getUser = async () => {
+const getUser = async (): Promise<UserData | null> => {
   const { data, error } = await supabase.auth.getUser();
 
   if (error) {
