@@ -1,4 +1,3 @@
-import { getNextMonday } from "../utils/time";
 import { supabase } from "../utils/supabaseClient";
 
 export const testDB = async () => {
@@ -9,15 +8,12 @@ export const testDB = async () => {
   return data
 }
 
-export const getActiveFormID = async () => {
-  const lastMonday = getNextMonday(new Date());
-  lastMonday.setDate(lastMonday.getDate() - 7);
+export const getActiveSignupFormID = async () => {
   // if the last form id was created before last Monday, create a new form
   const { data, error } = await supabase
     .from('forms')
-    .select('id, created_at')
-    .order('created_at', { ascending: false })
-    .limit(1)
+    .select('id, created_at, state')
+    .eq('state', 'active')
 
   if (error) {
     console.error(error);
@@ -30,20 +26,41 @@ export const getActiveFormID = async () => {
     return null;
   }
 
-  console.log('found a form')
-  const lastFormCreatedAt = new Date(data[0].created_at);
-  console.log(`checking if ${lastFormCreatedAt} is less than ${lastMonday}`)
-  if (lastFormCreatedAt.getDate() < lastMonday.getDate()) {
-    console.log('it was')
-  } else {
-    console.log('it was not')
-    return data[0].id;
+  if (data.length > 1) {
+    console.error('more than one active form found')
+    return null;
   }
+
+  return data[0].id;
+}
+
+export const getActiveInterviewFormID = async () => {
+  const { data, error } = await supabase
+    .from('forms')
+    .select('id, created_at, state')
+    .eq('state', 'interview')
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  if (data.length === 0) {
+    console.error('no forms found')
+    return null;
+  }
+
+  if (data.length > 1) {
+    console.error('more than one active form found')
+    return null;
+  }
+
+  return data[0].id;
 }
 
 
 export const submitSignup = async (userId: string, availability: boolean[][]) => {
-  const fid = await getActiveFormID();
+  const fid = await getActiveSignupFormID();
 
   if (!fid) {
     console.error('no active form found');

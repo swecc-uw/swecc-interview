@@ -7,7 +7,7 @@ function Welcome({ nextStep }: FormStartProps) {
         Click the button below to start the sign up process.
       </p>
       <div className="buttons">
-        <button onClick={nextStep}>Get started</button>
+        <button id='get-started-btn' onClick={nextStep}>Get started</button>
       </div>
 
     </div>
