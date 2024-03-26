@@ -41,7 +41,7 @@ const Empty = styled.div`
 `;
 
 const ToggleButton = styled.button`
-  margin-bottom: 80px;
+  margin-top: 80px;
 `;
 
 interface PairProps {
@@ -114,15 +114,14 @@ const PairsContainer = styled.div`
 
 interface ViewPairsProps {
   uuid: string | undefined;
-  active_formid: string | null;
+  active_formid: number | null;
 }
 
 // ViewPairs component
 const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
   const [pairs, setPairs] = useState<any[]>([]);
-  const [currentOnly, setCurrentOnly] = useState<boolean>(false);
+  const [currentOnly, setCurrentOnly] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     // get pairs for user
@@ -139,7 +138,7 @@ const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
   if (loading) return <div>Loading...</div>;
 
   const currentPair = active_formid !== null
-    ? pairs.find((pair) => pair.form_id === parseInt(active_formid))
+    ? pairs.find((pair) => pair.form_id === active_formid)
     : null;
 
   const Current = () => currentPair ? (
@@ -160,9 +159,6 @@ const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
 
   return (
     <PairsContainer>
-      <ToggleButton onClick={() => setCurrentOnly(!currentOnly)}>
-        {currentOnly ? "Show past partners" : "Show only active partner"}
-      </ToggleButton>
       {currentOnly  ?
       <Current /> :
       (pairs.length > 0 ? pairs.map((pair, idx) => (
@@ -177,6 +173,9 @@ const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
           p_grad_year={pair.partner.grad_year}
         />
       )) : <Empty> <h3>Empty...</h3> </Empty>)}
+      <ToggleButton onClick={() => setCurrentOnly(!currentOnly)}>
+        {currentOnly ? "Show all" : "Show only active partner"}
+      </ToggleButton>
     </PairsContainer>
   );
 };

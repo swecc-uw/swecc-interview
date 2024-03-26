@@ -21,7 +21,6 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
       fetch(`https://alfa-leetcode-api.onrender.com/${username}/solved`)
       .then(response => response.json()) // Convert the response to JSON format
       .then(data => {
-        console.log(data);
         const { easySolved: easy, mediumSolved: medium, hardSolved: hard } = data;
         setSubmissions({ easy, medium, hard });
       }).catch(error => {

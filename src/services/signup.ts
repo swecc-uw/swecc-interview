@@ -8,7 +8,7 @@ export const testDB = async () => {
   return data
 }
 
-export const getActiveSignupFormID = async () => {
+export const getActiveSignupFormID = async (): Promise<number | null> => {
   // if the last form id was created before last Monday, create a new form
   const { data, error } = await supabase
     .from('forms')

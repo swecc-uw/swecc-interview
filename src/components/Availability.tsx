@@ -70,7 +70,6 @@ const Availability = ({ nextStep, prevStep, uid }: AvailabilityProps) => {
   const nextMonday = getNextMonday(today);
 
   useEffect(() => {
-    console.log(uid);
     if (!uid)
       prevStep();
 

@@ -29,26 +29,29 @@ const ConfirmationMessage = styled.p`
 const ButtonsContainer = styled.div``
 
 
-const readAvailabilityFromLocalStorage = (): boolean[][] => {
-  return JSON.parse(localStorage.getItem('availability') || '[]')
+const readAvailabilityFromLocalStorage = (uid: string): boolean[][] => {
+  return JSON.parse(localStorage.getItem(`availability-${uid}`) || '[]')
 }
 
 interface ConirmationProps extends FormEndProps {
-  userData: any
+  uid: string
 }
 
 // Confirmation component
-function Confirmation ({ prevStep, userData }: ConirmationProps) {
+function Confirmation ({ prevStep, uid }: ConirmationProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const availability: boolean[][] = readAvailabilityFromLocalStorage()
+  const availability: boolean[][] = readAvailabilityFromLocalStorage(uid);
 
   const handleSubmit = async () => {
     setLoading(true)
 
-    const res = await submitSignup(userData.user_id, availability)
+    if (availability.length != 7 || availability[0].length != 24)
+      return setError('Availability not set')
+
+    const res = await submitSignup(uid, availability)
     if (!res) {
       setError('An error occurred. Please try again later.')
       setLoading(false)
@@ -58,7 +61,7 @@ function Confirmation ({ prevStep, userData }: ConirmationProps) {
     const nextMonday = getNextMonday(new Date())
 
     localStorage.setItem(
-      `lastSignup-${userData.user_id}`,
+      `lastSignup-${uid}`,
       JSON.stringify({
         date: nextMonday.toDateString(),
         dateForWeekOf: nextMonday.toDateString()

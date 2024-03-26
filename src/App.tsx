@@ -11,6 +11,7 @@ import UpdateAccount from './components/UpdateAccount'
 import { getUser } from './services/user'
 import ViewPairs from './components/ViewPairs'
 import { UserData } from './types'
+import { getActiveInterviewFormID } from './services/signup'
 
 const RootContainer = styled.div`
   margin: 0 auto;
@@ -81,7 +82,7 @@ function App () {
   const [signinOrSignup, setSigninOrSignup] = useState('signin')
   const [viewing, setViewing] = useState('login')
   const [loading, setLoading] = useState(true)
-  const [activeFormId, setActiveFormId] = useState<string | null>(null)
+  const [activeFormId, setActiveFormId] = useState<number | null>(null)
   const user = useRef<UserData | null>()
 
   useEffect(() => {
@@ -105,23 +106,9 @@ function App () {
     }
 
     const fetchActiveFormId = async () => {
-      const { data, error } = await supabase
-        .from('forms')
-        .select('id')
-        .order('created_at', { ascending: false })
-        .limit(1)
+      const fid = await getActiveInterviewFormID();
 
-      if (error) {
-        console.error(error)
-        return
-      }
-
-      if (data.length === 0) {
-        console.error('no active form found')
-        return
-      }
-
-      setActiveFormId(String(data[0].id))
+      setActiveFormId(fid);
     }
 
     fetchUser().then(() => setLoading(false))
@@ -131,11 +118,15 @@ function App () {
   useEffect(() => {
     if (signedIn) {
       const fetchUser = async () => {
+        setLoading(true)
         const userData = await getUser()
         user.current = userData
       }
 
-      fetchUser().then(() => setViewing('form'))
+      fetchUser()
+        .then(() => setViewing('form'))
+        .then(() => setLoading(false))
+        .then(() => setStep(0))
     }
   }, [signedIn])
 
@@ -162,12 +153,12 @@ function App () {
     user.current = null
   }
 
-  const MIFormContainer = () => (
+  const MIFormContainer = () => user.current?.user_id && (
     <FormContainer>
       {step === 0 && <Welcome nextStep={nextStep} />}
       {step === 1 && <Availability nextStep={nextStep} prevStep={prevStep} uid={user.current?.user_id} />}
       {step === 2 && (
-        <Confirmation prevStep={prevStep} userData={user.current} />
+        <Confirmation prevStep={prevStep} uid={user.current.user_id} />
       )}
     </FormContainer>
   )

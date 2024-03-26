@@ -56,8 +56,7 @@ const SignIn = ({ setSignedIn }: SignInProps) => {
     })
 
     if (error) {
-      console.error(error)
-      setError(JSON.stringify(error))
+      setError(error.message)
     } else {
       setSignedIn(true)
     }
