@@ -12,6 +12,7 @@ import { getUser } from './services/user'
 import ViewPairs from './components/ViewPairs'
 import { UserData } from './types'
 import { getActiveInterviewFormID } from './services/signup'
+import NavBar from './components/NavBar'
 
 const RootContainer = styled.div`
   margin: 0 auto;
@@ -54,26 +55,6 @@ const WarningMessage = styled.p`
   color: red;
 `
 
-const TopBannerContainer = styled.div`
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-  backdrop-filter: blur(5px);
-`
-
-const NavButton = styled.button`
-  style: none;
-  background: none;
-  @media (max-width: 600px) {
-    margin-bottom: 10px;
-    font-size: 0.8em;
-  }
-`
-
 function App () {
   // const states = ['login', 'form', 'account', 'pairs']
 
@@ -106,9 +87,9 @@ function App () {
     }
 
     const fetchActiveFormId = async () => {
-      const fid = await getActiveInterviewFormID();
+      const fid = await getActiveInterviewFormID()
 
-      setActiveFormId(fid);
+      setActiveFormId(fid)
     }
 
     fetchUser().then(() => setLoading(false))
@@ -140,28 +121,33 @@ function App () {
 
   const signOut = async () => {
     const uid = user.current?.user_id
-    let avail: string | null = null;
-    if (uid)
-      avail = localStorage.getItem(`availability-${uid}`)
+    let avail: string | null = null
+    if (uid) avail = localStorage.getItem(`availability-${uid}`)
 
     localStorage.clear()
-    if (uid && avail)
-      localStorage.setItem(`availability-${uid}`, avail)
+    if (uid && avail) localStorage.setItem(`availability-${uid}`, avail)
 
     await supabase.auth.signOut()
     setSignedIn(false)
     user.current = null
   }
 
-  const MIFormContainer = () => user.current?.user_id && (
-    <FormContainer>
-      {step === 0 && <Welcome nextStep={nextStep} />}
-      {step === 1 && <Availability nextStep={nextStep} prevStep={prevStep} uid={user.current?.user_id} />}
-      {step === 2 && (
-        <Confirmation prevStep={prevStep} uid={user.current.user_id} />
-      )}
-    </FormContainer>
-  )
+  const MIFormContainer = () =>
+    user.current?.user_id && (
+      <FormContainer>
+        {step === 0 && <Welcome nextStep={nextStep} />}
+        {step === 1 && (
+          <Availability
+            nextStep={nextStep}
+            prevStep={prevStep}
+            uid={user.current?.user_id}
+          />
+        )}
+        {step === 2 && (
+          <Confirmation prevStep={prevStep} uid={user.current.user_id} />
+        )}
+      </FormContainer>
+    )
 
   const SigninContainer = () => (
     <div>
@@ -170,7 +156,7 @@ function App () {
           Sign In
         </LinkButton>{' '}
         or{' '}
-        <LinkButton id="signup" onClick={() => setSigninOrSignup('signup')}>
+        <LinkButton id='signup' onClick={() => setSigninOrSignup('signup')}>
           Sign Up
         </LinkButton>{' '}
         to get started
@@ -209,27 +195,12 @@ function App () {
 
   return (
     <RootContainer>
-      <TopBannerContainer>
-        {signedIn && (
-          <NavButton
-            onClick={() =>
-              viewing === 'account' ? setViewing('form') : setViewing('account')
-            }
-          >
-            {viewing === 'account' ? 'Back to Form' : 'Update Account'}
-          </NavButton>
-        )}
-        {signedIn && <NavButton onClick={signOut}>Sign Out</NavButton>}
-        {signedIn && (
-          <NavButton
-            onClick={() =>
-              viewing === 'pairs' ? setViewing('form') : setViewing('pairs')
-            }
-          >
-            {viewing === 'pairs' ? 'Back to Form' : 'View Pairs'}
-          </NavButton>
-        )}
-      </TopBannerContainer>
+      <NavBar
+        signedIn={signedIn}
+        viewing={viewing}
+        setViewing={setViewing}
+        signOut={signOut}
+      />
       <HeaderTitle>
         <h1>Mock Interview Sign Up</h1>
         <i>{getNextMonday(new Date()).toDateString()}</i>
