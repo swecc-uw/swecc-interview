@@ -10,7 +10,7 @@ const LinkButton = styled.button`
   padding: 0;
 `
 
-interface SignInProps {
+interface SignInSignUpProps {
   setSignedIn: (signedIn: boolean) => void
   setSigninOrSignup: (signinOrSignup: string) => void
   signinOrSignup: string
@@ -20,7 +20,7 @@ export default function SignInSignUpPage ({
   setSignedIn,
   setSigninOrSignup,
   signinOrSignup
-}: SignInProps) {
+}: SignInSignUpProps) {
   return (
     <div>
       <h2>

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -7,13 +8,20 @@ const NavBarContainer = styled.div`
   left: 0;
   padding: 20px;
   margin-bottom: 20px;
+  margin-top: 10px;
+  margin-left: 10px;
   width: 100%;
   backdrop-filter: blur(5px);
 `
 
-const NavButton = styled.button`
+const NavButton = styled(NavLink)`
   style: none;
   background: none;
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.3em;
+  cursor: pointer;
+  margin-right: 20px;
   @media (max-width: 600px) {
     margin-bottom: 10px;
     font-size: 0.8em;
@@ -22,39 +30,20 @@ const NavButton = styled.button`
 
 interface NavBarProps {
   signedIn: boolean
-  viewing: string
-  setViewing: (view: string) => void
   signOut: () => void
 }
 
-export default function NavBar ({
-  signedIn,
-  viewing,
-  setViewing,
-  signOut
-}: NavBarProps) {
-
+export default function NavBar ({ signedIn, signOut }: NavBarProps) {
   return (
     <NavBarContainer>
+      {signedIn && <NavButton to='/account'>Update Account</NavButton>}
       {signedIn && (
-        <NavButton
-          onClick={() =>
-            viewing === 'account' ? setViewing('form') : setViewing('account')
-          }
-        >
-          {viewing === 'account' ? 'Back to Form' : 'Update Account'}
+        <NavButton to='/signout' onClick={signOut}>
+          Sign Out
         </NavButton>
       )}
-      {signedIn && <NavButton onClick={signOut}>Sign Out</NavButton>}
-      {signedIn && (
-        <NavButton
-          onClick={() =>
-            viewing === 'pairs' ? setViewing('form') : setViewing('pairs')
-          }
-        >
-          {viewing === 'pairs' ? 'Back to Form' : 'View Pairs'}
-        </NavButton>
-      )}
+      {signedIn && <NavButton to='/pairs'>View Pairs</NavButton>}
+      {signedIn && <NavButton to='/form'>Interview Signup</NavButton>}
     </NavBarContainer>
   )
 }
