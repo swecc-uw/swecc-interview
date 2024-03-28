@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import Availability from './components/Availability'
-import SignUp from './components/SignUp'
-import Welcome from './components/Welcome'
-import Confirmation from './components/Confirmation'
 import { getNextMonday } from './utils/time'
 import { supabase } from './utils/supabaseClient'
-import SignIn from './components/SignIn'
-import UpdateAccount from './components/UpdateAccount'
 import { getUser } from './services/user'
-import ViewPairs from './components/ViewPairs'
 import { UserData } from './types'
 import { getActiveInterviewFormID } from './services/signup'
+
+import Availability from './components/Availability'
+import Welcome from './components/Welcome'
+import Confirmation from './components/Confirmation'
+import UpdateAccount from './components/UpdateAccount'
+import ViewPairs from './components/ViewPairs'
 import NavBar from './components/NavBar'
+import SignInSignUpPage from './pages/SignInSignUpPage'
 
 const RootContainer = styled.div`
   margin: 0 auto;
@@ -33,14 +33,6 @@ const Card = styled.div`
 const FormContainer = styled.div`
   width: 85%;
   margin: 0 auto;
-`
-
-const LinkButton = styled.button`
-  background: none;
-  border: none;
-  color: rgb(162, 254, 168);
-  cursor: pointer;
-  padding: 0;
 `
 
 const WarningContainer = styled.div`
@@ -149,26 +141,6 @@ function App () {
       </FormContainer>
     )
 
-  const SigninContainer = () => (
-    <div>
-      <h2>
-        <LinkButton onClick={() => setSigninOrSignup('signin')}>
-          Sign In
-        </LinkButton>{' '}
-        or{' '}
-        <LinkButton id='signup' onClick={() => setSigninOrSignup('signup')}>
-          Sign Up
-        </LinkButton>{' '}
-        to get started
-      </h2>
-      {signinOrSignup === 'signin' ? (
-        <SignIn setSignedIn={setSignedIn} />
-      ) : (
-        <SignUp setSignedIn={setSignedIn} />
-      )}
-    </div>
-  )
-
   if (loading) {
     return <></>
   }
@@ -176,7 +148,13 @@ function App () {
   const Content = () => {
     switch (viewing) {
       case 'login':
-        return <SigninContainer />
+        return (
+          <SignInSignUpPage
+            setSignedIn={setSignedIn}
+            setSigninOrSignup={setSigninOrSignup}
+            signinOrSignup={signinOrSignup}
+          />
+        )
       case 'form':
         return <MIFormContainer />
       case 'account':
@@ -189,7 +167,13 @@ function App () {
           />
         )
       default:
-        return <SigninContainer />
+        return (
+          <SignInSignUpPage
+            setSignedIn={setSignedIn}
+            setSigninOrSignup={setSigninOrSignup}
+            signinOrSignup={signinOrSignup}
+          />
+        )
     }
   }
 
@@ -205,7 +189,17 @@ function App () {
         <h1>Mock Interview Sign Up</h1>
         <i>{getNextMonday(new Date()).toDateString()}</i>
       </HeaderTitle>
-      <Card>{signedIn ? <Content /> : <SigninContainer />}</Card>
+      <Card>
+        {signedIn ? (
+          <Content />
+        ) : (
+          <SignInSignUpPage
+            setSignedIn={setSignedIn}
+            setSigninOrSignup={setSigninOrSignup}
+            signinOrSignup={signinOrSignup}
+          />
+        )}
+      </Card>
       {renderWarning(null)}
     </RootContainer>
   )
