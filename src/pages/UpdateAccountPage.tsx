@@ -1,7 +1,12 @@
+import { HeaderTitle, PageContainer } from "../shared";
 
 
 export default function UpdateAccountPage() {
   return (
-    <>UpdateAccountPage</>
+    <PageContainer>
+      <HeaderTitle>
+
+      </HeaderTitle>
+    </PageContainer>
   );
 }
