@@ -1,18 +1,15 @@
-import { FormStartProps } from "../types";
+import { TextCard } from '../shared'
+import { getNextMonday } from '../utils/time'
 
-function Welcome({ nextStep }: FormStartProps) {
+function Welcome () {
   return (
-    <div>
+    <TextCard width={'40%'}>
       <p>
-        Click the button below to start the sign up process.
+        Click the button below to start the sign up process. Keep in mind that
+        you will be signing up for the week of next Monday ({getNextMonday(new Date()).toDateString()}).
       </p>
-      <div className="buttons">
-        <button id='get-started-btn' onClick={nextStep}>Get started</button>
-      </div>
-
-    </div>
-  );
+    </TextCard>
+  )
 }
 
-export default Welcome;
-
+export default Welcome

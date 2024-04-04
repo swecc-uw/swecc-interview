@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import styled from 'styled-components'
+import { HeaderTitle } from '../shared'
 
 const UpdateSecureDataContainer = styled.div`
   max-width: 400px;
@@ -220,6 +221,9 @@ const UpdateAccount = ({ hide, userRef }: UpdateAccountProps) => {
 
   return (
     <div>
+      <HeaderTitle>
+        <h1>Update Account</h1>
+      </HeaderTitle>
       <Button onClick={() => setUpdating('account')}>Account</Button>
       <Button onClick={() => setUpdating('password')}>Password</Button>
       <Button onClick={() => setUpdating('email')}>Email</Button>

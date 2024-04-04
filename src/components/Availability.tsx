@@ -4,7 +4,6 @@ import TimeSelector from './TimeSelector';
 import { hntotime, timetohn, getNextMonday } from '../utils/time';
 import { FormStepProps } from '../types';
 
-// Styled components
 const Container = styled.div`
   text-align: center;
 `;
@@ -55,12 +54,12 @@ const UnsavedChangesWarning = styled.div`
   color: lightcoral;
 `;
 
-interface AvailabilityProps extends FormStepProps {
+interface AvailabilityProps  {
   uid: string | undefined;
 }
 
 
-const Availability = ({ nextStep, prevStep, uid }: AvailabilityProps) => {
+const Availability = ({ uid }: AvailabilityProps) => {
   const [startTime, setStartTime] = useState(7);
   const [endTime, setEndTime] = useState(17);
   const [availability, setAvailability] = useState<boolean[][]>([]);
@@ -70,9 +69,7 @@ const Availability = ({ nextStep, prevStep, uid }: AvailabilityProps) => {
   const nextMonday = getNextMonday(today);
 
   useEffect(() => {
-    if (!uid)
-      prevStep();
-
+    // if (!uid)
     const availabilityString = localStorage.getItem(`availability-${uid}`);
     if (availabilityString) {
       setAvailability(JSON.parse(availabilityString).map((day: number[]) => day.map(hour => hour === 1)));
@@ -148,10 +145,6 @@ const Availability = ({ nextStep, prevStep, uid }: AvailabilityProps) => {
         {changedSinceSave && <UnsavedChangesWarning>Unsaved changes</UnsavedChangesWarning>}
         <SaveButton onClick={handleSave}>Save</SaveButton>
       </div>
-      <ButtonsContainer>
-        <button onClick={prevStep}>Previous</button>
-        <button onClick={nextStep}>Next</button>
-      </ButtonsContainer>
     </Container>
   );
 };

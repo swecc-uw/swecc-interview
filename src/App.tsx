@@ -17,12 +17,6 @@ const RootContainer = styled.div`
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  margin-top: 40px;
-`
-
-const HeaderTitle = styled.header`
-  width: 100%;
-  margin-bottom: 5em;
 `
 
 function App () {
@@ -111,10 +105,6 @@ function App () {
         signedIn={signedIn}
         signOut={signOut}
       />
-      <HeaderTitle>
-        <h1>Mock Interview Sign Up</h1>
-        <i>{getNextMonday(new Date()).toDateString()}</i>
-      </HeaderTitle>
       <Routes>
         <Route
           path='/login'

@@ -2,24 +2,10 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { submitSignup } from '../services/signup'
 import { getNextMonday } from '../utils/time'
-import { FormEndProps } from '../types'
 
 // Styled components
 const ConfirmationContainer = styled.div`
   text-align: center;
-`
-
-const SharedButton = styled.button`
-  margin-top: 20px;
-  min-width: 150px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
 `
 
 const ConfirmationMessage = styled.p`
@@ -33,12 +19,12 @@ const readAvailabilityFromLocalStorage = (uid: string): boolean[][] => {
   return JSON.parse(localStorage.getItem(`availability-${uid}`) || '[]')
 }
 
-interface ConirmationProps extends FormEndProps {
+interface ConirmationProps {
   uid: string
 }
 
 // Confirmation component
-function Confirmation ({ prevStep, uid }: ConirmationProps) {
+function Confirmation ({ uid }: ConirmationProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -81,12 +67,9 @@ function Confirmation ({ prevStep, uid }: ConirmationProps) {
         agreeing to participate, and you will be expected to be available for
         your assigned partner.
       </ConfirmationMessage>
-      <SharedButton onClick={handleSubmit}>
+      <button onClick={handleSubmit}>
         {loading ? 'Loading...' : 'Submit'}
-      </SharedButton>
-      <ButtonsContainer>
-        <SharedButton onClick={prevStep}>Previous</SharedButton>
-      </ButtonsContainer>
+      </button>
       {success && <p>{success}</p>}
       {error && <p>{error}</p>}
     </ConfirmationContainer>

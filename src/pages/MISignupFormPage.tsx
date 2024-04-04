@@ -1,12 +1,9 @@
-import styled from 'styled-components'
 import { UserData } from '../types'
 import Welcome from '../components/Welcome'
 import Availability from '../components/Availability'
 import Confirmation from '../components/Confirmation'
-const FormContainer = styled.div`
-  width: 85%;
-  margin: 0 auto;
-`
+import { HeaderTitle, PageContainer } from '../shared'
+import styled from 'styled-components'
 
 interface MIFormPageProps {
   user: React.MutableRefObject<UserData | null>
@@ -15,27 +12,43 @@ interface MIFormPageProps {
   prevStep: () => void
 }
 
+const ControlButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 5%;
+  margin: 0 auto;
+`
+
 export default function MISignupFormPage ({
   user,
   step,
   nextStep,
   prevStep
 }: MIFormPageProps) {
+  const FormControl = () => {
+    return (
+      <ControlButtonContainer>
+        { step > 0 && <button onClick={prevStep}>Back</button> }
+        { step < 2 && <button onClick={nextStep}>Next</button> }
+      </ControlButtonContainer>
+    )
+  }
+
   return (
     user.current?.user_id && (
-      <FormContainer>
-        {step === 0 && <Welcome nextStep={nextStep} />}
+      <PageContainer>
+        <HeaderTitle>Mock Interview Sign Up</HeaderTitle>
+        {step === 0 && <Welcome />}
         {step === 1 && (
           <Availability
-            nextStep={nextStep}
-            prevStep={prevStep}
             uid={user.current?.user_id}
           />
         )}
         {step === 2 && (
-          <Confirmation prevStep={prevStep} uid={user.current.user_id} />
+          <Confirmation uid={user.current.user_id} />
         )}
-      </FormContainer>
+        <FormControl />
+      </PageContainer>
     )
   )
 }

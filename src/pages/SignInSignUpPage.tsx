@@ -1,14 +1,9 @@
 import styled from 'styled-components'
 import SignIn from '../components/SignIn'
 import SignUp from '../components/SignUp'
+import { HeaderTitle, LinkButton, PageContainer } from '../shared'
 
-const LinkButton = styled.button`
-  background: none;
-  border: none;
-  color: rgb(162, 254, 168);
-  cursor: pointer;
-  padding: 0;
-`
+
 
 interface SignInSignUpProps {
   setSignedIn: (signedIn: boolean) => void
@@ -22,8 +17,8 @@ export default function SignInSignUpPage ({
   signinOrSignup
 }: SignInSignUpProps) {
   return (
-    <div>
-      <h2>
+    <PageContainer>
+      <HeaderTitle>
         <LinkButton onClick={() => setSigninOrSignup('signin')}>
           Sign In
         </LinkButton>{' '}
@@ -32,12 +27,12 @@ export default function SignInSignUpPage ({
           Sign Up
         </LinkButton>{' '}
         to get started
-      </h2>
+      </HeaderTitle>
       {signinOrSignup === 'signin' ? (
         <SignIn setSignedIn={setSignedIn} />
       ) : (
         <SignUp setSignedIn={setSignedIn} />
       )}
-    </div>
+    </PageContainer>
   )
 }
