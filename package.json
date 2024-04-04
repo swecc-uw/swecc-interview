@@ -2,6 +2,7 @@
   "name": "pairing-client",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://swecc-uw.github.io/pairing-client",
   "type": "module",
   "scripts": {
     "dev": "vite",
