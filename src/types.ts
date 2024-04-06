@@ -1,35 +1,35 @@
-interface FormComponentProps {
-  nextStep: () => void
-  prevStep: () => void
-}
+type FormComponentProps = {
+	nextStep: () => void;
+	prevStep: () => void;
+};
 
-interface FormStartProps {
-  nextStep: () => void
-}
+type FormStartProps = {
+	nextStep: () => void;
+};
 
-interface FormStepProps {
-  nextStep: () => void
-  prevStep: () => void
-}
+type FormStepProps = {
+	nextStep: () => void;
+	prevStep: () => void;
+};
 
-interface FormEndProps {
-  prevStep: () => void
-}
+type FormEndProps = {
+	prevStep: () => void;
+};
 
-interface UserData {
-  first_name: string
-  last_name: string
-  email: string
-  discord: string
-  grad_year: number
-  major: string
-  user_id: string
-}
+type UserData = {
+	first_name: string;
+	last_name: string;
+	email: string;
+	discord: string;
+	grad_year: number;
+	major: string;
+	user_id: string;
+};
 
-interface SignupData {
-  user_id: string
-  availability: boolean[][]
-}
+type SignupData = {
+	user_id: string;
+	availability: boolean[][];
+};
 
 /**
  *
@@ -51,18 +51,18 @@ interface SignupData {
  *
     */
 
-interface SignupRecord {
-  user_id: string
-  form_id: number
-  availability: string
-}
+type SignupRecord = {
+	user_id: string;
+	form_id: number;
+	availability: string;
+};
 
 export type {
-  FormComponentProps,
-  SignupData,
-  SignupRecord,
-  FormStartProps,
-  FormStepProps,
-  FormEndProps,
-  UserData
-}
+	FormComponentProps,
+	SignupData,
+	SignupRecord,
+	FormStartProps,
+	FormStepProps,
+	FormEndProps,
+	UserData,
+};

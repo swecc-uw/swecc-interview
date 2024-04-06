@@ -1,23 +1,23 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const colors = {
-  clickable: 'rgb(162, 254, 168)',
-  clickableHover: 'rgb(162, 254, 168, 0.8)',
-  background: 'black',
-  text: 'white'
-}
+	clickable: 'rgb(162, 254, 168)',
+	clickableHover: 'rgb(162, 254, 168, 0.8)',
+	background: 'black',
+	text: 'white',
+};
 
 export const HeaderTitle = styled.h1`
   width: 100%;
   margin-bottom: 5em;
   font-size: 2em;
-`
+`;
 
 export const PageContainer = styled.div`
   width: 85%;
   margin: 0 auto;
   margin-top: 5em;
-`
+`;
 
 export const LinkButton = styled.button`
   background: none;
@@ -25,7 +25,7 @@ export const LinkButton = styled.button`
   color: ${colors.clickable};
   cursor: pointer;
   padding: 0;
-`
+`;
 
 export const DropdownText = styled.select`
   background: none;
@@ -48,7 +48,7 @@ export const DropdownText = styled.select`
   &:focus {
     outline: none;
   }
-`
+`;
 
 export const Button = styled.button`
   background: ${colors.clickable};
@@ -63,7 +63,7 @@ export const Button = styled.button`
   &:hover {
     background: ${colors.clickableHover};
   }
-`
+`;
 
 export const TextInput = styled.input`
   width: 100%;
@@ -72,25 +72,25 @@ export const TextInput = styled.input`
   font-size: 1em;
   border: none;
   border-radius: 1px;
-`
+`;
 
-export const HorizontallyCenteredContainer = styled.div<{ width: string }>`
+export const HorizontallyCenteredContainer = styled.div<{width: string}>`
   width: ${props => props.width};
   margin: 0 auto;
-`
+`;
 
 export const HorizontallyCenteredInlineContainer = styled.div<{
-  width: string
-  gap: string
+	width: string;
+	gap: string;
 }>`
   width: ${props => props.width};
   gap: ${props => props.gap};
   display: flex;
   justify-content: center;
   margin: 0 auto;
-`
+`;
 
-export const TextCard = styled.div<{ width: string }>`
+export const TextCard = styled.div<{width: string}>`
   font-size: 1.5em;
   width: ${props => props.width};
   padding: 1em;
@@ -99,4 +99,4 @@ export const TextCard = styled.div<{ width: string }>`
   @media (max-width: 768px) {
     width: 100%;
   }
-`
+`;

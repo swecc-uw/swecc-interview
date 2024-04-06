@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { getNextMonday } from './utils/time'
 import { supabase } from './utils/supabaseClient'
 import { getUser } from './services/user'
-import { UserData } from './types'
+import { type UserData } from './types'
 import { getActiveInterviewFormID } from './services/signup'
 import UpdateAccountPage from './pages/UpdateAccountPage'
 import ViewPairs from './components/ViewPairs'
@@ -43,7 +42,7 @@ function App () {
       }
 
       const userData = await getUser()
-      user.current = userData
+      if (userData) user.current = userData
       setSignedIn(true)
     }
 
@@ -53,7 +52,9 @@ function App () {
       setActiveFormId(fid)
     }
 
-    fetchUser().then(() => setLoading(false))
+    fetchUser().then(() => {
+      setLoading(false)
+    })
     fetchActiveFormId()
   }, [])
 
@@ -62,13 +63,19 @@ function App () {
       const fetchUser = async () => {
         setLoading(true)
         const userData = await getUser()
-        user.current = userData
+        if (userData) user.current = userData
       }
 
       fetchUser()
-        .then(() => navigate('/form'))
-        .then(() => setLoading(false))
-        .then(() => setStep(0))
+        .then(() => {
+          navigate('/form')
+        })
+        .then(() => {
+          setLoading(false)
+        })
+        .then(() => {
+          setStep(0)
+        })
     }
   }, [signedIn])
 
@@ -111,32 +118,41 @@ function App () {
             />
           }
         />
-        <Route
-          path='/form'
-          element={
-            <MISignupFormPage
-              user={user}
-              step={step}
-              nextStep={nextStep}
-              prevStep={prevStep}
+        {user.current !== null ? (
+          <>
+            <Route
+              path='/form'
+              element={
+                <MISignupFormPage
+                  user={user as React.MutableRefObject<UserData>}
+                  step={step}
+                  nextStep={nextStep}
+                  prevStep={prevStep}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path='/account'
-          element={
-            <UpdateAccountPage user={user} hide={() => navigate('/form')} />
-          }
-        />
-        <Route
-          path='/pairs'
-          element={
-            <ViewPairs
-              uuid={user?.current?.user_id}
-              active_formid={activeFormId}
+            <Route
+              path='/account'
+              element={
+                <UpdateAccountPage
+                  user={user as React.MutableRefObject<UserData>}
+                  hide={() => {
+                    navigate('/form')
+                  }}
+                />
+              }
             />
-          }
-        />
+            <Route
+              path='/pairs'
+              element={
+                <ViewPairs
+                  uuid={user?.current?.user_id}
+                  active_formid={activeFormId}
+                />
+              }
+            />
+          </>
+        ) : null}
         <Route
           path='*'
           element={
