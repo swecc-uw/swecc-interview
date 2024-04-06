@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { getPairsForUser } from "../services/pair";
-import styled from "styled-components";
+import { useEffect, useState } from 'react'
+import { getPairsForUser } from '../services/pair'
+import styled from 'styled-components'
 
 const PairContainer = styled.div`
   margin-bottom: 20px;
   width: 100%;
-`;
+`
 
 const Table = styled.table`
   width: 80%;
@@ -14,7 +14,7 @@ const Table = styled.table`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-`;
+`
 
 const TableRow = styled.tr`
   border-bottom: 1px solid #333333;
@@ -22,36 +22,36 @@ const TableRow = styled.tr`
   font-weight: 500;
   font-style: normal;
   text-align: left;
-`;
+`
 
 const TableHeader = styled.th`
   padding: 12px;
   text-align: left;
   background-color: #323232;
   width: 20%;
-`;
+`
 
 const TableCell = styled.td`
   padding: 12px;
-`;
+`
 
 const Empty = styled.div`
   margin-top: 8%;
   text-align: center;
-`;
+`
 
 const ToggleButton = styled.button`
   margin-top: 80px;
-`;
+`
 
 interface PairProps {
-  date: string;
-  p_fname: string;
-  p_lname: string;
-  p_email: string;
-  p_discord: string;
-  p_major: string;
-  p_grad_year: string;
+  date: string
+  p_fname: string
+  p_lname: string
+  p_email: string
+  p_discord: string
+  p_major: string
+  p_grad_year: string
 }
 
 // PairView component
@@ -62,10 +62,9 @@ const PairView = ({
   p_email,
   p_discord,
   p_major,
-  p_grad_year,
+  p_grad_year
 }: PairProps) => {
-
-  const dateStr = new Date(date).toLocaleDateString();
+  const dateStr = new Date(date).toLocaleDateString()
   return (
     <PairContainer>
       <Table>
@@ -101,48 +100,49 @@ const PairView = ({
         </tbody>
       </Table>
     </PairContainer>
-  );
-
-};
+  )
+}
 
 // Styled components for ViewPairs
 const PairsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 interface ViewPairsProps {
-  uuid: string | undefined;
-  active_formid: number | null;
+  uuid: string | undefined
+  active_formid: number | null
 }
 
 // ViewPairs component
 const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
-  const [pairs, setPairs] = useState<any[]>([]);
-  const [currentOnly, setCurrentOnly] = useState<boolean>(true);
-  const [loading, setLoading] = useState(false);
+  const [pairs, setPairs] = useState<any[]>([])
+  const [currentOnly, setCurrentOnly] = useState<boolean>(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     // get pairs for user
-    setLoading(true);
+    setLoading(true)
     const fetchPairs = async () => {
-      if (!uuid) return;
-      const pairs = await getPairsForUser(uuid);
-      if (pairs && pairs.length > 0) setPairs(pairs);
-    };
+      if (!uuid) return
+      const pairs = await getPairsForUser(uuid)
+      if (pairs && pairs.length > 0) setPairs(pairs)
+    }
 
-    fetchPairs().then(() => setLoading(false));
-  }, []);
+    fetchPairs().then(() => setLoading(false))
+  }, [])
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>
 
-  const currentPair = active_formid !== null
-    ? pairs.find((pair) => pair.form_id === active_formid)
-    : null;
+  const currentPair =
+    active_formid !== null
+      ? pairs.find(pair => pair.form_id === active_formid)
+      : null
 
-  const Current = () => currentPair ? (
-    <PairView
+  const Current = () =>
+    currentPair ? (
+      <PairView
         date={currentPair.date}
         p_fname={currentPair.partner.first_name}
         p_lname={currentPair.partner.last_name}
@@ -151,33 +151,40 @@ const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
         p_major={currentPair.partner.major}
         p_grad_year={currentPair.partner.grad_year}
       />
-  ) : (
-    <Empty>
-      <h3>Empty...</h3>
-    </Empty>
-  )
+    ) : (
+      <Empty>
+        <h3>Empty...</h3>
+      </Empty>
+    )
 
   return (
     <PairsContainer>
-      {currentOnly  ?
-      <Current /> :
-      (pairs.length > 0 ? pairs.map((pair, idx) => (
-        <PairView
-          key={idx}
-          date={pair.date}
-          p_fname={pair.partner.first_name}
-          p_lname={pair.partner.last_name}
-          p_email={pair.partner.email}
-          p_discord={pair.partner.discord}
-          p_major={pair.partner.major}
-          p_grad_year={pair.partner.grad_year}
-        />
-      )) : <Empty> <h3>Empty...</h3> </Empty>)}
+      {currentOnly ? (
+        <Current />
+      ) : pairs.length > 0 ? (
+        pairs.map((pair, idx) => (
+          <PairView
+            key={idx}
+            date={pair.date}
+            p_fname={pair.partner.first_name}
+            p_lname={pair.partner.last_name}
+            p_email={pair.partner.email}
+            p_discord={pair.partner.discord}
+            p_major={pair.partner.major}
+            p_grad_year={pair.partner.grad_year}
+          />
+        ))
+      ) : (
+        <Empty>
+          {' '}
+          <h3>Empty...</h3>{' '}
+        </Empty>
+      )}
       <ToggleButton onClick={() => setCurrentOnly(!currentOnly)}>
-        {currentOnly ? "Show all" : "Show only active partner"}
+        {currentOnly ? 'Show all' : 'Show only active partner'}
       </ToggleButton>
     </PairsContainer>
-  );
-};
+  )
+}
 
-export default ViewPairs;
+export default ViewPairs

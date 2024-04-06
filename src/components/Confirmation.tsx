@@ -1,49 +1,23 @@
 import { useState } from 'react'
-import styled from 'styled-components'
 import { submitSignup } from '../services/signup'
 import { getNextMonday } from '../utils/time'
-import { FormEndProps } from '../types'
-
-// Styled components
-const ConfirmationContainer = styled.div`
-  text-align: center;
-`
-
-const SharedButton = styled.button`
-  margin-top: 20px;
-  min-width: 150px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`
-
-const ConfirmationMessage = styled.p`
-  margin: 20px 30%;
-`
-
-const ButtonsContainer = styled.div``
-
+import { TextCard, Button } from '../shared'
 
 const readAvailabilityFromLocalStorage = (uid: string): boolean[][] => {
   return JSON.parse(localStorage.getItem(`availability-${uid}`) || '[]')
 }
 
-interface ConirmationProps extends FormEndProps {
+interface ConirmationProps {
   uid: string
 }
 
 // Confirmation component
-function Confirmation ({ prevStep, uid }: ConirmationProps) {
+function Confirmation ({ uid }: ConirmationProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const availability: boolean[][] = readAvailabilityFromLocalStorage(uid);
+  const availability: boolean[][] = readAvailabilityFromLocalStorage(uid)
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -73,23 +47,21 @@ function Confirmation ({ prevStep, uid }: ConirmationProps) {
     setLoading(false)
   }
 
-
   return (
-    <ConfirmationContainer>
-      <ConfirmationMessage>
-        Are you sure you want to interview next week? Submitting this form is
-        agreeing to participate, and you will be expected to be available for
-        your assigned partner.
-      </ConfirmationMessage>
-      <SharedButton onClick={handleSubmit}>
+    <div>
+      <TextCard width='50%'>
+        <p>
+          Are you sure you want to interview next week? Submitting this form is
+          agreeing to participate, and you will be expected to be available for
+          your assigned partner.
+        </p>
+      </TextCard>
+      <Button onClick={handleSubmit}>
         {loading ? 'Loading...' : 'Submit'}
-      </SharedButton>
-      <ButtonsContainer>
-        <SharedButton onClick={prevStep}>Previous</SharedButton>
-      </ButtonsContainer>
+      </Button>
       {success && <p>{success}</p>}
       {error && <p>{error}</p>}
-    </ConfirmationContainer>
+    </div>
   )
 }
 

@@ -1,9 +1,7 @@
-import { supabase } from "../utils/supabaseClient";
+import { supabase } from '../utils/supabaseClient'
 
 export const testDB = async () => {
-  const { data, error } = await supabase
-    .from('signups')
-    .select('*')
+  const { data, error } = await supabase.from('signups').select('*')
   console.log(data, error)
   return data
 }
@@ -16,22 +14,22 @@ export const getActiveSignupFormID = async (): Promise<number | null> => {
     .eq('state', 'active')
 
   if (error) {
-    console.error(error);
-    return null;
+    console.error(error)
+    return null
   }
 
-  console.log(data);
+  console.log(data)
   if (data.length === 0) {
     console.error('no forms found')
-    return null;
+    return null
   }
 
   if (data.length > 1) {
     console.error('more than one active form found')
-    return null;
+    return null
   }
 
-  return data[0].id;
+  return data[0].id
 }
 
 export const getActiveInterviewFormID = async () => {
@@ -41,30 +39,32 @@ export const getActiveInterviewFormID = async () => {
     .eq('state', 'interview')
 
   if (error) {
-    console.error(error);
-    return null;
+    console.error(error)
+    return null
   }
 
   if (data.length === 0) {
     console.error('no forms found')
-    return null;
+    return null
   }
 
   if (data.length > 1) {
     console.error('more than one active form found')
-    return null;
+    return null
   }
 
-  return data[0].id;
+  return data[0].id
 }
 
-
-export const submitSignup = async (userId: string, availability: boolean[][]) => {
-  const fid = await getActiveSignupFormID();
+export const submitSignup = async (
+  userId: string,
+  availability: boolean[][]
+) => {
+  const fid = await getActiveSignupFormID()
 
   if (!fid) {
-    console.error('no active form found');
-    return false;
+    console.error('no active form found')
+    return false
   }
 
   // if signup for form_id and email exists, update it
@@ -76,8 +76,8 @@ export const submitSignup = async (userId: string, availability: boolean[][]) =>
     .eq('form_id', fid)
 
   if (error) {
-    console.error(error);
-    return false;
+    console.error(error)
+    return false
   }
 
   if (data.length > 0) {
@@ -88,27 +88,24 @@ export const submitSignup = async (userId: string, availability: boolean[][]) =>
       .eq('user_id', userId)
       .eq('form_id', fid)
     if (res.error) {
-      console.error(error);
-      return false;
+      console.error(error)
+      return false
     }
-
   } else {
     console.log('inserting')
     const { error } = await supabase
       .from('signups')
       .insert({ user_id: userId, form_id: fid, availability })
     if (error) {
-      console.error(error);
-      return false;
+      console.error(error)
+      return false
     }
-
   }
 
   if (error) {
-    console.error(error);
-    return false;
+    console.error(error)
+    return false
   }
 
-  return true;
-};
-
+  return true
+}

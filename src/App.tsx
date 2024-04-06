@@ -5,8 +5,7 @@ import { supabase } from './utils/supabaseClient'
 import { getUser } from './services/user'
 import { UserData } from './types'
 import { getActiveInterviewFormID } from './services/signup'
-
-import UpdateAccount from './components/UpdateAccount'
+import UpdateAccountPage from './pages/UpdateAccountPage'
 import ViewPairs from './components/ViewPairs'
 import NavBar from './components/NavBar'
 import SignInSignUpPage from './pages/SignInSignUpPage'
@@ -17,12 +16,6 @@ const RootContainer = styled.div`
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  margin-top: 40px;
-`
-
-const HeaderTitle = styled.header`
-  width: 100%;
-  margin-bottom: 5em;
 `
 
 function App () {
@@ -33,7 +26,7 @@ function App () {
   const [activeFormId, setActiveFormId] = useState<number | null>(null)
   const user = useRef<UserData | null>(null)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -97,8 +90,7 @@ function App () {
 
     await supabase.auth.signOut()
     setSignedIn(false)
-    user.current = null;
-
+    user.current = null
   }
 
   if (loading) {
@@ -107,14 +99,7 @@ function App () {
 
   return (
     <RootContainer>
-      <NavBar
-        signedIn={signedIn}
-        signOut={signOut}
-      />
-      <HeaderTitle>
-        <h1>Mock Interview Sign Up</h1>
-        <i>{getNextMonday(new Date()).toDateString()}</i>
-      </HeaderTitle>
+      <NavBar signedIn={signedIn} signOut={signOut} />
       <Routes>
         <Route
           path='/login'
@@ -140,7 +125,7 @@ function App () {
         <Route
           path='/account'
           element={
-            <UpdateAccount userRef={user} hide={() => navigate('/form')} />
+            <UpdateAccountPage user={user} hide={() => navigate('/form')} />
           }
         />
         <Route
@@ -152,13 +137,16 @@ function App () {
             />
           }
         />
-        <Route path='*' element={
-          <SignInSignUpPage
-            setSignedIn={setSignedIn}
-            setSigninOrSignup={setSigninOrSignup}
-            signinOrSignup={signinOrSignup}
-          />
-        } />
+        <Route
+          path='*'
+          element={
+            <SignInSignUpPage
+              setSignedIn={setSignedIn}
+              setSigninOrSignup={setSigninOrSignup}
+              signinOrSignup={signinOrSignup}
+            />
+          }
+        />
       </Routes>
     </RootContainer>
   )

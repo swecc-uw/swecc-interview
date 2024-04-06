@@ -1,12 +1,14 @@
-import styled from 'styled-components'
 import { UserData } from '../types'
 import Welcome from '../components/Welcome'
 import Availability from '../components/Availability'
 import Confirmation from '../components/Confirmation'
-const FormContainer = styled.div`
-  width: 85%;
-  margin: 0 auto;
-`
+import {
+  Button,
+  HeaderTitle,
+  PageContainer,
+  HorizontallyCenteredInlineContainer
+} from '../shared'
+import styled from 'styled-components'
 
 interface MIFormPageProps {
   user: React.MutableRefObject<UserData | null>
@@ -15,27 +17,47 @@ interface MIFormPageProps {
   prevStep: () => void
 }
 
+const ButtonContainer = styled.div`
+  margin-top: 1em;
+`
+
 export default function MISignupFormPage ({
   user,
   step,
   nextStep,
   prevStep
 }: MIFormPageProps) {
+  const FormControl = () => {
+    return (
+      <ButtonContainer>
+        <HorizontallyCenteredInlineContainer width='50%' gap='1em'>
+          {step > 0 && <Button onClick={prevStep}>Back</Button>}
+          {step < 2 && <Button onClick={nextStep}>Next</Button>}
+        </HorizontallyCenteredInlineContainer>
+      </ButtonContainer>
+    )
+  }
+
+  const FormPart = () => {
+    if (user.current?.user_id === undefined) return <div>loading...</div>
+    switch (step) {
+      case 0:
+        return <Welcome />
+      case 1:
+        return <Availability uid={user.current?.user_id} />
+      case 2:
+        return <Confirmation uid={user.current?.user_id} />
+      default:
+        return <Welcome />
+    }
+  }
   return (
     user.current?.user_id && (
-      <FormContainer>
-        {step === 0 && <Welcome nextStep={nextStep} />}
-        {step === 1 && (
-          <Availability
-            nextStep={nextStep}
-            prevStep={prevStep}
-            uid={user.current?.user_id}
-          />
-        )}
-        {step === 2 && (
-          <Confirmation prevStep={prevStep} uid={user.current.user_id} />
-        )}
-      </FormContainer>
+      <PageContainer>
+        <HeaderTitle>Mock Interview Sign Up</HeaderTitle>
+        <FormPart />
+        <FormControl />
+      </PageContainer>
     )
   )
 }
