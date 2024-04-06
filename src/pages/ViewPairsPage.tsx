@@ -1,5 +1,3 @@
-export default function ViewPairsPage() {
-  return (
-    <>ViewPairsPage</>
-  );
+export default function ViewPairsPage () {
+  return <>ViewPairsPage</>
 }

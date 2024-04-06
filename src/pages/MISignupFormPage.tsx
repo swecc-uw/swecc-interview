@@ -2,7 +2,12 @@ import { UserData } from '../types'
 import Welcome from '../components/Welcome'
 import Availability from '../components/Availability'
 import Confirmation from '../components/Confirmation'
-import { HeaderTitle, PageContainer } from '../shared'
+import {
+  Button,
+  HeaderTitle,
+  PageContainer,
+  HorizontallyCenteredInlineContainer
+} from '../shared'
 import styled from 'styled-components'
 
 interface MIFormPageProps {
@@ -12,11 +17,8 @@ interface MIFormPageProps {
   prevStep: () => void
 }
 
-const ControlButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 5%;
-  margin: 0 auto;
+const ButtonContainer = styled.div`
+  margin-top: 1em;
 `
 
 export default function MISignupFormPage ({
@@ -27,26 +29,33 @@ export default function MISignupFormPage ({
 }: MIFormPageProps) {
   const FormControl = () => {
     return (
-      <ControlButtonContainer>
-        { step > 0 && <button onClick={prevStep}>Back</button> }
-        { step < 2 && <button onClick={nextStep}>Next</button> }
-      </ControlButtonContainer>
+      <ButtonContainer>
+        <HorizontallyCenteredInlineContainer width='50%' gap='1em'>
+          {step > 0 && <Button onClick={prevStep}>Back</Button>}
+          {step < 2 && <Button onClick={nextStep}>Next</Button>}
+        </HorizontallyCenteredInlineContainer>
+      </ButtonContainer>
     )
   }
 
+  const FormPart = () => {
+    if (user.current?.user_id === undefined) return <div>loading...</div>
+    switch (step) {
+      case 0:
+        return <Welcome />
+      case 1:
+        return <Availability uid={user.current?.user_id} />
+      case 2:
+        return <Confirmation uid={user.current?.user_id} />
+      default:
+        return <Welcome />
+    }
+  }
   return (
     user.current?.user_id && (
       <PageContainer>
         <HeaderTitle>Mock Interview Sign Up</HeaderTitle>
-        {step === 0 && <Welcome />}
-        {step === 1 && (
-          <Availability
-            uid={user.current?.user_id}
-          />
-        )}
-        {step === 2 && (
-          <Confirmation uid={user.current.user_id} />
-        )}
+        <FormPart />
         <FormControl />
       </PageContainer>
     )

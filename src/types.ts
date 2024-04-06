@@ -27,8 +27,8 @@ interface UserData {
 }
 
 interface SignupData {
-    user_id: string
-    availability: boolean[][]
+  user_id: string
+  availability: boolean[][]
 }
 
 /**

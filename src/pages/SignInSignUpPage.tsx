@@ -1,9 +1,6 @@
-import styled from 'styled-components'
 import SignIn from '../components/SignIn'
 import SignUp from '../components/SignUp'
 import { HeaderTitle, LinkButton, PageContainer } from '../shared'
-
-
 
 interface SignInSignUpProps {
   setSignedIn: (signedIn: boolean) => void

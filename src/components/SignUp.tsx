@@ -93,7 +93,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
   return (
     <SignUpContainer>
       <SignUpForm onSubmit={handleSignUp}>
-        <InputField id='first-name'
+        <InputField
+          id='first-name'
           type='text'
           placeholder='First Name'
           value={firstName}
@@ -101,7 +102,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
             setFirstName(e.target.value)
           }
         />
-        <InputField id='last-name'
+        <InputField
+          id='last-name'
           type='text'
           placeholder='Last Name'
           value={lastName}
@@ -109,7 +111,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
             setLastName(e.target.value)
           }
         />
-        <InputField id='discord'
+        <InputField
+          id='discord'
           type='text'
           placeholder='Discord Username'
           value={discord}
@@ -117,7 +120,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
             setDiscord(e.target.value)
           }
         />
-        <InputField id='grad-year'
+        <InputField
+          id='grad-year'
           type='number'
           placeholder='Graduation Year'
           value={gradYear}
@@ -125,7 +129,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
             setGradYear(parseInt(e.target.value))
           }
         />
-        <InputField id='major'
+        <InputField
+          id='major'
           type='text'
           placeholder='Major'
           value={major}
@@ -133,7 +138,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
             setMajor(e.target.value)
           }
         />
-        <InputField id='email'
+        <InputField
+          id='email'
           type='email'
           placeholder='Email'
           value={email}
@@ -141,7 +147,8 @@ const SignUp = ({ setSignedIn }: SignUpProps) => {
             setEmail(e.target.value)
           }
         />
-        <InputField id='password'
+        <InputField
+          id='password'
           type='password'
           placeholder='Password'
           value={password}

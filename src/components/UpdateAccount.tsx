@@ -1,17 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { supabase } from '../utils/supabaseClient'
+import { Button } from '../shared'
 import styled from 'styled-components'
-import { HeaderTitle } from '../shared'
-
-const UpdateSecureDataContainer = styled.div`
-  max-width: 400px;
-  margin: 0 auto;
-`
-
-const UpdateSecureDataForm = styled.form`
-  display: flex;
-  flex-direction: column;
-`
+import { TextInput, HorizontallyCenteredContainer } from '../shared'
 
 interface UpdateSecureDataProps {
   type: 'password' | 'email'
@@ -52,9 +43,9 @@ const UpdateSecureData = ({
   }
 
   return (
-    <UpdateSecureDataContainer>
-      <UpdateSecureDataForm onSubmit={handleUpdateSecureData}>
-        <InputField
+    <HorizontallyCenteredContainer width='50%'>
+      <form onSubmit={handleUpdateSecureData}>
+        <TextInput
           type={type}
           placeholder={`New ${type}`}
           value={newVal}
@@ -62,7 +53,7 @@ const UpdateSecureData = ({
             setNewVal(e.target.value)
           }
         />
-        <InputField
+        <TextInput
           type={type}
           placeholder={`Confirm new ${type}`}
           value={confirmVal}
@@ -70,43 +61,11 @@ const UpdateSecureData = ({
             setConfirmVal(e.target.value)
           }
         />
-        <SubmitButton type='submit'>
-          {loading ? 'Loading...' : 'Update'}
-        </SubmitButton>
-      </UpdateSecureDataForm>
-    </UpdateSecureDataContainer>
+        <Button type='submit'>{loading ? 'Loading...' : 'Update'}</Button>
+      </form>
+    </HorizontallyCenteredContainer>
   )
 }
-
-const UpdateAccountContainer = styled.div`
-  max-width: 400px;
-  margin: 0 auto;
-`
-
-const UpdateAccountForm = styled.form`
-  display: flex;
-  flex-direction: column;
-`
-
-const InputField = styled.input`
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-`
-
-const SubmitButton = styled.button`
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #333;
-  }
-`
 
 interface UpdateAccountSectionProps {
   hide: () => void
@@ -123,7 +82,9 @@ const UpdateAccountData = ({
   setLoading,
   loading
 }: UpdateAccountSectionProps) => {
-  const [firstName, setFirstName] = useState<string>(userRef.current?.first_name)
+  const [firstName, setFirstName] = useState<string>(
+    userRef.current?.first_name
+  )
   const [lastName, setLastName] = useState<string>(userRef.current?.last_name)
   const [discord, setDiscord] = useState<string>(userRef.current?.discord)
   const [gradYear, setGradYear] = useState<number>(userRef.current?.grad_year)
@@ -147,7 +108,7 @@ const UpdateAccountData = ({
 
     if (error) {
       console.error(error)
-      setError("An error occurred. Please try again later.")
+      setError('An error occurred. Please try again later.')
       setLoading(false)
       return
     }
@@ -157,9 +118,9 @@ const UpdateAccountData = ({
   }
 
   return (
-    <UpdateAccountContainer>
-      <UpdateAccountForm onSubmit={handleUpdateAccount}>
-        <InputField
+    <HorizontallyCenteredContainer width='50%'>
+      <form onSubmit={handleUpdateAccount}>
+        <TextInput
           type='text'
           placeholder='First Name'
           value={firstName}
@@ -167,7 +128,7 @@ const UpdateAccountData = ({
             setFirstName(e.target.value)
           }
         />
-        <InputField
+        <TextInput
           type='text'
           placeholder='Last Name'
           value={lastName}
@@ -175,7 +136,7 @@ const UpdateAccountData = ({
             setLastName(e.target.value)
           }
         />
-        <InputField
+        <TextInput
           type='text'
           placeholder='Discord Username'
           value={discord}
@@ -183,7 +144,7 @@ const UpdateAccountData = ({
             setDiscord(e.target.value)
           }
         />
-        <InputField
+        <TextInput
           type='number'
           placeholder='Graduation Year'
           value={gradYear}
@@ -191,7 +152,7 @@ const UpdateAccountData = ({
             setGradYear(parseInt(e.target.value))
           }
         />
-        <InputField
+        <TextInput
           type='text'
           placeholder='Major'
           value={major}
@@ -199,34 +160,27 @@ const UpdateAccountData = ({
             setMajor(e.target.value)
           }
         />
-        <SubmitButton type='submit' disabled={loading}>
+        <Button type='submit' disabled={loading}>
           {loading ? 'Loading...' : 'Update'}
-        </SubmitButton>
-      </UpdateAccountForm>
-    </UpdateAccountContainer>
+        </Button>
+      </form>
+    </HorizontallyCenteredContainer>
   )
 }
 
 interface UpdateAccountProps {
   hide: () => void
   userRef: any
+  updating: 'account' | 'password' | 'email'
 }
 
-const UpdateAccount = ({ hide, userRef }: UpdateAccountProps) => {
-  const [updating, setUpdating] = useState<'account' | 'password' | 'email'>(
-    'account'
-  )
+const UpdateAccount = ({ hide, userRef, updating }: UpdateAccountProps) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  console.log(updating)
   return (
     <div>
-      <HeaderTitle>
-        <h1>Update Account</h1>
-      </HeaderTitle>
-      <Button onClick={() => setUpdating('account')}>Account</Button>
-      <Button onClick={() => setUpdating('password')}>Password</Button>
-      <Button onClick={() => setUpdating('email')}>Email</Button>
       {updating === 'account' && (
         <UpdateAccountData
           hide={hide}
@@ -259,19 +213,6 @@ const UpdateAccount = ({ hide, userRef }: UpdateAccountProps) => {
 
 const ErrorMessage = styled.p`
   color: red;
-`
-
-const Button = styled.button`
-  style: none;
-  background: none;
-  border: none;
-  padding: 10px;
-  margin-bottom: 10%;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #333;
-  }
 `
 
 export default UpdateAccount
