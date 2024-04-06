@@ -1,35 +1,35 @@
 type FormComponentProps = {
-	nextStep: () => void;
-	prevStep: () => void;
-};
+  nextStep: () => void
+  prevStep: () => void
+}
 
 type FormStartProps = {
-	nextStep: () => void;
-};
+  nextStep: () => void
+}
 
 type FormStepProps = {
-	nextStep: () => void;
-	prevStep: () => void;
-};
+  nextStep: () => void
+  prevStep: () => void
+}
 
 type FormEndProps = {
-	prevStep: () => void;
-};
+  prevStep: () => void
+}
 
 type UserData = {
-	first_name: string;
-	last_name: string;
-	email: string;
-	discord: string;
-	grad_year: number;
-	major: string;
-	user_id: string;
-};
+  first_name: string
+  last_name: string
+  email: string
+  discord: string
+  grad_year: number
+  major: string
+  user_id: string
+}
 
 type SignupData = {
-	user_id: string;
-	availability: boolean[][];
-};
+  user_id: string
+  availability: boolean[][]
+}
 
 /**
  *
@@ -52,17 +52,17 @@ type SignupData = {
     */
 
 type SignupRecord = {
-	user_id: string;
-	form_id: number;
-	availability: string;
-};
+  user_id: string
+  form_id: number
+  availability: string
+}
 
 export type {
-	FormComponentProps,
-	SignupData,
-	SignupRecord,
-	FormStartProps,
-	FormStepProps,
-	FormEndProps,
-	UserData,
-};
+  FormComponentProps,
+  SignupData,
+  SignupRecord,
+  FormStartProps,
+  FormStepProps,
+  FormEndProps,
+  UserData
+}

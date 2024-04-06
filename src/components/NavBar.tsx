@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {NavLink} from 'react-router-dom';
+import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
 
 const NavBarContainer = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const NavBarContainer = styled.div`
   margin-left: 10px;
   width: 100%;
   backdrop-filter: blur(5px);
-`;
+`
 
 const NavButton = styled(NavLink)`
   style: none;
@@ -26,24 +26,24 @@ const NavButton = styled(NavLink)`
     margin-bottom: 10px;
     font-size: 0.8em;
   }
-`;
+`
 
 type NavBarProps = {
-	signedIn: boolean;
-	signOut: () => void;
-};
+  signedIn: boolean
+  signOut: () => void
+}
 
-export default function NavBar({signedIn, signOut}: NavBarProps) {
-	return (
-		<NavBarContainer>
-			{signedIn && <NavButton to='/account'>Update Account</NavButton>}
-			{signedIn && (
-				<NavButton to='/signout' onClick={signOut}>
+export default function NavBar ({ signedIn, signOut }: NavBarProps) {
+  return (
+    <NavBarContainer>
+      {signedIn && <NavButton to='/account'>Update Account</NavButton>}
+      {signedIn && (
+        <NavButton to='/signout' onClick={signOut}>
           Sign Out
-				</NavButton>
-			)}
-			{signedIn && <NavButton to='/pairs'>View Pairs</NavButton>}
-			{signedIn && <NavButton to='/form'>Interview Signup</NavButton>}
-		</NavBarContainer>
-	);
+        </NavButton>
+      )}
+      {signedIn && <NavButton to='/pairs'>View Pairs</NavButton>}
+      {signedIn && <NavButton to='/form'>Interview Signup</NavButton>}
+    </NavBarContainer>
+  )
 }
