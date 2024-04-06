@@ -7,9 +7,14 @@ const colors = {
   text: 'white'
 }
 
+const config = {
+  borderRadius: '5px',
+  padding: '1em'
+}
+
 export const HeaderTitle = styled.h1`
   width: 100%;
-  margin-bottom: 5em;
+  margin-bottom: 3em;
   font-size: 2em;
 `
 
@@ -53,7 +58,7 @@ export const DropdownText = styled.select`
 
 export const Button = styled.button`
   background: ${colors.clickable};
-  border-radius: 2px;
+  border-radius: ${config.borderRadius};
   border: 1px solid transparent;
   color: black;
   padding: 0.5em 1em;
@@ -72,7 +77,7 @@ export const TextInput = styled.input`
   margin: 0.5em 0;
   font-size: 1em;
   border: none;
-  border-radius: 1px;
+  border-radius: ${config.borderRadius};
 `
 
 export const HorizontallyCenteredContainer = styled.div<{ width: string }>`
@@ -98,7 +103,6 @@ export const HorizontallyCenteredInlineContainer = styled.div<{
 export const TextCard = styled.div<{ width: string }>`
   font-size: 1.5em;
   width: ${props => props.width};
-  padding: 1em;
   margin: 0 auto;
 
   @media (max-width: 768px) {
