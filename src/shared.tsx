@@ -22,6 +22,7 @@ export const PageContainer = styled.div`
 export const LinkButton = styled.button`
   background: none;
   border: none;
+  font-size: inherit;
   color: ${colors.clickable};
   cursor: pointer;
   padding: 0;
