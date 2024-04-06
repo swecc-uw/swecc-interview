@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getPairsForUser } from '../services/pair'
 import styled from 'styled-components'
+import { Button } from '../shared'
 
 const PairContainer = styled.div`
   margin-bottom: 20px;
@@ -38,10 +39,6 @@ const TableCell = styled.td`
 const Empty = styled.div`
   margin-top: 8%;
   text-align: center;
-`
-
-const ToggleButton = styled.button`
-  margin-top: 80px;
 `
 
 type PairProps = {
@@ -182,13 +179,13 @@ const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
           <h3>Empty...</h3>{' '}
         </Empty>
       )}
-      <ToggleButton
+      <Button
         onClick={() => {
           setCurrentOnly(!currentOnly)
         }}
       >
         {currentOnly ? 'Show all' : 'Show only active partner'}
-      </ToggleButton>
+      </Button>
     </PairsContainer>
   )
 }
