@@ -109,11 +109,11 @@ const PairsContainer = styled.div`
 
 type ViewPairsProps = {
   uuid: string | undefined
-  active_formid: number | null
+  interview_formid: number | null
 }
 
 // ViewPairs component
-const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
+const ViewPairs = ({ uuid, interview_formid }: ViewPairsProps) => {
   const [pairs, setPairs] = useState<any[]>([])
   const [currentOnly, setCurrentOnly] = useState<boolean>(true)
   const [loading, setLoading] = useState(false)
@@ -135,8 +135,8 @@ const ViewPairs = ({ uuid, active_formid }: ViewPairsProps) => {
   if (loading) return <div>Loading...</div>
 
   const currentPair =
-    active_formid !== null
-      ? pairs.find(pair => pair.form_id === active_formid)
+    interview_formid !== null
+      ? pairs.find(pair => pair.form_id === interview_formid)
       : null
 
   const Current = () =>

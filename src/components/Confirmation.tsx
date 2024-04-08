@@ -9,6 +9,7 @@ const readAvailabilityFromLocalStorage = (uid: string): boolean[][] => {
 
 type ConirmationProps = {
   uid: string
+  signupFormId: number | null
 }
 
 // Confirmation component

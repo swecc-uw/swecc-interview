@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { supabase } from './utils/supabaseClient'
 import { getUser } from './services/user'
 import { type UserData } from './types'
-import { getActiveInterviewFormID } from './services/signup'
+import { getActiveInterviewFormID, getActiveSignupFormID } from './services/signup'
 import UpdateAccountPage from './pages/UpdateAccountPage'
 import ViewPairs from './components/ViewPairs'
 import NavBar from './components/NavBar'
@@ -23,6 +23,7 @@ function App () {
   const [signinOrSignup, setSigninOrSignup] = useState('signin')
   const [loading, setLoading] = useState(true)
   const [activeFormId, setActiveFormId] = useState<number | null>(null)
+  const [interviewFormId, setInterviewFormId] = useState<number | null>(null)
   const user = useRef<UserData | null>(null)
 
   const navigate = useNavigate()
@@ -47,15 +48,23 @@ function App () {
     }
 
     const fetchActiveFormId = async () => {
-      const fid = await getActiveInterviewFormID()
-
+      const fid = await getActiveSignupFormID()
+      alert(fid)
       setActiveFormId(fid)
     }
 
+    const fetchInterviewFormId = async () => {
+      const fid = await getActiveInterviewFormID()
+      setInterviewFormId(fid)
+    }
+
     fetchUser().then(() => {
+      fetchActiveFormId()
+    }).then(() => {
+      fetchInterviewFormId()
+    }).then(() => {
       setLoading(false)
-    })
-    fetchActiveFormId()
+    });
   }, [])
 
   useEffect(() => {
@@ -126,6 +135,7 @@ function App () {
                 <MISignupFormPage
                   user={user as React.MutableRefObject<UserData>}
                   step={step}
+                  signupFormId={activeFormId}
                   nextStep={nextStep}
                   prevStep={prevStep}
                 />
@@ -147,7 +157,7 @@ function App () {
               element={
                 <ViewPairs
                   uuid={user?.current?.user_id}
-                  active_formid={activeFormId}
+                  interview_formid={interviewFormId}
                 />
               }
             />

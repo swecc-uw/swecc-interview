@@ -15,6 +15,7 @@ type MIFormPageProps = {
   step: number
   nextStep: () => void
   prevStep: () => void
+  signupFormId: number | null
 }
 
 const ButtonContainer = styled.div`
@@ -25,7 +26,8 @@ export default function MISignupFormPage ({
   user,
   step,
   nextStep,
-  prevStep
+  prevStep,
+  signupFormId
 }: MIFormPageProps) {
   const FormControl = () => {
     return (
@@ -39,6 +41,11 @@ export default function MISignupFormPage ({
   }
 
   const FormPart = () => {
+
+    if (signupFormId === null) return (
+      <div>No active form found</div>
+    )
+
     if (user.current?.user_id === undefined) return <div>loading...</div>
     switch (step) {
       case 0:
@@ -46,16 +53,20 @@ export default function MISignupFormPage ({
       case 1:
         return <Availability uid={user.current?.user_id} />
       case 2:
-        return <Confirmation uid={user.current?.user_id} />
+        return <Confirmation uid={user.current?.user_id} signupFormId={signupFormId} />
       default:
         return <Welcome />
     }
   }
 
+  const FormIdBit = () => String(signupFormId) === null
+    ? null
+    : (<>Form ID #{String(signupFormId)}</>)
+
   return (
     user.current?.user_id && (
       <PageContainer>
-        <HeaderTitle>Mock Interview Sign Up</HeaderTitle>
+        <HeaderTitle>Mock Interview Sign Up <FormIdBit/></HeaderTitle>
         <FormPart />
         <FormControl />
       </PageContainer>
