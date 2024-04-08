@@ -1,5 +1,6 @@
 import { supabase } from '../utils/supabaseClient'
 import { getActiveSignupFormID } from './form'
+
 export const testDB = async () => {
   const { data, error } = await supabase.from('signups').select('*')
   console.log(data, error)
