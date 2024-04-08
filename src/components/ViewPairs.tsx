@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getPairsForUser } from '../services/pair'
 import styled from 'styled-components'
 import { Button } from '../shared'
+import { getProblemsForUser } from '../services/problem'
 
 const PairContainer = styled.div`
   margin-bottom: 20px;
@@ -49,6 +50,8 @@ type PairProps = {
   p_discord: string
   p_major: string
   p_grad_year: string
+  problem_link?: string
+  topic?: string
 }
 
 // PairView component
@@ -59,7 +62,9 @@ const PairView = ({
   p_email,
   p_discord,
   p_major,
-  p_grad_year
+  p_grad_year,
+  problem_link,
+  topic
 }: PairProps) => {
   const dateStr = new Date(date).toLocaleDateString()
   return (
@@ -94,6 +99,19 @@ const PairView = ({
             <TableHeader>Graduation Year</TableHeader>
             <TableCell>{p_grad_year}</TableCell>
           </TableRow>
+          {problem_link && topic && (
+            <>
+              <TableRow>
+                <TableHeader>Interviewing partner on</TableHeader>
+                <TableCell><a href={problem_link}>{problem_link}</a></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableHeader>Topic</TableHeader>
+                <TableCell>{topic}</TableCell>
+              </TableRow>
+            </>
+          )}
+
         </tbody>
       </Table>
     </PairContainer>
@@ -108,7 +126,7 @@ const PairsContainer = styled.div`
 `
 
 type ViewPairsProps = {
-  uuid: string | undefined
+  uuid: string
   interview_formid: number | null
 }
 
@@ -116,6 +134,7 @@ type ViewPairsProps = {
 const ViewPairs = ({ uuid, interview_formid }: ViewPairsProps) => {
   const [pairs, setPairs] = useState<any[]>([])
   const [currentOnly, setCurrentOnly] = useState<boolean>(true)
+  const [problems, setProblems] = useState<{ [key: number]: any }>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -127,8 +146,15 @@ const ViewPairs = ({ uuid, interview_formid }: ViewPairsProps) => {
       if (pairs && pairs.length > 0) setPairs(pairs)
     }
 
+    const fetchProblems = async () => {
+      const res = await getProblemsForUser(uuid)
+      if (res) setProblems(res)
+    }
+
     fetchPairs().then(() => {
-      setLoading(false)
+      fetchProblems().then(() => {
+        setLoading(false)
+      })
     })
   }, [])
 
@@ -149,6 +175,8 @@ const ViewPairs = ({ uuid, interview_formid }: ViewPairsProps) => {
         p_discord={currentPair.partner.discord}
         p_major={currentPair.partner.major}
         p_grad_year={currentPair.partner.grad_year}
+        problem_link={problems[currentPair.form_id]?.problem_url}
+        topic={problems[currentPair.form_id]?.topic}
       />
     ) : (
       <Empty>
@@ -171,6 +199,8 @@ const ViewPairs = ({ uuid, interview_formid }: ViewPairsProps) => {
             p_discord={pair.partner.discord}
             p_major={pair.partner.major}
             p_grad_year={pair.partner.grad_year}
+            problem_link={problems[pair.form_id]?.problem_url}
+            topic={problems[pair.form_id]?.topic}
           />
         ))
       ) : (

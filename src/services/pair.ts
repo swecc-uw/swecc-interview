@@ -17,8 +17,8 @@ const getPairsForUser = async (userId: string) => {
     .sort((a, b) => a.form_id - b.form_id)
     .map(pair =>
       pair.p1_id === userId
-        ? { pid: pair.p2_id, date: pair.created_at, form_id: pair.form_id }
-        : { pid: pair.p1_id, date: pair.created_at, form_id: pair.form_id }
+        ? { pid: pair.p2_id, date: pair.created_at, form_id: pair.form_id, seq: 0}
+        : { pid: pair.p1_id, date: pair.created_at, form_id: pair.form_id, seq: 1}
     )
 
   const { data: userData, error: userError } = await supabase
@@ -39,7 +39,8 @@ const getPairsForUser = async (userId: string) => {
     return {
       date: partner.date,
       partner: user,
-      form_id: partner.form_id
+      form_id: partner.form_id,
+      seq: partner.seq
     }
   })
 

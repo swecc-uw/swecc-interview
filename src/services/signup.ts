@@ -18,7 +18,6 @@ export const getActiveSignupFormID = async (): Promise<number | null> => {
     return null
   }
 
-  console.log(data)
   if (data.length === 0) {
     console.error('no forms found')
     return null
@@ -81,7 +80,6 @@ export const submitSignup = async (
   }
 
   if (data.length > 0) {
-    console.log('updating', data)
     const res = await supabase
       .from('signups')
       .update({ availability })
@@ -92,7 +90,6 @@ export const submitSignup = async (
       return false
     }
   } else {
-    console.log('inserting')
     const { error } = await supabase
       .from('signups')
       .insert({ user_id: userId, form_id: fid, availability })

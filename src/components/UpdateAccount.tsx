@@ -183,7 +183,6 @@ const UpdateAccount = ({ hide, userRef, updating }: UpdateAccountProps) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  console.log(updating)
   return (
     <div>
       {updating === 'account' && (
