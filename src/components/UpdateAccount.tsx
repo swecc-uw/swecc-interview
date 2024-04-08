@@ -44,6 +44,7 @@ const UpdateSecureData = ({
     }
 
     setLoading(false)
+    alert(`Updated ${type} successfully!`)
   }
 
   return (

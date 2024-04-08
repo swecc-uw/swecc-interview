@@ -49,7 +49,6 @@ function App () {
 
     const fetchActiveFormId = async () => {
       const fid = await getActiveSignupFormID()
-      alert(fid)
       setActiveFormId(fid)
     }
 
