@@ -23,7 +23,8 @@ const TimeLabel = styled.label`
 
 const UnsavedChangesWarning = styled.div`
   margin-top: 20px;
-  font-size: 0.5em;
+  margin-bottom: 10px;
+  font-size: 1em;
   color: lightcoral;
 `
 
