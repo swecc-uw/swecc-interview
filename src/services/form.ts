@@ -1,7 +1,6 @@
 import { supabase } from '../utils/supabaseClient';
 
 export const getActiveSignupFormID = async (): Promise<number | null> => {
-  // if the last form id was created before last Monday, create a new form
   const { data, error } = await supabase
     .from('forms')
     .select('id, created_at, state')
