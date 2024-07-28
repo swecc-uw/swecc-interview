@@ -34,7 +34,7 @@ export async function getMemberProfile (userId: number): Promise<Member> {
       leetcode: { username: 'elimelt', isPrivate: false },
       resumeUrl: 'https://example.com/resume.pdf',
       local: 'Seattle',
-      bio: 'It has been a lifelong dream of mine to kill myself',
+      bio: 'It has been a lifelong dream of mine to go to Italy',
       discordId: 1234567890
     })
   })
@@ -66,7 +66,7 @@ export async function updateMemberProfile (
       leetcode: { username: 'elimelt', isPrivate: false },
       resumeUrl: 'https://example.com/resume.pdf',
       local: 'Seattle',
-      bio: 'It has been a lifelong dream of mine to kill myself',
+      bio: 'It has been a lifelong dream of mine to go to Italy',
       discordId: 1234567890
     })
   })
