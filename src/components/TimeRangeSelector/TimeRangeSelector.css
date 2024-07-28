@@ -1,0 +1,52 @@
+/* InterviewAvailabilitySelector.css */
+.box {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  width: 100%;
+  overflow: visible;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+}
+
+.gridItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.dayLabel {
+  font-weight: bold;
+  color: #333;
+  user-select: none;
+}
+
+.timeLabel {
+  font-weight: bold;
+  color: #333;
+  user-select: none;
+}
+
+.timeSlot {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.timeSlot:hover {
+  background-color: lightgray;
+}
