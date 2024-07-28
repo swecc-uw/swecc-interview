@@ -1,4 +1,4 @@
-# Pairing Client
+# SWECC Client
 
 ## Setup
 

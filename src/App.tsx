@@ -1,180 +1,46 @@
-import { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
-import { supabase } from './utils/supabaseClient'
-import { getUser } from './services/user'
-import { type UserData } from './types'
-import { getActiveInterviewFormID, getActiveSignupFormID } from './services/form'
-import UpdateAccountPage from './pages/UpdateAccountPage'
-import ViewPairs from './components/ViewPairs'
-import NavBar from './components/NavBar'
-import SignInSignUpPage from './pages/SignInSignUpPage'
-import MISignupFormPage from './pages/MISignupFormPage'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import React from 'react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { Routes, Route, HashRouter } from 'react-router-dom'
+import InterviewSignupPage from './pages/InterviewSignupPage'
+import Layout from './components/Layout'
+import { MemberProvider } from './context/MemberContex'
+import MemberProfilePage from './pages/MemberProfilePage'
+import JoinPage from './pages/JoinPage'
+import { ViewInterviewsPage } from './pages/ViewInterviewsPage'
+import { ViewInterviewPage } from './pages/ViewInterviewPage'
 
-const RootContainer = styled.div`
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-`
-
-function App () {
-  const [step, setStep] = useState(0)
-  const [signedIn, setSignedIn] = useState(false)
-  const [signinOrSignup, setSigninOrSignup] = useState('signin')
-  const [loading, setLoading] = useState(true)
-  const [activeFormId, setActiveFormId] = useState<number | null>(null)
-  const [interviewFormId, setInterviewFormId] = useState<number | null>(null)
-  const user = useRef<UserData | null>(null)
-
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser()
-
-      if (error) {
-        // console.error(error);
-        return
-      }
-
-      if (!(data && data.user)) {
-        console.error('No user data found')
-        return
-      }
-
-      const userData = await getUser()
-      if (userData) user.current = userData
-      setSignedIn(true)
-    }
-
-    const fetchActiveFormId = async () => {
-      const fid = await getActiveSignupFormID()
-      setActiveFormId(fid)
-    }
-
-    const fetchInterviewFormId = async () => {
-      const fid = await getActiveInterviewFormID()
-      setInterviewFormId(fid)
-    }
-
-    fetchUser().then(() => {
-      fetchActiveFormId()
-    }).then(() => {
-      fetchInterviewFormId()
-    }).then(() => {
-      setLoading(false)
-    });
-  }, [])
-
-  useEffect(() => {
-    if (signedIn) {
-      const fetchUser = async () => {
-        setLoading(true)
-        const userData = await getUser()
-        if (userData) user.current = userData
-      }
-
-      fetchUser()
-        .then(() => {
-          navigate('/form')
-        })
-        .then(() => {
-          setLoading(false)
-        })
-        .then(() => {
-          setStep(0)
-        })
-    }
-  }, [signedIn])
-
-  const nextStep = () => {
-    setStep(step + 1)
+const theme = extendTheme({
+  config: {
+    initialColorMode: 'dark',
+    useSystemColorMode: false
   }
+})
 
-  const prevStep = () => {
-    setStep(step - 1)
-  }
-
-  const signOut = async () => {
-    const uid = user.current?.user_id
-    let avail: string | null = null
-    if (uid) avail = localStorage.getItem(`availability-${uid}`)
-
-    localStorage.clear()
-    if (uid && avail) localStorage.setItem(`availability-${uid}`, avail)
-
-    await supabase.auth.signOut()
-    setSignedIn(false)
-    user.current = null
-  }
-
-  if (loading) {
-    return <></>
-  }
-
+const App: React.FC = () => {
   return (
-    <RootContainer>
-      <NavBar signedIn={signedIn} signOut={signOut} />
-      <Routes>
-        <Route
-          path='/login'
-          element={
-            <SignInSignUpPage
-              setSignedIn={setSignedIn}
-              setSigninOrSignup={setSigninOrSignup}
-              signinOrSignup={signinOrSignup}
-            />
-          }
-        />
-        {user.current !== null ? (
-          <>
-            <Route
-              path='/form'
-              element={
-                <MISignupFormPage
-                  user={user as React.MutableRefObject<UserData>}
-                  step={step}
-                  signupFormId={activeFormId}
-                  nextStep={nextStep}
-                  prevStep={prevStep}
-                />
-              }
-            />
-            <Route
-              path='/account'
-              element={
-                <UpdateAccountPage
-                  user={user as React.MutableRefObject<UserData>}
-                  hide={() => {
-                    navigate('/form')
-                  }}
-                />
-              }
-            />
-            <Route
-              path='/pairs'
-              element={
-                <ViewPairs
-                  uuid={user?.current?.user_id}
-                  interview_formid={interviewFormId}
-                />
-              }
-            />
-          </>
-        ) : null}
-        <Route
-
-          path='*'
-          element={
-            <SignInSignUpPage
-              setSignedIn={setSignedIn}
-              setSigninOrSignup={setSigninOrSignup}
-              signinOrSignup={signinOrSignup}
-            />
-          }
-        />
-      </Routes>
-    </RootContainer>
+    <ChakraProvider theme={theme}>
+      <HashRouter>
+        <MemberProvider>
+          <Layout>
+            <Routes>
+              <Route
+                path='/interview-signup'
+                element={<InterviewSignupPage />}
+              />
+              <Route path='/interviews' element={<ViewInterviewsPage />} />
+              <Route
+                path='/interviews/:interviewId'
+                element={<ViewInterviewPage />}
+              />
+              <Route path='/profile' element={<MemberProfilePage />} />
+              <Route path='/join-swecc' element={<JoinPage />} />
+              <Route path='/' element={<div>Home</div>} />
+              <Route path='*' element={<div>Not Found</div>} />
+            </Routes>
+          </Layout>
+        </MemberProvider>
+      </HashRouter>
+    </ChakraProvider>
   )
 }
 
