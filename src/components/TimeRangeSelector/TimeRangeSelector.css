@@ -13,6 +13,8 @@
   margin-bottom: 16px;
   text-align: center;
   font-weight: bold;
+  /* dynamic color to contrast background */
+  color: var(--text-color);
 }
 
 .grid {

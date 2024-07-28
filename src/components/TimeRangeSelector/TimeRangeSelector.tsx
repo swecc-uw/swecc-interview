@@ -14,13 +14,6 @@ interface TimeRangeSelectorProps {
   timeLabels?: string[]
   selectedColor?: string
   unselectedColor?: string
-  // New style props
-  titleStyle?: React.CSSProperties
-  gridStyle?: React.CSSProperties
-  dayLabelStyle?: React.CSSProperties
-  timeLabelStyle?: React.CSSProperties
-  timeSlotStyle?: React.CSSProperties
-  boxStyle?: React.CSSProperties
 }
 
 const getDefaultDayLabels = () => {
@@ -51,13 +44,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   dayLabels = defaultDayLabels,
   timeLabels = defaultTimeLabels,
   selectedColor = 'teal',
-  unselectedColor = 'gray',
-  titleStyle = {},
-  gridStyle = {},
-  dayLabelStyle = {},
-  timeLabelStyle = {},
-  timeSlotStyle = {},
-  boxStyle = {}
+  unselectedColor = 'gray'
 }) => {
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability)
   const [isDragging, setIsDragging] = useState(false)
@@ -122,24 +109,23 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   }
 
   return (
-    <div className='box' style={boxStyle}>
-      <div className='title' style={titleStyle}>{title}</div>
-      <div className='grid' style={gridStyle}>
+    <div className='box'>
+      <div className='title'>{title}</div>
+      <div className='grid'>
         <div className='gridItem'></div>
         {dayLabels.map(day => (
-          <div key={day} className='gridItem dayLabel' style={dayLabelStyle}>
+          <div key={day} className='gridItem dayLabel'>
             {day}
           </div>
         ))}
         {timeLabels.map((time, ti) => (
           <React.Fragment key={time}>
-            <div className='gridItem timeLabel' style={timeLabelStyle}>{time}</div>
+            <div className='gridItem timeLabel'>{time}</div>
             {Array.from({ length: dayLabels.length }).map((_, di) => (
               <div
                 key={`${di}-${ti}`}
                 className='gridItem timeSlot'
                 style={{
-                  ...timeSlotStyle,
                   backgroundColor: selectedSlots[di][ti]
                     ? selectedColor
                     : unselectedColor
