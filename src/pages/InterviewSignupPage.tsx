@@ -15,7 +15,7 @@ const InterviewSignupPage: React.FC = () => {
     <Container maxW='container.lg' py={8}>
       <Box bg='white' borderRadius='lg' boxShadow='md' p={6}>
         <InterviewSignupForm
-          title='Select Your Availability'
+          title='Select Your Availability for the following week...'
           availability={availability}
           onChange={handleAvailabilityChange}
           // dayLabels={dayLabels}

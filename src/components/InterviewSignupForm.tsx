@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Button, Heading, VStack } from '@chakra-ui/react'
-import TimeRangeSelector from './TimeRangeSelector/TimeRangeSelector'
+import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector'
 import { motion, AnimatePresence } from 'framer-motion'
 import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep'
 
@@ -44,7 +44,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
     switch (step) {
       case 0:
         return (
-          <TimeRangeSelector
+          <ChakaraTimeRangeSelector
             title={title}
             availability={availability}
             onChange={onChange}

@@ -23,12 +23,28 @@ interface TimeRangeSelectorProps {
   unselectedColor?: string // Custom color for unselected slots
 }
 
-const defaultDayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const getDefaultDayLabels = () => {
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const today = new Date().getDate()
+  const nextSunday = new Date()
+  nextSunday.setDate(today + (7 - nextSunday.getDay()))
+  return days.map((day, i) => {
+    const date = new Date()
+    date.setDate(nextSunday.getDate() + i)
+    return `${day} ${date.getMonth() + 1}/${date.getDate()}`
+  })
+}
+
+
+const defaultDayLabels = getDefaultDayLabels()
 const defaultTimeLabels = Array.from({ length: 48 }, (_, i) => {
-  const hour = Math.floor(i / 2)
+  const hour = (Math.floor(i / 2) + 7) % 24
   const minutes = i % 2 === 0 ? '00' : '30'
-  return `${hour}:${minutes}`
+  const adjustedHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour
+  const amPm = hour >= 12 && hour < 24 ? 'PM' : 'AM'
+  return `${adjustedHour}:${minutes} ${amPm}`
 })
+
 
 const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   availability,
@@ -103,7 +119,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   }
 
   return (
-    <Box bg='white' p={6} rounded='lg' shadow='lg' borderWidth='1px'>
+    <Box p={6}>
       <Text fontSize='2xl' mb={4} textAlign='center' fontWeight='bold'>
         {title}
       </Text>
