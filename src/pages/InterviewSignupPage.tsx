@@ -13,7 +13,7 @@ const InterviewSignupPage: React.FC = () => {
 
   return (
     <Container maxW='container.lg' py={8}>
-      <Box bg='white' borderRadius='lg' boxShadow='md' p={6}>
+      <Box borderRadius='lg' boxShadow='md' p={6}>
         <InterviewSignupForm
           title='Select Your Availability for the following week...'
           availability={availability}
