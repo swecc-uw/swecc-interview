@@ -3,6 +3,9 @@ import { Box, Button, Heading, VStack } from '@chakra-ui/react'
 import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector'
 import { motion, AnimatePresence } from 'framer-motion'
 import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep'
+import { updateInterviewAvailabilityForUser } from '../services/mock/interview'
+import { useMember } from '../context/MemberContex'
+import { InterviewAvailability } from '../types'
 
 const getNextSunday = () => {
   const today = new Date()
@@ -25,6 +28,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   dayLabels,
   timeLabels
 }) => {
+  const { member } = useMember()
   const [currentStep, setCurrentStep] = useState(0)
   const steps = ['Availability', 'Confirmation']
 
@@ -36,8 +40,30 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
     setCurrentStep(prev => Math.max(prev - 1, 0))
   }
 
-  const handleConfirm = () => {
-    // Implement the actual signup logic here
+  const handleConfirm = async () => {
+    if (!member) {
+      alert('You must be logged in to sign up for an interview')
+      return
+    }
+
+    const interviewAvailability: InterviewAvailability = {
+      member: member.user,
+      interviewAvailabilitySlots: availability,
+      mentorAvailabilitySlots: Array.from({ length: 7 }, () =>
+        Array.from({ length: 48 }, () => false)
+      )
+    }
+
+    try {
+      await updateInterviewAvailabilityForUser(
+        member.user.id,
+        interviewAvailability
+      )
+      alert('Availability updated successfully!')
+    } catch (error) {
+      alert('Failed to update availability')
+    }
+
   }
 
   const renderStep = (step: number) => {

@@ -90,6 +90,7 @@ const Navbar: React.FC<NavBarProps> = ({ member }) => {
           <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
             <NavLink to='/interview-signup'>Sign up for an interview</NavLink>
             <NavLink to='/interviews'>View your interviews</NavLink>
+            <NavLink to='/directory'>Directory</NavLink>
             {!member && <NavLink to='/join-swecc'>Join SWECC</NavLink>}
           </HStack>
           <HStack spacing={8}>

@@ -8,6 +8,8 @@ import MemberProfilePage from './pages/MemberProfilePage'
 import JoinPage from './pages/JoinPage'
 import { ViewInterviewsPage } from './pages/ViewInterviewsPage'
 import { ViewInterviewPage } from './pages/ViewInterviewPage'
+import DirectoryPage from './pages/DirectoryPage'
+import MemberProfile from './components/MemberProfile'
 
 const theme = extendTheme({
   config: {
@@ -34,6 +36,8 @@ const App: React.FC = () => {
               />
               <Route path='/profile' element={<MemberProfilePage />} />
               <Route path='/join-swecc' element={<JoinPage />} />
+              <Route path="/directory" element={<DirectoryPage />} />
+              <Route path="/directory/:userId" element={<MemberProfile />} />
               <Route path='/' element={<div>Home</div>} />
               <Route path='*' element={<div>Not Found</div>} />
             </Routes>
