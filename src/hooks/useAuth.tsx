@@ -7,7 +7,6 @@ interface AuthContextType {
   csrf: string;
   error: string;
   loading: boolean;
-  isVerified: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (username: string, password: string, email: string) => Promise<void>;
@@ -34,7 +33,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [csrf, setCsrf] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [isVerified, setIsVerified] = useState<boolean>(true);
 
   useEffect(() => {
     getSession();
@@ -86,8 +84,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
       if (res.status === 200) {
-        const data = res.data;
-        devPrint("Login successful:", data);
         setIsAuthenticated(true);
         setError("");
       } else {
@@ -143,6 +139,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const data = res.data;
       devPrint("Registration successful:", data);
       setError("");
+      //This shouldn't be an error but too lazy right now to create redirect page
+      setError(`Registration successful. Please type /verify ${username} in the swecc server`);
     } catch (err: any) {
       if (err.response) {
         console.error("Registration failed:", err.response.data);
@@ -156,7 +154,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, csrf, error, loading, isVerified, login, logout, register }}
+      value={{ isAuthenticated, csrf, error, loading, login, logout, register }}
     >
       {children}
     </AuthContext.Provider>

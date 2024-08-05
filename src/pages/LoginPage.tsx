@@ -7,7 +7,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   const navigate = useNavigate(); 
-  const { isAuthenticated, login, error, isVerified } = useAuth();
+  const { isAuthenticated, login, error } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
     await login(username, password);
   };
 
-  return (isVerified) ? (
+  return (
     <div>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
@@ -57,7 +57,7 @@ const LoginPage: React.FC = () => {
         <br />
         <button type="submit">Login</button>
       </form>
-    </div>) : (<div>Please verify </div>);
+    </div>)
 
 };
 
