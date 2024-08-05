@@ -8,6 +8,11 @@ import MemberProfilePage from './pages/MemberProfilePage'
 import JoinPage from './pages/JoinPage'
 import { ViewInterviewsPage } from './pages/ViewInterviewsPage'
 import { ViewInterviewPage } from './pages/ViewInterviewPage'
+import LoginPage from './pages/LoginPage'
+import ProtectedRoute from './components/ProtectedRoute'
+import ProtectedPage from './pages/TestPage'
+import LogoutPage from './pages/LogoutPage'
+import RegisterPage from './pages/RegisterPage'
 
 const theme = extendTheme({
   config: {
@@ -34,8 +39,15 @@ const App: React.FC = () => {
               />
               <Route path='/profile' element={<MemberProfilePage />} />
               <Route path='/join-swecc' element={<JoinPage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/logout' element={<LogoutPage />} />
+              <Route path='/register' element={<RegisterPage />} />
               <Route path='/' element={<div>Home</div>} />
               <Route path='*' element={<div>Not Found</div>} />
+              <Route path="/protected" element={
+                <ProtectedRoute>
+                  <ProtectedPage />
+                </ProtectedRoute>} />
             </Routes>
           </Layout>
         </MemberProvider>

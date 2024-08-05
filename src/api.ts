@@ -1,21 +1,22 @@
-import axios from "axios";
-import { ACCESS_TOKEN } from "./constants";
+import axios from 'axios';
+
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000",
+  baseURL: 'http://localhost:8000',  
+  withCredentials: true,             
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+
+const fetchCsrfToken = async () => {
+  try {
+    const response = await api.get('/api/user/csrf/');
+    const csrfToken = response.headers['x-csrftoken'];
+    api.defaults.headers.common['X-CSRFToken'] = csrfToken;
+  } catch (error) {
+    console.error('Failed to fetch CSRF token:', error);
   }
-);
+};
+
+fetchCsrfToken();
 
 export default api;
