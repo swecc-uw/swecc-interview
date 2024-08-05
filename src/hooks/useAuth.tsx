@@ -89,7 +89,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else {
         const errorData = res.data;
         if (errorData.detail === "Your account does not have a Discord ID associated with it.") {
-          setError(`Your discord is not verified. Please type /verify ${errorData.username} in the swecc server`);
+          setError(`Your discord is not verified. Please type /auth ${errorData.username} in the swecc server`);
         } else {
           console.error("Login failed:", errorData);
           setError("Invalid credentials. Please try again.");
@@ -140,7 +140,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       devPrint("Registration successful:", data);
       setError("");
       //This shouldn't be an error but too lazy right now to create redirect page
-      setError(`Registration successful. Please type /verify ${username} in the swecc server`);
+      setError(`Registration successful. Please type /auth ${username} in the swecc server`);
     } catch (err: any) {
       if (err.response) {
         console.error("Registration failed:", err.response.data);
