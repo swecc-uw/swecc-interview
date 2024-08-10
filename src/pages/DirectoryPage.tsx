@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Container, Input, VStack, Button, Heading, Stack, Text } from '@chakra-ui/react';
+import { Container, Input, VStack, Button, Heading, Stack } from '@chakra-ui/react';
 import { searchMembers } from '../services/mock/directory';
 import { Member } from '../types';
 import MemberList from '../components/MemberList';
@@ -8,7 +7,6 @@ import MemberList from '../components/MemberList';
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
-  const navigate = useNavigate();
 
   const handleSearch = async () => {
     const results = await searchMembers(query);

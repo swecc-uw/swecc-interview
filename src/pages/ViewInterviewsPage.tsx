@@ -15,7 +15,7 @@ export const ViewInterviewsPage: React.FC = () => {
       try {
         if (member) {
           const fetchedInterviews = await getInterviewsForUser(
-            member.user.id.toString()
+            member.user.id
           )
           setInterviews(fetchedInterviews)
         }
