@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Box, Button, Heading, VStack } from '@chakra-ui/react'
 import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector'
+import MobileTimeRangeSelector from './TimeRangeSelector/MobileTimeRangeSelector'
 import { motion, AnimatePresence } from 'framer-motion'
 import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep'
 import { updateInterviewAvailabilityForUser } from '../services/mock/interview'
 import { useMember } from '../context/MemberContex'
 import { InterviewAvailability } from '../types'
+
 
 const getNextSunday = () => {
   const today = new Date()
@@ -31,6 +33,9 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   const { member } = useMember()
   const [currentStep, setCurrentStep] = useState(0)
   const steps = ['Availability', 'Confirmation']
+
+  const isMobile = window.innerWidth < 768
+  console.log('isMobile', isMobile)
 
   const handleNext = () => {
     setCurrentStep(prev => Math.min(prev + 1, steps.length - 1))
@@ -69,7 +74,17 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   const renderStep = (step: number) => {
     switch (step) {
       case 0:
-        return (
+        return isMobile
+        ? (
+          <MobileTimeRangeSelector
+            title={title}
+            availability={availability}
+            onChange={onChange}
+            dayLabels={dayLabels}
+            timeLabels={timeLabels}
+          />
+        )
+        : (
           <ChakaraTimeRangeSelector
             title={title}
             availability={availability}
