@@ -16,6 +16,7 @@ import RegisterPage from './pages/RegisterPage'
 import DevRoute from './components/DevRoute'
 import DirectoryPage from './pages/DirectoryPage'
 import MemberProfile from './components/MemberProfile'
+import AuthPage from './pages/AuthPage'
 
 
 const theme = extendTheme({
@@ -45,6 +46,7 @@ const App: React.FC = () => {
               <Route path='/join-swecc' element={<JoinPage />} />
               <Route path='/login' element={<LoginPage />} />
               <Route path='/logout' element={<LogoutPage />} />
+              <Route path='/auth' element={<AuthPage />} />
               <Route path='/register' element={<RegisterPage />} />
               <Route path="/directory" element={<DirectoryPage />} />
               <Route path="/directory/:userId" element={<MemberProfile />} />

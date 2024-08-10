@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom'
 import { Member } from '../types'
 import { useMember } from '../context/MemberContex'
+import { useAuth } from '../hooks/useAuth'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -29,6 +30,7 @@ interface NavBarProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { member } = useMember()
+
   return (
     <Flex direction='column' minHeight='100vh'>
       <Navbar member={member} />
@@ -46,13 +48,12 @@ const Navbar: React.FC<NavBarProps> = ({ member }) => {
   const bg = useColorModeValue('white', 'gray.800')
   const navigate = useNavigate()
 
+  const { isAuthenticated } = useAuth();
+
   const SignUpOrSignIn: React.FC = () => {
     return (
       <HStack>
-        <Button colorScheme='blue'>Sign In</Button>
-        <Button colorScheme='blue' variant='outline'>
-          Sign Up
-        </Button>
+        <Button colorScheme='blue' onClick={() => navigate("/auth")}>Sign in or register</Button>
       </HStack>
     )
   }
@@ -88,14 +89,14 @@ const Navbar: React.FC<NavBarProps> = ({ member }) => {
             </ChakraLink>
           </Link>
           <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
-            <NavLink to='/interview-signup'>Sign up for an interview</NavLink>
-            <NavLink to='/interviews'>View your interviews</NavLink>
-            <NavLink to='/protected'>protected</NavLink>
-            <NavLink to='/directory'>Directory</NavLink>
-            {!member && <NavLink to='/join-swecc'>Join SWECC</NavLink>}
+            {isAuthenticated && <NavLink to='/interview-signup'>Sign up for an interview</NavLink>}
+            {isAuthenticated && <NavLink to='/interviews'>View your interviews</NavLink>}
+            {isAuthenticated && <NavLink to='/protected'>protected</NavLink>}
+            {isAuthenticated && <NavLink to='/directory'>Directory</NavLink>}
+            {!isAuthenticated && <NavLink to='/join-swecc'>Join SWECC</NavLink>}
           </HStack>
           <HStack spacing={8}>
-            {member ? <ProfileIcon member={member} /> : <SignUpOrSignIn />}
+            {member && isAuthenticated ? <ProfileIcon member={member} /> : <SignUpOrSignIn />}
           </HStack>
         </Flex>
       </Container>
