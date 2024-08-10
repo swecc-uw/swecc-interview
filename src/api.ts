@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 const api = axios.create({
   baseURL: 'http://localhost:8000',  
   withCredentials: true,             
@@ -9,7 +8,7 @@ const api = axios.create({
 
 const fetchCsrfToken = async () => {
   try {
-    const response = await api.get('/api/user/csrf/');
+    const response = await api.get('/api/auth/csrf/');
     const csrfToken = response.headers['x-csrftoken'];
     api.defaults.headers.common['X-CSRFToken'] = csrfToken;
   } catch (error) {

@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getSession = async (): Promise<void> => {
     try {
-      const res = await api.get('/api/user/session/');
+      const res = await api.get('/api/auth/session/');
 
       const data = res.data;
       devPrint("Session data:", data);
@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getCSRF = async (): Promise<void> => {
     try {
-      const res = await api.get('/api/csrf_token/');
+      const res = await api.get('/api/auth/csrf/');
 
       const csrfToken = res.headers['x-csrftoken']; 
       if (csrfToken) {
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (username: string, password: string): Promise<void> => {
     try {
-      const res = await api.post('/api/user/login/', {
+      const res = await api.post('/api/auth/login/', {
         username,
         password,
       });
@@ -110,7 +110,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<void> => {
     try {
-      const res = await api.post('/api/user/logout/');
+      const res = await api.post('/api/auth/logout/');
 
       if (res.status === 200) {
         devPrint("Logout successful");
@@ -126,7 +126,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const register = async (username: string, password: string, discord_username: string): Promise<void> => {
     try {
-      const res = await api.post('/api/user/register/', {
+      const res = await api.post('/api/auth/register/', {
         username,
         password,
         discord_username,

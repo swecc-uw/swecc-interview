@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ProtectedPage from './pages/TestPage'
 import LogoutPage from './pages/LogoutPage'
 import RegisterPage from './pages/RegisterPage'
+import DevRoute from './components/DevRoute'
 
 const theme = extendTheme({
   config: {
@@ -46,7 +47,9 @@ const App: React.FC = () => {
               <Route path='*' element={<div>Not Found</div>} />
               <Route path="/protected" element={
                 <ProtectedRoute>
-                  <ProtectedPage />
+                  <DevRoute>
+                    <ProtectedPage />
+                  </DevRoute>
                 </ProtectedRoute>} />
             </Routes>
           </Layout>
