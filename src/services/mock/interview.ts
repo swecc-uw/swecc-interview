@@ -1,7 +1,7 @@
 import { Interview, InterviewAvailability } from '../../types'
 
 export async function getInterviewsForUser (
-  userId: string
+  userId: number
 ): Promise<Interview[]> {
   return new Promise(resolve => {
     resolve([
@@ -65,11 +65,11 @@ export async function getInterviewsForUser (
 export async function getInterviewById (
   interviewId: string
 ): Promise<Interview> {
-  return await getInterviewsForUser('1').then(interviews => interviews[0])
+  return await getInterviewsForUser(1).then(interviews => interviews[0])
 }
 
 export async function getInterviewAvailabilityForUser (
-  userId: string
+  userId: number
 ): Promise<InterviewAvailability> {
   return new Promise(resolve => {
     resolve({
@@ -85,7 +85,7 @@ export async function getInterviewAvailabilityForUser (
 }
 
 export async function updateInterviewAvailabilityForUser (
-  userId: string,
+  userId: number,
   availability: InterviewAvailability
 ): Promise<InterviewAvailability> {
   return new Promise(resolve => {
@@ -102,7 +102,7 @@ export async function updateInterviewAvailabilityForUser (
 }
 
 export async function signupForInterviewPool (
-  userId: string,
+  userId: number,
   interviewId: string
 ): Promise<Interview> {
   return new Promise(resolve => {

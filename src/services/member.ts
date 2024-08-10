@@ -7,14 +7,14 @@ export async function getCurrentUser (): Promise<User> {
   })
 }
 
-export async function getMemberProfile (userId: string): Promise<Member> {
+export async function getMemberProfile (userId: number): Promise<Member> {
   return new Promise((resolve, reject) => {
     reject('Not implemented')
   })
 }
 
 export async function updateMemberProfile (
-  userId: string,
+  userId: number,
   profile: Partial<Member>
 ): Promise<Member> {
   return new Promise((resolve, reject) => {
