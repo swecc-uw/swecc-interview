@@ -1,27 +1,26 @@
-import React, { useState } from 'react'
-import { Box, Button, Heading, VStack } from '@chakra-ui/react'
-import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector'
-import MobileTimeRangeSelector from './TimeRangeSelector/MobileTimeRangeSelector'
-import { motion, AnimatePresence } from 'framer-motion'
-import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep'
-import { updateInterviewAvailabilityForUser } from '../services/mock/interview'
-import { useMember } from '../context/MemberContex'
-import { InterviewAvailability } from '../types'
-import { devPrint } from './utils/RandomUltils'
-
+import React, { useState } from 'react';
+import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector';
+import MobileTimeRangeSelector from './TimeRangeSelector/MobileTimeRangeSelector';
+import { motion, AnimatePresence } from 'framer-motion';
+import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep';
+import { updateInterviewAvailabilityForUser } from '../services/mock/interview';
+import { useMember } from '../context/MemberContext';
+import { InterviewAvailability } from '../types';
+import { devPrint } from './utils/RandomUtils';
 
 const getNextSunday = () => {
-  const today = new Date()
-  const day = today.getDay()
-  return new Date(today.setDate(today.getDate() + 7 - day))
-}
+  const today = new Date();
+  const day = today.getDay();
+  return new Date(today.setDate(today.getDate() + 7 - day));
+};
 
 interface InterviewSignupFormProps {
-  title: string
-  availability: boolean[][]
-  onChange: (newAvailability: boolean[][]) => void
-  dayLabels?: string[] | undefined
-  timeLabels?: string[] | undefined
+  title: string;
+  availability: boolean[][];
+  onChange: (newAvailability: boolean[][]) => void;
+  dayLabels?: string[] | undefined;
+  timeLabels?: string[] | undefined;
 }
 
 const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
@@ -29,27 +28,27 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   availability,
   onChange,
   dayLabels,
-  timeLabels
+  timeLabels,
 }) => {
-  const { member } = useMember()
-  const [currentStep, setCurrentStep] = useState(0)
-  const steps = ['Availability', 'Confirmation']
+  const { member } = useMember();
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = ['Availability', 'Confirmation'];
 
-  const isMobile = window.innerWidth < 768
-  devPrint('isMobile', isMobile)
+  const isMobile = window.innerWidth < 768;
+  devPrint('isMobile', isMobile);
 
   const handleNext = () => {
-    setCurrentStep(prev => Math.min(prev + 1, steps.length - 1))
-  }
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+  };
 
   const handlePrev = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 0))
-  }
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
 
   const handleConfirm = async () => {
     if (!member) {
-      alert('You must be logged in to sign up for an interview')
-      return
+      alert('You must be logged in to sign up for an interview');
+      return;
     }
 
     const interviewAvailability: InterviewAvailability = {
@@ -57,26 +56,24 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
       interviewAvailabilitySlots: availability,
       mentorAvailabilitySlots: Array.from({ length: 7 }, () =>
         Array.from({ length: 48 }, () => false)
-      )
-    }
+      ),
+    };
 
     try {
       await updateInterviewAvailabilityForUser(
         member.user.id,
         interviewAvailability
-      )
-      alert('Availability updated successfully!')
+      );
+      alert('Availability updated successfully!');
     } catch (error) {
-      alert('Failed to update availability')
+      alert('Failed to update availability');
     }
-
-  }
+  };
 
   const renderStep = (step: number) => {
     switch (step) {
       case 0:
-        return isMobile
-        ? (
+        return isMobile ? (
           <MobileTimeRangeSelector
             title={title}
             availability={availability}
@@ -84,8 +81,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
             dayLabels={dayLabels}
             timeLabels={timeLabels}
           />
-        )
-        : (
+        ) : (
           <ChakaraTimeRangeSelector
             title={title}
             availability={availability}
@@ -93,27 +89,27 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
             dayLabels={dayLabels}
             timeLabels={timeLabels}
           />
-        )
+        );
       case 1:
         return (
           <ConfirmInterviewSignupStep
             weekOf={getNextSunday().toLocaleDateString()}
             handleConfirm={handleConfirm}
           />
-        )
+        );
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
-    <VStack spacing={6} align='stretch'>
-      <Heading as='h1' size='xl' textAlign='center' mb={6}>
+    <VStack spacing={6} align="stretch">
+      <Heading as="h1" size="xl" textAlign="center" mb={6}>
         {steps[currentStep]}
       </Heading>
       <Box
-        position='relative'
-        height='500px'
+        position="relative"
+        height="500px"
         overflowY={currentStep === 0 ? 'auto' : 'hidden'}
       >
         <AnimatePresence initial={false}>
@@ -126,14 +122,14 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
             style={{
               position: 'absolute',
               width: '100%',
-              height: '100%'
+              height: '100%',
             }}
           >
             {renderStep(currentStep)}
           </motion.div>
         </AnimatePresence>
       </Box>
-      <Box display='flex' justifyContent='space-between'>
+      <Box display="flex" justifyContent="space-between">
         <Button onClick={handlePrev} isDisabled={currentStep === 0}>
           Previous
         </Button>
@@ -146,7 +142,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
         </Button>
       </Box>
     </VStack>
-  )
-}
+  );
+};
 
-export default InterviewSignupForm
+export default InterviewSignupForm;

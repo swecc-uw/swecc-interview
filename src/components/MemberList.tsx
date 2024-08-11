@@ -24,9 +24,13 @@ const MemberList: React.FC<MemberListProps> = ({ members }) => {
             <Avatar name={member.user.username} src={member.user.username} />
             <VStack align="start">
               <Text fontWeight="bold">{member.user.username}</Text>
-              <Text>{member.firstName} {member.lastName}</Text>
+              <Text>
+                {member.firstName} {member.lastName}
+              </Text>
               <Link to={`/directory/${member.user.id}`}>
-                <Button size="sm" colorScheme="teal">View Profile</Button>
+                <Button size="sm" colorScheme="teal">
+                  View Profile
+                </Button>
               </Link>
             </VStack>
           </HStack>

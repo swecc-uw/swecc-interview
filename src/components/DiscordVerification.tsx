@@ -17,7 +17,9 @@ interface DiscordVerificationProps {
   userId: number;
 }
 
-const DiscordVerification: React.FC<DiscordVerificationProps> = ({ userId }) => {
+const DiscordVerification: React.FC<DiscordVerificationProps> = ({
+  userId,
+}) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +85,11 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({ userId }) => 
           {!isVerified ? (
             <VStack spacing={4}>
               <Text fontSize="lg">
-                Run <Text as="span" fontWeight="bold">`/auth {userId}`</Text> in the Discord server and paste the code here.
+                Run{' '}
+                <Text as="span" fontWeight="bold">
+                  `/auth {userId}`
+                </Text>{' '}
+                in the Discord server and paste the code here.
               </Text>
               <Input
                 placeholder="Enter verification code"
