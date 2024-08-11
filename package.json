@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "npx eslint ./src --fix",
     "preview": "vite preview",
-    "spellcheck": "cspell src/**/*.{tsx,ts,html}"
+    "spellcheck": "cspell"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",

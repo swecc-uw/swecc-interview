@@ -6,6 +6,16 @@
         "swecc",
         "chakra",
         "csrftoken",
-        "Chakara"
+        "Chakara",
+        "elimelt",
+        "Glassdoor"
+    ],
+    "ignorePaths": [
+        "node_modules/**",
+        "dist/**",
+        "build/**"
+    ],
+    "files": [
+        "src/**/*.{tsx,ts,html,md}"
     ]
 }
