@@ -17,11 +17,14 @@ import { useEffect, useState } from "react";
 import LeetcodeProfile from "../components/LeetcodeProfile";
 import GitHubCalendar, { ThemeInput } from "react-github-calendar";
 
+// TODO: Create a type instead of using any here please.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const selectLastHalfYear = (contributions: any) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const shownMonths = 6;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return contributions.filter((activity: any) => {
     const date = new Date(activity.date);
     const monthOfDay = date.getMonth();
@@ -76,6 +79,8 @@ const MemberProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
+  // TODO: Finish this onSave function
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSave = (member: Partial<Member>) => {};
 
   useEffect(() => {

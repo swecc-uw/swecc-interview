@@ -9,7 +9,7 @@ export async function getCurrentUser(): Promise<User> {
 
 export async function getMemberProfile(userId: string): Promise<Member> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${userId}`);
   });
 }
 
@@ -18,6 +18,6 @@ export async function updateMemberProfile(
   profile: Partial<Member>
 ): Promise<Member> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${userId} ${profile}`);
   });
 }

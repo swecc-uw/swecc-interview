@@ -5,7 +5,7 @@ export async function getInterviewsForUser(
   userId: string
 ): Promise<Interview[]> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${userId}`);
   });
 }
 
@@ -13,7 +13,7 @@ export async function getInterviewById(
   interviewId: string
 ): Promise<Interview> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${interviewId}`);
   });
 }
 
@@ -21,7 +21,7 @@ export async function getInterviewAvailabilityForUser(
   userId: string
 ): Promise<InterviewAvailability> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${userId}`);
   });
 }
 
@@ -30,7 +30,7 @@ export async function updateInterviewAvailabilityForUser(
   availability: InterviewAvailability
 ): Promise<InterviewAvailability> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${userId} ${availability}`);
   });
 }
 
@@ -39,6 +39,6 @@ export async function signupForInterviewPool(
   interviewId: string
 ): Promise<Interview> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject(`Not implemented - ${userId} ${interviewId}`);
   });
 }

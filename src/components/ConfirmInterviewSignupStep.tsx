@@ -7,6 +7,7 @@ interface ConfirmInterviewSignupStepProps {
 
 const ConfirmInterviewSignupStep: React.FC<ConfirmInterviewSignupStepProps> = ({
   weekOf,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleConfirm,
 }) => {
   return (

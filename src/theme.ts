@@ -30,6 +30,7 @@ const theme = extendTheme({
         },
       },
       variants: {
+        // eslint-disable-next-line
         solid: (_props: any) => ({
           bg: "brand.500",
           color: "white",

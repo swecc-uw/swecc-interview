@@ -111,6 +111,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setIsAuthenticated(false);
         }
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.response) {
         console.error("Error during login:", err.response.data);
@@ -162,6 +163,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(
         `Registration successful. Please type /auth ${username} in the swecc server`
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.response) {
         console.error("Registration failed:", err.response.data);

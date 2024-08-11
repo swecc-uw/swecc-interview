@@ -1,6 +1,7 @@
 import { TechnicalQuestion, BehavioralQuestion } from "../../types";
 
 export async function getTechnicalQuestionsForInterview(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interviewId: string
 ): Promise<TechnicalQuestion[]> {
   return new Promise((resolve) => {
@@ -30,6 +31,7 @@ export async function getTechnicalQuestionsForInterview(
 }
 
 export async function getBehavioralQuestionsForInterview(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interviewId: string
 ): Promise<BehavioralQuestion[]> {
   return new Promise((resolve) => {

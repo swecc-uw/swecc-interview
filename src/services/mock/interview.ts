@@ -50,7 +50,7 @@ export async function getInterviewsForUser(
           },
         ],
         interviewee: {
-          id: 1,
+          id: Number(userId),
           username: "john_doe",
           email: "john.doe@example.com",
         },
@@ -63,12 +63,14 @@ export async function getInterviewsForUser(
 }
 
 export async function getInterviewById(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interviewId: string
 ): Promise<Interview> {
   return await getInterviewsForUser("1").then((interviews) => interviews[0]);
 }
 
 export async function getInterviewAvailabilityForUser(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   userId: string
 ): Promise<InterviewAvailability> {
   return new Promise((resolve) => {
@@ -85,6 +87,7 @@ export async function getInterviewAvailabilityForUser(
 }
 
 export async function updateInterviewAvailabilityForUser(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   userId: string,
   availability: InterviewAvailability
 ): Promise<InterviewAvailability> {
@@ -102,7 +105,9 @@ export async function updateInterviewAvailabilityForUser(
 }
 
 export async function signupForInterviewPool(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   userId: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interviewId: string
 ): Promise<Interview> {
   return new Promise((resolve) => {

@@ -11,6 +11,7 @@ export async function getCurrentUser(): Promise<User> {
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getMemberProfile(userId: number): Promise<Member> {
   return new Promise((resolve) => {
     resolve({
@@ -41,7 +42,9 @@ export async function getMemberProfile(userId: number): Promise<Member> {
 }
 
 export async function updateMemberProfile(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   userId: number,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   profile: Partial<Member>
 ): Promise<Member> {
   return new Promise((resolve) => {

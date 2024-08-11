@@ -54,8 +54,6 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  
-
   //TODO: Add messaging to tell people to type /auth "username" in the discord.
   return (
     <div className="container mt-3">
