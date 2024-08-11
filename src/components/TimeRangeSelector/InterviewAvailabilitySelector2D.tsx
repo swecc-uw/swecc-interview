@@ -50,7 +50,7 @@ const InterviewAvailabilitySelector2D: React.FC<
     directionChangePivot.current &&
     dragStart &&
     lastSlotEntered.current.time >= directionChangePivot.current.time;
-  // if cell we just entered is >= to the last cell entered, then we are traveling dowbn
+  // if cell we just entered is >= to the last cell entered, then we are traveling down
   const isTravelingDown = (time: number) =>
     lastSlotEntered.current &&
     dragStart &&
@@ -68,8 +68,8 @@ const InterviewAvailabilitySelector2D: React.FC<
     if (isDragging && dragStart) {
       const wasDown = wasTravelingDown();
       const isDown = isTravelingDown(time);
-      const chanedDirection = wasDown !== isDown;
-      if (chanedDirection) {
+      const chainedDirection = wasDown !== isDown;
+      if (chainedDirection) {
         setIsSelecting((prev) => !prev);
         directionChangePivot.current = { day, time };
       }
@@ -78,7 +78,7 @@ const InterviewAvailabilitySelector2D: React.FC<
 
       const updatedAvailability = [...selectedSlots];
 
-      if (chanedDirection) {
+      if (chainedDirection) {
         if (isDown) {
           setIsSelecting(!selectedSlots[day][time]);
         }
