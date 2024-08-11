@@ -74,7 +74,7 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
         <VStack spacing={1}>
           <Heading as="h3" size="lg">
             <Link href={`https://leetcode.com/${username}`} isExternal>
-              {username}'s profile
+              {username}&apos;s profile
             </Link>
           </Heading>
           <Text fontSize="xl" fontWeight="bold" color={totalColor}>

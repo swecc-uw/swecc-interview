@@ -59,6 +59,8 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   const [isSelecting, setIsSelecting] = useState(true);
   const lastSlotEntered = useRef<TimeSlot | null>(null);
 
+  const color = useColorModeValue('gray.700', 'gray.300');
+
   // Handle global mouse up event
   useEffect(() => {
     const handleMouseUp = () => {
@@ -128,7 +130,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
             key={day}
             textAlign="center"
             fontWeight="bold"
-            color={useColorModeValue('gray.700', 'gray.300')}
+            color={color}
             userSelect="none"
           >
             {day}
@@ -139,7 +141,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
             <GridItem
               textAlign="center"
               fontWeight="bold"
-              color={useColorModeValue('gray.700', 'gray.300')}
+              color={color}
               userSelect="none"
             >
               {time}

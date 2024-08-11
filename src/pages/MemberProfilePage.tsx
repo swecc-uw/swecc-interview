@@ -18,13 +18,11 @@ import LeetcodeProfile from '../components/LeetcodeProfile';
 import GitHubCalendar, { ThemeInput } from 'react-github-calendar';
 
 // TODO: Create a type instead of using any here please.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const selectLastHalfYear = (contributions: any) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const shownMonths = 6;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return contributions.filter((activity: any) => {
     const date = new Date(activity.date);
     const monthOfDay = date.getMonth();
@@ -38,18 +36,14 @@ const selectLastHalfYear = (contributions: any) => {
 };
 
 const Widgets: React.FC<{ member: Member }> = ({ member }) => {
+  const color = useColorModeValue('white', 'gray.800');
   const githubTheme: ThemeInput = {
     dark: ['#f0f0f0', '#dcd0ff', '#c4a3ff', '#a876ff', '#8a00d4'],
     light: ['#333333', '#62419d', '#7139bf', '#822df2', '#8a00d4'],
   };
 
   return (
-    <Box
-      bg={useColorModeValue('white', 'gray.800')}
-      borderRadius="lg"
-      p={6}
-      mt={6}
-    >
+    <Box bg={color} borderRadius="lg" p={6} mt={6}>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
         {member.leetcode && (
           <Box p={4} flex="1">
@@ -79,8 +73,8 @@ const MemberProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
-  // TODO: Finish this onSave function
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const color = useColorModeValue('white', 'gray.800');
+
   const onSave = (member: Partial<Member>) => {};
 
   useEffect(() => {
@@ -103,7 +97,7 @@ const MemberProfilePage: React.FC = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
-      <Box p={6} bg={useColorModeValue('white', 'gray.800')}>
+      <Box p={6} bg={color}>
         <VStack spacing={4} align="stretch">
           <HStack spacing={4}>
             <Heading as="h1" size="lg" flex="1">

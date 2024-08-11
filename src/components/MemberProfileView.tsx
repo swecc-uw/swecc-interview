@@ -16,6 +16,8 @@ interface MemberProfileViewProps {
 }
 
 const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
+  const color = useColorModeValue('gray.700', 'gray.300');
+
   return (
     <Box
       bg={useColorModeValue('white', 'gray.800')}
@@ -48,21 +50,21 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
       <Divider my={4} />
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={4}>
         <VStack align="start" spacing={2}>
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>Major:</b> {member.major}
           </Text>
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>Graduation Date:</b> {member.gradDate}
           </Text>
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>Discord:</b> {member.discordUsername}
           </Text>
         </VStack>
         <VStack align="start" spacing={2}>
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>Location:</b> {member.local}
           </Text>
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>Bio:</b> {member.bio}
           </Text>
         </VStack>
@@ -70,7 +72,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
       <Divider my={4} />
       <VStack align="start" spacing={2}>
         {member.resumeUrl && (
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>Resume:</b>{' '}
             <Link
               href={
@@ -86,7 +88,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           </Text>
         )}
         {member.linkedin && (
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>LinkedIn:</b>{' '}
             <Link
               href={
@@ -102,7 +104,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           </Text>
         )}
         {member.github && (
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>GitHub:</b>{' '}
             <Link
               href={
@@ -118,7 +120,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           </Text>
         )}
         {member.leetcode && (
-          <Text fontSize="md" color={useColorModeValue('gray.700', 'gray.300')}>
+          <Text fontSize="md" color={color}>
             <b>LeetCode:</b>{' '}
             <Link
               href={
