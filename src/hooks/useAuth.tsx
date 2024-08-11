@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import api from "../api"; 
+import api from "../api";
 import { devPrint } from "../components/utils/RandomUltils";
 
 interface AuthContextType {
@@ -64,7 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const res = await api.get('/api/auth/csrf/');
 
-      const csrfToken = res.headers['x-csrftoken']; 
+      const csrfToken = res.headers['x-csrftoken'];
       if (csrfToken) {
         setCsrf(csrfToken);
         devPrint("CSRF Token fetched and set:", csrfToken);
@@ -87,7 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsAuthenticated(true);
         setError("");
 
-        console.log("Login successful:", res.data);
+        devPrint("Login successful:", res.data);
       } else {
         const errorData = res.data;
         if (errorData.detail === "Your account does not have a Discord ID associated with it.") {

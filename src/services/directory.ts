@@ -1,11 +1,12 @@
 import { Member } from '../types'
 import api from '../api'
+import { devPrint } from '../components/utils/RandomUltils'
 
 export async function searchMembers(nameQuery: string): Promise<Member[]> {
   try {
     const url = `/api/directory/search/?q=${nameQuery}`
     const res: any = await api.get(url)
-    console.log('res:', res)
+    devPrint('res:', res)
 
     if (res.status !== 200) {
       throw new Error('Failed to search for members')
@@ -27,7 +28,7 @@ export async function getMemberById(userId: number): Promise<Member> {
   try {
     const url = `/api/members/${userId}`
     const res: any = await api.get(url)
-    console.log('res:', res)
+    devPrint('res:', res)
 
     if (res.status !== 200) {
       throw new Error('Failed to get member profile')

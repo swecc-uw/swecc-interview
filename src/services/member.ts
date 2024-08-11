@@ -1,3 +1,4 @@
+import { devPrint } from '../components/utils/RandomUltils'
 import { User, Member } from '../types'
 import api from './api'
 
@@ -5,7 +6,7 @@ export async function getCurrentUser (): Promise<User> {
   try {
     const url = '/api/members/profile'
     const res: any = await api.get(url)
-    console.log('res:', res)
+    devPrint('res:', res)
 
     if (res.status !== 200) {
       throw new Error('Failed to get current user')
@@ -26,7 +27,7 @@ export async function getMemberProfile (userId: number): Promise<Member> {
   try {
     const url = `/api/members/${userId}`
     const res: any = await api.get(url)
-    console.log('res:', res)
+    devPrint('res:', res)
 
     if (res.status !== 200) {
       throw new Error('Failed to get member profile')
@@ -50,7 +51,7 @@ export async function updateMemberProfile (
   try {
     const url = `/api/members/${userId}`
     const res: any = await api.put(url, profile)
-    console.log('res:', res)
+    devPrint('res:', res)
 
     if (res.status !== 200) {
       throw new Error('Failed to update member profile')
