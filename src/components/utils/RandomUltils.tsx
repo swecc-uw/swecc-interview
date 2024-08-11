@@ -3,4 +3,3 @@ export const devPrint = (...data: any[]): void => {
       console.log(...data);
     }
   };
-  

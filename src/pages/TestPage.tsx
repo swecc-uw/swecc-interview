@@ -1,11 +1,12 @@
 import React from "react";
 import api from "../api";
+import { devPrint } from "../components/utils/RandomUltils";
 
 const ProtectedPage: React.FC = () => {
   const whoami = async (): Promise<void> => {
     const res = await api.get('/api/members/profile/')
     const data = res.data
-    console.log(data);
+    devPrint(data);
   }
 
   return (

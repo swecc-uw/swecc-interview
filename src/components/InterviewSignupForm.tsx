@@ -7,6 +7,7 @@ import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep'
 import { updateInterviewAvailabilityForUser } from '../services/mock/interview'
 import { useMember } from '../context/MemberContex'
 import { InterviewAvailability } from '../types'
+import { devPrint } from './utils/RandomUltils'
 
 
 const getNextSunday = () => {
@@ -35,7 +36,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   const steps = ['Availability', 'Confirmation']
 
   const isMobile = window.innerWidth < 768
-  console.log('isMobile', isMobile)
+  devPrint('isMobile', isMobile)
 
   const handleNext = () => {
     setCurrentStep(prev => Math.min(prev + 1, steps.length - 1))
