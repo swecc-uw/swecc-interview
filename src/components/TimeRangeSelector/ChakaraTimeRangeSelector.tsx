@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -6,7 +6,7 @@ import {
   Text,
   Tooltip,
   useColorModeValue,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 interface TimeSlot {
   day: number;
@@ -24,7 +24,7 @@ interface TimeRangeSelectorProps {
 }
 
 const getDefaultDayLabels = () => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const today = new Date().getDate();
   const nextSunday = new Date();
   nextSunday.setDate(today + (7 - nextSunday.getDay()));
@@ -38,9 +38,9 @@ const getDefaultDayLabels = () => {
 const defaultDayLabels = getDefaultDayLabels();
 const defaultTimeLabels = Array.from({ length: 48 }, (_, i) => {
   const hour = (Math.floor(i / 2) + 7) % 24;
-  const minutes = i % 2 === 0 ? "00" : "30";
+  const minutes = i % 2 === 0 ? '00' : '30';
   const adjustedHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  const amPm = hour >= 12 && hour < 24 ? "PM" : "AM";
+  const amPm = hour >= 12 && hour < 24 ? 'PM' : 'AM';
   return `${adjustedHour}:${minutes} ${amPm}`;
 });
 
@@ -50,8 +50,8 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   title,
   dayLabels = defaultDayLabels,
   timeLabels = defaultTimeLabels,
-  selectedColor = "teal.400",
-  unselectedColor = "gray.100",
+  selectedColor = 'teal.400',
+  unselectedColor = 'gray.100',
 }) => {
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
   const [isDragging, setIsDragging] = useState(false);
@@ -83,9 +83,9 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
       onChange(selectedSlots);
     };
 
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener('mouseup', handleMouseUp);
     return () => {
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [dragStart, lastSlotEntered, selectedSlots, onChange]);
 
@@ -128,7 +128,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
             key={day}
             textAlign="center"
             fontWeight="bold"
-            color={useColorModeValue("gray.700", "gray.300")}
+            color={useColorModeValue('gray.700', 'gray.300')}
             userSelect="none"
           >
             {day}
@@ -139,7 +139,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
             <GridItem
               textAlign="center"
               fontWeight="bold"
-              color={useColorModeValue("gray.700", "gray.300")}
+              color={useColorModeValue('gray.700', 'gray.300')}
               userSelect="none"
             >
               {time}
@@ -158,7 +158,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
                   borderColor="gray.200"
                   cursor="pointer"
                   _hover={{
-                    bg: selectedSlots[di][ti] ? selectedColor : "gray.200",
+                    bg: selectedSlots[di][ti] ? selectedColor : 'gray.200',
                   }}
                   onMouseDown={() => handleMouseDown(di, ti)}
                   onMouseEnter={() => handleMouseEnter(di, ti)}

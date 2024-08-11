@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import React, { useState, useRef } from 'react';
+import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 
 interface TimeSlot {
   day: number;
@@ -117,7 +117,7 @@ const InterviewAvailabilitySelector2D: React.FC<
 
   const times = Array.from({ length: 48 }, (_, i) => {
     const hour = Math.floor(i / 2);
-    const minutes = i % 2 === 0 ? "00" : "30";
+    const minutes = i % 2 === 0 ? '00' : '30';
     return `${hour}:${minutes}`;
   });
 
@@ -128,7 +128,7 @@ const InterviewAvailabilitySelector2D: React.FC<
       </Text>
       <Grid templateColumns={`repeat(8, 1fr)`} gap={2}>
         <GridItem></GridItem>
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <GridItem key={day} textAlign="center" fontWeight="bold">
             {day}
           </GridItem>
@@ -142,7 +142,7 @@ const InterviewAvailabilitySelector2D: React.FC<
               <GridItem
                 key={`${dayIndex}-${timeIndex}`}
                 bg={
-                  selectedSlots[dayIndex][timeIndex] ? "teal.300" : "gray.100"
+                  selectedSlots[dayIndex][timeIndex] ? 'teal.300' : 'gray.100'
                 }
                 p={1}
                 onMouseDown={() => handleMouseDown(dayIndex, timeIndex)}

@@ -5,9 +5,9 @@ import React, {
   useContext,
   ReactNode,
   useEffect,
-} from "react";
-import { Member } from "../types";
-import { getMemberProfile, getCurrentUser } from "../services/mock/member";
+} from 'react';
+import { Member } from '../types';
+import { getMemberProfile, getCurrentUser } from '../services/mock/member';
 interface MemberContextProps {
   member: Member | null;
   setMember: React.Dispatch<React.SetStateAction<Member | null>>;
@@ -38,7 +38,7 @@ export const MemberProvider: React.FC<{ children: ReactNode }> = ({
 export const useMember = () => {
   const context = useContext(MemberContext);
   if (!context) {
-    throw new Error("useMember must be used within a MemberProvider");
+    throw new Error('useMember must be used within a MemberProvider');
   }
   return context;
 };

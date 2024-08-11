@@ -1,4 +1,4 @@
-import { Interview, InterviewAvailability } from "../types";
+import { Interview, InterviewAvailability } from '../types';
 // import api from './api'
 
 export async function getInterviewsForUser(

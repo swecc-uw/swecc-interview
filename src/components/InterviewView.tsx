@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Heading,
@@ -7,8 +7,8 @@ import {
   HStack,
   Badge,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { Interview, TechnicalQuestion, BehavioralQuestion } from "../types";
+} from '@chakra-ui/react';
+import { Interview, TechnicalQuestion, BehavioralQuestion } from '../types';
 
 interface InterviewViewProps {
   interview: Interview;
@@ -21,8 +21,8 @@ export const InterviewView: React.FC<InterviewViewProps> = ({
   technicalQuestions,
   behavioralQuestions,
 }) => {
-  const bgColor = useColorModeValue("white", "gray.800");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Box
@@ -36,9 +36,9 @@ export const InterviewView: React.FC<InterviewViewProps> = ({
         <Heading size="lg">Interview Details</Heading>
         <HStack justify="space-between">
           <Text>
-            Status:{" "}
+            Status:{' '}
             <Badge
-              colorScheme={interview.status === "active" ? "green" : "gray"}
+              colorScheme={interview.status === 'active' ? 'green' : 'gray'}
             >
               {interview.status}
             </Badge>

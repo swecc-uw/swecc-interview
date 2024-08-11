@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const devPrint = (...data: any[]): void => {
-  if (import.meta.env.VITE_ENV === "development") {
+  if (import.meta.env.VITE_ENV === 'development') {
     console.log(...data);
   }
 };

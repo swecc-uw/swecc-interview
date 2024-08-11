@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Box, Button, Heading, VStack } from "@chakra-ui/react";
-import ChakaraTimeRangeSelector from "./TimeRangeSelector/ChakaraTimeRangeSelector";
-import { motion, AnimatePresence } from "framer-motion";
-import ConfirmInterviewSignupStep from "./ConfirmInterviewSignupStep";
+import React, { useState } from 'react';
+import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector';
+import { motion, AnimatePresence } from 'framer-motion';
+import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep';
 
 const getNextSunday = () => {
   const today = new Date();
@@ -26,7 +26,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   timeLabels,
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = ["Availability", "Confirmation"];
+  const steps = ['Availability', 'Confirmation'];
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -72,7 +72,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
       <Box
         position="relative"
         height="500px"
-        overflowY={currentStep === 0 ? "auto" : "hidden"}
+        overflowY={currentStep === 0 ? 'auto' : 'hidden'}
       >
         <AnimatePresence initial={false}>
           <motion.div
@@ -80,11 +80,11 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
             initial={{ x: 300, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -300, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
             }}
           >
             {renderStep(currentStep)}
@@ -100,7 +100,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
             currentStep === steps.length - 1 ? handleConfirm : handleNext
           }
         >
-          {currentStep === steps.length - 1 ? "Submit" : "Next"}
+          {currentStep === steps.length - 1 ? 'Submit' : 'Next'}
         </Button>
       </Box>
     </VStack>

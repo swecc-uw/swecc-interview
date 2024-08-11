@@ -1,9 +1,9 @@
-import { User, Member } from "../types";
+import { User, Member } from '../types';
 // import api from './api'
 
 export async function getCurrentUser(): Promise<User> {
   return new Promise((resolve, reject) => {
-    reject("Not implemented");
+    reject('Not implemented');
   });
 }
 

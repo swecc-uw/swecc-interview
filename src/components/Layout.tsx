@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Flex,
@@ -9,10 +9,10 @@ import {
   Button,
   Link as ChakraLink,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
-import { Member } from "../types";
-import { useMember } from "../context/MemberContext";
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Member } from '../types';
+import { useMember } from '../context/MemberContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -43,7 +43,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 };
 
 const Navbar: React.FC<NavBarProps> = ({ member }) => {
-  const bg = useColorModeValue("white", "gray.800");
+  const bg = useColorModeValue('white', 'gray.800');
   const navigate = useNavigate();
 
   const SignUpOrSignIn: React.FC = () => {
@@ -64,7 +64,7 @@ const Navbar: React.FC<NavBarProps> = ({ member }) => {
           {member?.firstName}
         </Text>
         <Button
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate('/profile')}
           colorScheme="blue"
           variant="outline"
         >
@@ -79,7 +79,7 @@ const Navbar: React.FC<NavBarProps> = ({ member }) => {
       <Container maxW="container.xl" py={4}>
         <Flex justify="space-between" align="center">
           <Link to="/">
-            <ChakraLink as="span" _hover={{ textDecoration: "none" }}>
+            <ChakraLink as="span" _hover={{ textDecoration: 'none' }}>
               <HStack spacing={2}>
                 <Text fontSize="xl" fontWeight="bold">
                   SWECC
@@ -87,7 +87,7 @@ const Navbar: React.FC<NavBarProps> = ({ member }) => {
               </HStack>
             </ChakraLink>
           </Link>
-          <HStack spacing={8} display={{ base: "none", md: "flex" }}>
+          <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
             <NavLink to="/interview-signup">Sign up for an interview</NavLink>
             <NavLink to="/interviews">View your interviews</NavLink>
             <NavLink to="/protected">protected</NavLink>
@@ -108,7 +108,7 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
       <ChakraLink
         as="span"
         fontWeight="medium"
-        _hover={{ textDecoration: "none", color: "blue.500" }}
+        _hover={{ textDecoration: 'none', color: 'blue.500' }}
       >
         {children}
       </ChakraLink>
@@ -117,13 +117,13 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
 };
 
 const Footer: React.FC = () => {
-  const bg = useColorModeValue("gray.50", "gray.900");
-  const color = useColorModeValue("gray.700", "gray.200");
+  const bg = useColorModeValue('gray.50', 'gray.900');
+  const color = useColorModeValue('gray.700', 'gray.200');
 
   return (
     <Box as="footer" bg={bg} color={color}>
       <Container maxW="container.xl" py={12}>
-        <Flex direction={{ base: "column", md: "row" }} justify="space-between">
+        <Flex direction={{ base: 'column', md: 'row' }} justify="space-between">
           <VStack align="start" spacing={4} mb={{ base: 8, md: 0 }}>
             <Text fontWeight="bold">Product</Text>
             <FooterLink to="/features">Features</FooterLink>
@@ -159,7 +159,7 @@ const FooterLink: React.FC<NavLinkProps> = ({ to, children }) => {
       <ChakraLink
         as="span"
         fontSize="sm"
-        _hover={{ textDecoration: "none", color: "blue.500" }}
+        _hover={{ textDecoration: 'none', color: 'blue.500' }}
       >
         {children}
       </ChakraLink>

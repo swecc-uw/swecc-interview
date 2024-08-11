@@ -1,7 +1,7 @@
-import React from "react";
-import { Box, Text, Badge, Flex, useColorModeValue } from "@chakra-ui/react";
-import { Interview } from "../types";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { Box, Text, Badge, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Interview } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface InterviewPreviewProps {
   interview: Interview;
@@ -11,8 +11,8 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   interview,
 }) => {
   const navigate = useNavigate();
-  const bgColor = useColorModeValue("gray.100", "gray.700");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const bgColor = useColorModeValue('gray.100', 'gray.700');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Box
@@ -29,7 +29,7 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
         <Text fontWeight="bold">
           Interview with {interview.interviewee.username}
         </Text>
-        <Badge colorScheme={interview.status === "active" ? "green" : "gray"}>
+        <Badge colorScheme={interview.status === 'active' ? 'green' : 'gray'}>
           {interview.status}
         </Badge>
       </Flex>

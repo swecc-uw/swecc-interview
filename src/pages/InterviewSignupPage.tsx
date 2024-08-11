@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Container, Box } from "@chakra-ui/react";
-import InterviewSignupForm from "../components/InterviewSignupForm";
+import React, { useState } from 'react';
+import { Container, Box } from '@chakra-ui/react';
+import InterviewSignupForm from '../components/InterviewSignupForm';
 
 const InterviewSignupPage: React.FC = () => {
   const [availability, setAvailability] = useState<boolean[][]>(

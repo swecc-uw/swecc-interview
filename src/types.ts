@@ -19,7 +19,7 @@ export interface InterviewPool {
   member: User;
 }
 
-type Status = "pending" | "active" | "inactive";
+type Status = 'pending' | 'active' | 'inactive';
 
 export interface Interview {
   interviewId: string;

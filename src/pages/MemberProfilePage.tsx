@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import MemberProfileEdit from "../components/MemberProfileEdit";
-import MemberProfileView from "../components/MemberProfileView";
-import { useMember } from "../context/MemberContext";
-import { Member } from "../types";
+import { useNavigate } from 'react-router-dom';
+import MemberProfileEdit from '../components/MemberProfileEdit';
+import MemberProfileView from '../components/MemberProfileView';
+import { useMember } from '../context/MemberContext';
+import { Member } from '../types';
 import {
   Box,
   Button,
@@ -12,10 +12,10 @@ import {
   VStack,
   Stack,
   HStack,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import LeetcodeProfile from "../components/LeetcodeProfile";
-import GitHubCalendar, { ThemeInput } from "react-github-calendar";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import LeetcodeProfile from '../components/LeetcodeProfile';
+import GitHubCalendar, { ThemeInput } from 'react-github-calendar';
 
 // TODO: Create a type instead of using any here please.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,18 +39,18 @@ const selectLastHalfYear = (contributions: any) => {
 
 const Widgets: React.FC<{ member: Member }> = ({ member }) => {
   const githubTheme: ThemeInput = {
-    dark: ["#f0f0f0", "#dcd0ff", "#c4a3ff", "#a876ff", "#8a00d4"],
-    light: ["#333333", "#62419d", "#7139bf", "#822df2", "#8a00d4"],
+    dark: ['#f0f0f0', '#dcd0ff', '#c4a3ff', '#a876ff', '#8a00d4'],
+    light: ['#333333', '#62419d', '#7139bf', '#822df2', '#8a00d4'],
   };
 
   return (
     <Box
-      bg={useColorModeValue("white", "gray.800")}
+      bg={useColorModeValue('white', 'gray.800')}
       borderRadius="lg"
       p={6}
       mt={6}
     >
-      <Stack direction={{ base: "column", md: "row" }} spacing={4}>
+      <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
         {member.leetcode && (
           <Box p={4} flex="1">
             <LeetcodeProfile username={member.leetcode.username} />
@@ -64,7 +64,7 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
               theme={githubTheme}
               year={new Date().getFullYear()}
               labels={{
-                totalCount: "last 6 months: {{count}} commits",
+                totalCount: 'last 6 months: {{count}} commits',
               }}
             />
           </Box>
@@ -85,7 +85,7 @@ const MemberProfilePage: React.FC = () => {
 
   useEffect(() => {
     if (!member) {
-      navigate("/");
+      navigate('/');
     }
   }, [member, navigate]);
 
@@ -103,14 +103,14 @@ const MemberProfilePage: React.FC = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
-      <Box p={6} bg={useColorModeValue("white", "gray.800")}>
+      <Box p={6} bg={useColorModeValue('white', 'gray.800')}>
         <VStack spacing={4} align="stretch">
           <HStack spacing={4}>
             <Heading as="h1" size="lg" flex="1">
               Profile
             </Heading>
             <Button colorScheme="teal" onClick={() => setIsEditing(!isEditing)}>
-              {isEditing ? "Cancel" : "Edit"}
+              {isEditing ? 'Cancel' : 'Edit'}
             </Button>
           </HStack>
           <Content />

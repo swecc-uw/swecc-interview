@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Text,
@@ -7,9 +7,9 @@ import {
   Heading,
   keyframes,
   useColorModeValue,
-} from "@chakra-ui/react";
-import { FaDiscord } from "react-icons/fa";
-import { motion } from "framer-motion";
+} from '@chakra-ui/react';
+import { FaDiscord } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const pulseKeyframe = keyframes`
   0% { box-shadow: 0 0 0 0 rgba(88, 101, 242, 0.7); }
@@ -20,8 +20,8 @@ const pulseKeyframe = keyframes`
 const MotionBox = motion(Box);
 
 const JoinPage: React.FC = () => {
-  const bgColor = useColorModeValue("grey.100", "gray.800");
-  const textColor = useColorModeValue("gray.800", "gray.100");
+  const bgColor = useColorModeValue('grey.100', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'gray.100');
 
   return (
     <Box
@@ -60,10 +60,10 @@ const JoinPage: React.FC = () => {
           leftIcon={<FaDiscord />}
           size="lg"
           colorScheme="purple"
-          _hover={{ transform: "translateY(-5px)" }}
+          _hover={{ transform: 'translateY(-5px)' }}
           transition="all 0.2s"
           onClick={() =>
-            window.open("https://discord.gg/your-invite-link", "_blank")
+            window.open('https://discord.gg/your-invite-link', '_blank')
           }
           animation={`${pulseKeyframe} 2s infinite`}
           whileHover={{ scale: 1.05 }}

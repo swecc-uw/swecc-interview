@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Box,
   VStack,
@@ -8,8 +8,8 @@ import {
   Textarea,
   Button,
   HStack,
-} from "@chakra-ui/react";
-import { Member } from "../types";
+} from '@chakra-ui/react';
+import { Member } from '../types';
 
 interface MemberProfileEditProps {
   member: Member;
@@ -41,7 +41,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
             <FormLabel>First Name</FormLabel>
             <Input
               name="firstName"
-              value={profile.firstName || ""}
+              value={profile.firstName || ''}
               onChange={handleChange}
             />
           </FormControl>
@@ -49,7 +49,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
             <FormLabel>Last Name</FormLabel>
             <Input
               name="lastName"
-              value={profile.lastName || ""}
+              value={profile.lastName || ''}
               onChange={handleChange}
             />
           </FormControl>
@@ -58,7 +58,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel>Email</FormLabel>
           <Input
             name="email"
-            value={profile.email || ""}
+            value={profile.email || ''}
             onChange={handleChange}
           />
         </FormControl>
@@ -66,7 +66,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel>Major</FormLabel>
           <Input
             name="major"
-            value={profile.major || ""}
+            value={profile.major || ''}
             onChange={handleChange}
           />
         </FormControl>
@@ -74,7 +74,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel>Graduation Date</FormLabel>
           <Input
             name="gradDate"
-            value={profile.gradDate || ""}
+            value={profile.gradDate || ''}
             onChange={handleChange}
             type="date"
           />
@@ -83,7 +83,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel>Discord Username</FormLabel>
           <Input
             name="discordUsername"
-            value={profile.discordUsername || ""}
+            value={profile.discordUsername || ''}
             onChange={handleChange}
           />
         </FormControl>
@@ -91,7 +91,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel>Location</FormLabel>
           <Input
             name="local"
-            value={profile.local || ""}
+            value={profile.local || ''}
             onChange={handleChange}
           />
         </FormControl>
@@ -99,7 +99,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel>Bio</FormLabel>
           <Textarea
             name="bio"
-            value={profile.bio || ""}
+            value={profile.bio || ''}
             onChange={handleChange}
           />
         </FormControl>

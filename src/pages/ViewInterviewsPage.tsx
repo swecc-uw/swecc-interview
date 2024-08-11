@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Box, Heading, VStack, useToast } from "@chakra-ui/react";
-import { Interview } from "../types";
-import { InterviewPreview } from "../components/InterviewPreview";
-import { getInterviewsForUser } from "../services/mock/interview";
-import { useMember } from "../context/MemberContext";
+import React, { useEffect, useState } from 'react';
+import { Box, Heading, VStack, useToast } from '@chakra-ui/react';
+import { Interview } from '../types';
+import { InterviewPreview } from '../components/InterviewPreview';
+import { getInterviewsForUser } from '../services/mock/interview';
+import { useMember } from '../context/MemberContext';
 
 export const ViewInterviewsPage: React.FC = () => {
   const [interviews, setInterviews] = useState<Interview[]>([]);
@@ -21,9 +21,9 @@ export const ViewInterviewsPage: React.FC = () => {
         }
       } catch (error) {
         toast({
-          title: "Error fetching interviews",
-          description: "Please try again later.",
-          status: "error",
+          title: 'Error fetching interviews',
+          description: 'Please try again later.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });

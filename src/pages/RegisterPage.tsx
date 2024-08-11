@@ -1,21 +1,21 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage: React.FC = () => {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [discord_username, setDiscord] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [discord_username, setDiscord] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   const { register, error: registerError, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
@@ -41,16 +41,16 @@ const RegisterPage: React.FC = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
 
     await register(username, password, discord_username);
     if (isAuthenticated) {
-      setSuccessMessage("Registration successful. You can now log in.");
-      setError("");
+      setSuccessMessage('Registration successful. You can now log in.');
+      setError('');
     } else {
-      setError("Registration failed. Please try again.");
+      setError('Registration failed. Please try again.');
     }
   };
 

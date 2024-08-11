@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./TimeRangeSelector.css";
+import React, { useState, useRef, useEffect } from 'react';
+import './TimeRangeSelector.css';
 
 interface TimeSlot {
   day: number;
@@ -17,7 +17,7 @@ interface TimeRangeSelectorProps {
 }
 
 const getDefaultDayLabels = () => {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const today = new Date().getDate();
   const nextSunday = new Date();
   nextSunday.setDate(today + (7 - nextSunday.getDay()));
@@ -31,9 +31,9 @@ const getDefaultDayLabels = () => {
 const defaultDayLabels = getDefaultDayLabels();
 const defaultTimeLabels = Array.from({ length: 48 }, (_, i) => {
   const hour = (Math.floor(i / 2) + 7) % 24;
-  const minutes = i % 2 === 0 ? "00" : "30";
+  const minutes = i % 2 === 0 ? '00' : '30';
   const adjustedHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  const amPm = hour >= 12 && hour < 24 ? "PM" : "AM";
+  const amPm = hour >= 12 && hour < 24 ? 'PM' : 'AM';
   return `${adjustedHour}:${minutes} ${amPm}`;
 });
 
@@ -43,8 +43,8 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   title,
   dayLabels = defaultDayLabels,
   timeLabels = defaultTimeLabels,
-  selectedColor = "teal",
-  unselectedColor = "gray",
+  selectedColor = 'teal',
+  unselectedColor = 'gray',
 }) => {
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
   const [isDragging, setIsDragging] = useState(false);
@@ -75,9 +75,9 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
       onChange(selectedSlots);
     };
 
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener('mouseup', handleMouseUp);
     return () => {
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [dragStart, lastSlotEntered, selectedSlots, onChange]);
 

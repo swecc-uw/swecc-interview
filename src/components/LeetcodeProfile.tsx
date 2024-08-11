@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from 'react';
 import {
   Box,
   Link,
@@ -7,7 +7,7 @@ import {
   Heading,
   Spinner,
   useColorModeValue,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 type LeetcodeProfileProps = {
   username: string;
@@ -57,10 +57,10 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
     }
   }, [username, profileCache]);
 
-  const easyColor = useColorModeValue("green.500", "green.300");
-  const mediumColor = useColorModeValue("orange.500", "orange.300");
-  const hardColor = useColorModeValue("red.500", "red.300");
-  const totalColor = useColorModeValue("orange.500", "orange.300");
+  const easyColor = useColorModeValue('green.500', 'green.300');
+  const mediumColor = useColorModeValue('orange.500', 'orange.300');
+  const hardColor = useColorModeValue('red.500', 'red.300');
+  const totalColor = useColorModeValue('orange.500', 'orange.300');
 
   return loading ? (
     <Box display="flex" justifyContent="center" alignItems="center">

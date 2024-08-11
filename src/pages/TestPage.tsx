@@ -1,9 +1,9 @@
-import React from "react";
-import api from "../api";
+import React from 'react';
+import api from '../api';
 
 const ProtectedPage: React.FC = () => {
   const whoami = async (): Promise<void> => {
-    const res = await api.get("/api/members/profile/");
+    const res = await api.get('/api/members/profile/');
     const data = res.data;
     console.log(data);
   };

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Heading, VStack, Spinner, useToast } from "@chakra-ui/react";
-import { Interview, TechnicalQuestion, BehavioralQuestion } from "../types";
-import { InterviewView } from "../components/InterviewView";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Box, Heading, VStack, Spinner, useToast } from '@chakra-ui/react';
+import { Interview, TechnicalQuestion, BehavioralQuestion } from '../types';
+import { InterviewView } from '../components/InterviewView';
 import {
   getTechnicalQuestionsForInterview,
   getBehavioralQuestionsForInterview,
-} from "../services/mock/question";
-import { getInterviewById } from "../services/mock/interview";
-import { useMember } from "../context/MemberContext";
+} from '../services/mock/question';
+import { getInterviewById } from '../services/mock/interview';
+import { useMember } from '../context/MemberContext';
 
 export const ViewInterviewPage: React.FC = () => {
   const { interviewId } = useParams<{ interviewId: string }>();
@@ -38,14 +38,14 @@ export const ViewInterviewPage: React.FC = () => {
             setTechnicalQuestions(technical);
             setBehavioralQuestions(behavioral);
           } else {
-            throw new Error("Interview not found");
+            throw new Error('Interview not found');
           }
         }
       } catch (error) {
         toast({
-          title: "Error fetching interview data",
-          description: "Please try again later.",
-          status: "error",
+          title: 'Error fetching interview data',
+          description: 'Please try again later.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
