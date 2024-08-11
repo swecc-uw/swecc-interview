@@ -11,13 +11,13 @@ const RegisterPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const { register, error: registerError, isAuthenticated } = useAuth();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuthenticated) {
-        navigate("/");
-      }
-    }, [isAuthenticated, navigate]);    
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleUserNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -27,13 +27,15 @@ const RegisterPage: React.FC = () => {
     setPassword(event.target.value);
   };
 
-  const handleConfirmPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleConfirmPasswordChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     setConfirmPassword(event.target.value);
   };
 
   const handleDiscordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDiscord(event.target.value);
-  }
+  };
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -108,9 +110,7 @@ const RegisterPage: React.FC = () => {
           {registerError && <small>{registerError}</small>}
           {successMessage && <small>{successMessage}</small>}
         </div>
-        <button type="submit">
-          Register
-        </button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );

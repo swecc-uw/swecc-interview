@@ -7,7 +7,7 @@ interface DevRouteProps {
 }
 
 const DevRoute: React.FC<DevRouteProps> = ({ children }) => {
-  const isDev = (import.meta.env.VITE_ENV === 'development');
+  const isDev = import.meta.env.VITE_ENV === "development";
 
   return isDev ? <>{children}</> : <Navigate to="/" />;
 };

@@ -8,13 +8,13 @@ const LogoutPage: React.FC = () => {
 
   useEffect(() => {
     const handleLogout = async () => {
-        await logout();
-        navigate("/login");
-    }
+      await logout();
+      navigate("/login");
+    };
     handleLogout();
   }, []);
 
-  return <div>Logging out...</div>; 
+  return <div>Logging out...</div>;
 };
 
 export default LogoutPage;

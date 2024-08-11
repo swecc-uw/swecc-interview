@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import api from "../api"; 
-import { devPrint } from "../components/utils/RandomUltils";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import api from "../api";
+import { devPrint } from "../components/utils/RandomUtils";
 
 interface AuthContextType {
   isAuthenticated: boolean | null;
@@ -9,7 +15,11 @@ interface AuthContextType {
   loading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  register: (username: string, password: string, email: string) => Promise<void>;
+  register: (
+    username: string,
+    password: string,
+    email: string
+  ) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -40,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getSession = async (): Promise<void> => {
     try {
-      const res = await api.get('/api/auth/session/');
+      const res = await api.get("/api/auth/session/");
 
       const data = res.data;
       devPrint("Session data:", data);
@@ -62,9 +72,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getCSRF = async (): Promise<void> => {
     try {
-      const res = await api.get('/api/auth/csrf/');
+      const res = await api.get("/api/auth/csrf/");
 
-      const csrfToken = res.headers['x-csrftoken']; 
+      const csrfToken = res.headers["x-csrftoken"];
       if (csrfToken) {
         setCsrf(csrfToken);
         devPrint("CSRF Token fetched and set:", csrfToken);
@@ -78,7 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (username: string, password: string): Promise<void> => {
     try {
-      const res = await api.post('/api/auth/login/', {
+      const res = await api.post("/api/auth/login/", {
         username,
         password,
       });
@@ -88,8 +98,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setError("");
       } else {
         const errorData = res.data;
-        if (errorData.detail === "Your account does not have a Discord ID associated with it.") {
-          setError(`Your discord is not verified. Please type /auth ${errorData.username} in the swecc server`);
+        if (
+          errorData.detail ===
+          "Your account does not have a Discord ID associated with it."
+        ) {
+          setError(
+            `Your discord is not verified. Please type /auth ${errorData.username} in the swecc server`
+          );
         } else {
           console.error("Login failed:", errorData);
           setError("Invalid credentials. Please try again.");
@@ -110,7 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<void> => {
     try {
-      const res = await api.post('/api/auth/logout/');
+      const res = await api.post("/api/auth/logout/");
 
       if (res.status === 200) {
         devPrint("Logout successful");
@@ -124,9 +139,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (username: string, password: string, discord_username: string): Promise<void> => {
+  const register = async (
+    username: string,
+    password: string,
+    discord_username: string
+  ): Promise<void> => {
     try {
-      const res = await api.post('/api/auth/register/', {
+      const res = await api.post("/api/auth/register/", {
         username,
         password,
         discord_username,
@@ -140,11 +159,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       devPrint("Registration successful:", data);
       setError("");
       //This shouldn't be an error but too lazy right now to create redirect page
-      setError(`Registration successful. Please type /auth ${username} in the swecc server`);
+      setError(
+        `Registration successful. Please type /auth ${username} in the swecc server`
+      );
     } catch (err: any) {
       if (err.response) {
         console.error("Registration failed:", err.response.data);
-        setError(err.response.data.detail || "Registration failed. Please try again.");
+        setError(
+          err.response.data.detail || "Registration failed. Please try again."
+        );
       } else {
         console.error("Error during registration:", err);
         setError("Registration failed. Please try again.");

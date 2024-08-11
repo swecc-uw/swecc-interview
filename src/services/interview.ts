@@ -1,44 +1,44 @@
-import { Interview, InterviewAvailability } from '../types'
+import { Interview, InterviewAvailability } from "../types";
 // import api from './api'
 
-export async function getInterviewsForUser (
+export async function getInterviewsForUser(
   userId: string
 ): Promise<Interview[]> {
   return new Promise((resolve, reject) => {
-    reject('Not implemented')
-  })
+    reject("Not implemented");
+  });
 }
 
-export async function getInterviewById (
+export async function getInterviewById(
   interviewId: string
 ): Promise<Interview> {
   return new Promise((resolve, reject) => {
-    reject('Not implemented')
-  })
+    reject("Not implemented");
+  });
 }
 
-export async function getInterviewAvailabilityForUser (
+export async function getInterviewAvailabilityForUser(
   userId: string
 ): Promise<InterviewAvailability> {
   return new Promise((resolve, reject) => {
-    reject('Not implemented')
-  })
+    reject("Not implemented");
+  });
 }
 
-export async function updateInterviewAvailabilityForUser (
+export async function updateInterviewAvailabilityForUser(
   userId: string,
   availability: InterviewAvailability
 ): Promise<InterviewAvailability> {
   return new Promise((resolve, reject) => {
-    reject('Not implemented')
-  })
+    reject("Not implemented");
+  });
 }
 
-export async function signupForInterviewPool (
+export async function signupForInterviewPool(
   userId: string,
   interviewId: string
 ): Promise<Interview> {
   return new Promise((resolve, reject) => {
-    reject('Not implemented')
-  })
+    reject("Not implemented");
+  });
 }
