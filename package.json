@@ -18,7 +18,6 @@
     "@supabase/supabase-js": "^2.39.8",
     "cspell": "^6.28.0",
     "axios": "^1.7.2",
-    "cspell": "^6.28.0",
     "framer-motion": "^11.3.18",
     "install": "^0.13.0",
     "react": "^18.2.0",
