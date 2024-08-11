@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Container, Heading, Text, VStack, Avatar, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Container,
+  Heading,
+  Text,
+  VStack,
+  Avatar,
+  Stack,
+} from '@chakra-ui/react';
 import { Member } from '../types';
 import { getMemberById } from '../services/mock/directory';
 
@@ -39,18 +47,28 @@ const MemberProfile: React.FC = () => {
     <Container maxW="container.lg" py={8}>
       <Box p={6} bg="white" borderRadius="lg" boxShadow="sm">
         <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-          <Avatar name={member.user.username} src={member.user.username} size="2xl" />
+          <Avatar
+            name={member.user.username}
+            src={member.user.username}
+            size="2xl"
+          />
           <VStack align="start">
-            <Heading as="h2" size="lg">{member.firstName} {member.lastName}</Heading>
+            <Heading as="h2" size="lg">
+              {member.firstName} {member.lastName}
+            </Heading>
             <Text>Username: {member.user.username}</Text>
             <Text>Email: {member.user.email}</Text>
             <Text>Major: {member.major}</Text>
             <Text>Graduation Date: {member.gradDate}</Text>
             <Text>Bio: {member.bio}</Text>
             <Text>Location: {member.local}</Text>
-            {member.linkedin && <Text>LinkedIn: {member.linkedin.username}</Text>}
+            {member.linkedin && (
+              <Text>LinkedIn: {member.linkedin.username}</Text>
+            )}
             {member.github && <Text>GitHub: {member.github.username}</Text>}
-            {member.leetcode && <Text>LeetCode: {member.leetcode.username}</Text>}
+            {member.leetcode && (
+              <Text>LeetCode: {member.leetcode.username}</Text>
+            )}
           </VStack>
         </Stack>
       </Box>

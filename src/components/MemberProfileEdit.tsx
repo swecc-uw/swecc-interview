@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Box,
   VStack,
@@ -7,40 +7,40 @@ import {
   Input,
   Textarea,
   Button,
-  HStack
-} from '@chakra-ui/react'
-import { Member } from '../types'
+  HStack,
+} from '@chakra-ui/react';
+import { Member } from '../types';
 
 interface MemberProfileEditProps {
-  member: Member
-  onSave: (profile: Partial<Member>) => void
+  member: Member;
+  onSave: (profile: Partial<Member>) => void;
 }
 
 const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   member,
-  onSave
+  onSave,
 }) => {
-  const [profile, setProfile] = useState<Partial<Member>>(member)
+  const [profile, setProfile] = useState<Partial<Member>>(member);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target
-    setProfile({ ...profile, [name]: value })
-  }
+    const { name, value } = e.target;
+    setProfile({ ...profile, [name]: value });
+  };
 
   const handleSave = () => {
-    onSave(profile)
-  }
+    onSave(profile);
+  };
 
   return (
-    <Box bg='white' p={8} rounded='lg' shadow='lg'>
-      <VStack spacing={4} align='stretch'>
+    <Box bg="white" p={8} rounded="lg" shadow="lg">
+      <VStack spacing={4} align="stretch">
         <HStack spacing={4}>
           <FormControl>
             <FormLabel>First Name</FormLabel>
             <Input
-              name='firstName'
+              name="firstName"
               value={profile.firstName || ''}
               onChange={handleChange}
             />
@@ -48,7 +48,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormControl>
             <FormLabel>Last Name</FormLabel>
             <Input
-              name='lastName'
+              name="lastName"
               value={profile.lastName || ''}
               onChange={handleChange}
             />
@@ -57,7 +57,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Email</FormLabel>
           <Input
-            name='email'
+            name="email"
             value={profile.email || ''}
             onChange={handleChange}
           />
@@ -65,7 +65,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Major</FormLabel>
           <Input
-            name='major'
+            name="major"
             value={profile.major || ''}
             onChange={handleChange}
           />
@@ -73,16 +73,16 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Graduation Date</FormLabel>
           <Input
-            name='gradDate'
+            name="gradDate"
             value={profile.gradDate || ''}
             onChange={handleChange}
-            type='date'
+            type="date"
           />
         </FormControl>
         <FormControl>
           <FormLabel>Discord Username</FormLabel>
           <Input
-            name='discordUsername'
+            name="discordUsername"
             value={profile.discordUsername || ''}
             onChange={handleChange}
           />
@@ -90,7 +90,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Location</FormLabel>
           <Input
-            name='local'
+            name="local"
             value={profile.local || ''}
             onChange={handleChange}
           />
@@ -98,17 +98,17 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Bio</FormLabel>
           <Textarea
-            name='bio'
+            name="bio"
             value={profile.bio || ''}
             onChange={handleChange}
           />
         </FormControl>
-        <Button colorScheme='teal' onClick={handleSave} alignSelf='end'>
+        <Button colorScheme="teal" onClick={handleSave} alignSelf="end">
           Save
         </Button>
       </VStack>
     </Box>
-  )
-}
+  );
+};
 
-export default MemberProfileEdit
+export default MemberProfileEdit;

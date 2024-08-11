@@ -1,5 +1,5 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 // Define the props for ProtectedRoute
 interface DevRouteProps {
@@ -7,7 +7,7 @@ interface DevRouteProps {
 }
 
 const DevRoute: React.FC<DevRouteProps> = ({ children }) => {
-  const isDev = (import.meta.env.VITE_ENV === 'development');
+  const isDev = import.meta.env.VITE_ENV === 'development';
 
   return isDev ? <>{children}</> : <Navigate to="/" />;
 };
