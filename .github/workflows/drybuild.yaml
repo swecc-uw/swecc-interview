@@ -1,0 +1,36 @@
+name: Dry Build on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - release/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run lint
+      run: npm run lint
+
+    - name: Run spellcheck
+      run: npm run spellcheck
+
+    - name: Run tests
+      run: npm test
+
+    - name: Run build
+      run: npm run build
