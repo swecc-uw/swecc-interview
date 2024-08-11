@@ -53,7 +53,12 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
 
   return (
     <VStack spacing={4} align="stretch" w="100%" bg={bgColor} p={4}>
-      <Text fontSize="2xl" fontWeight="bold" textAlign="center" color={textColor}>
+      <Text
+        fontSize="2xl"
+        fontWeight="bold"
+        textAlign="center"
+        color={textColor}
+      >
         {title}
       </Text>
       {dayLabels.map((day, dayIndex) => (
@@ -83,11 +88,15 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
                   </Text>
                   <Button
                     size="sm"
-                    colorScheme={selectedSlots[dayIndex][timeIndex] ? 'teal' : 'gray'}
+                    colorScheme={
+                      selectedSlots[dayIndex][timeIndex] ? 'teal' : 'gray'
+                    }
                     onClick={() => toggleTimeSlot(dayIndex, timeIndex)}
                     flex={1}
                   >
-                    {selectedSlots[dayIndex][timeIndex] ? 'Available' : 'Unavailable'}
+                    {selectedSlots[dayIndex][timeIndex]
+                      ? 'Available'
+                      : 'Unavailable'}
                   </Button>
                 </HStack>
               ))}

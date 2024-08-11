@@ -1,23 +1,23 @@
-import { Member, User } from '../../types'
+import { Member, User } from '../../types';
 
-export async function getCurrentUser (): Promise<User> {
-  return new Promise(resolve => {
+export async function getCurrentUser(): Promise<User> {
+  return new Promise((resolve) => {
     resolve({
       id: 1,
       username: 'john_doe',
-      email: 'john.doe@example.com'
+      email: 'john.doe@example.com',
       // Add other fields as needed
-    })
-  })
+    });
+  });
 }
 
-export async function getMemberProfile (userId: number): Promise<Member> {
-  return new Promise(resolve => {
+export async function getMemberProfile(userId: number): Promise<Member> {
+  return new Promise((resolve) => {
     resolve({
       user: {
         id: 1,
         username: 'elimelt',
-        email: 'elimelt@uw.edu'
+        email: 'elimelt@uw.edu',
       },
       created: '2024-07-26T00:00:00Z',
       email: 'elimelt@uw.edu',
@@ -35,21 +35,21 @@ export async function getMemberProfile (userId: number): Promise<Member> {
       resumeUrl: 'https://example.com/resume.pdf',
       local: 'Seattle',
       bio: 'It has been a lifelong dream of mine to go to Italy',
-      discordId: 1234567890
-    })
-  })
+      discordId: 1234567890,
+    });
+  });
 }
 
-export async function updateMemberProfile (
+export async function updateMemberProfile(
   userId: number,
   profile: Partial<Member>
 ): Promise<Member> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     resolve({
       user: {
         id: 1,
         username: 'elimelt',
-        email: 'elimelt@uw.edu'
+        email: 'elimelt@uw.edu',
       },
       created: '2024-07-26T00:00:00Z',
       email: 'elimelt@uw.edu',
@@ -67,7 +67,7 @@ export async function updateMemberProfile (
       resumeUrl: 'https://example.com/resume.pdf',
       local: 'Seattle',
       bio: 'It has been a lifelong dream of mine to go to Italy',
-      discordId: 1234567890
-    })
-  })
+      discordId: 1234567890,
+    });
+  });
 }
