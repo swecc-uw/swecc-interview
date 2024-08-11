@@ -8,7 +8,7 @@ on:
       - release/*
 
 jobs:
-  build:
+  dry-build:
     runs-on: ubuntu-latest
 
     steps:
