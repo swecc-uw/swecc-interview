@@ -4,7 +4,7 @@ import { devPrint } from '../components/utils/RandomUtils';
 
 export async function searchMembers(nameQuery: string): Promise<Member[]> {
   try {
-    const url = `/api/directory/search/?q=${nameQuery}`;
+    const url = `/directory/search/?q=${nameQuery}`;
     const res: any = await api.get(url);
     devPrint('res:', res);
 
@@ -25,7 +25,7 @@ export async function searchMembers(nameQuery: string): Promise<Member[]> {
 
 export async function getMemberById(userId: number): Promise<Member> {
   try {
-    const url = `/api/members/${userId}`;
+    const url = `/members/${userId}`;
     const res: any = await api.get(url);
     devPrint('res:', res);
 

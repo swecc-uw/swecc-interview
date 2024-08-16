@@ -31,7 +31,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
     if (!isVerified) {
       interval = setInterval(async () => {
         try {
-          const response = await fetch(`/api/auth/${userId}/verified`);
+          const response = await fetch(`/auth/${userId}/verified`);
           const data = await response.json();
           if (data.verified) {
             setIsVerified(true);
@@ -49,7 +49,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
     setIsLoading(true);
     try {
       // Send the verification code to the server if needed
-      // const response = await fetch(`/api/auth/verify-code`, { method: 'POST', body: JSON.stringify({ userId, verificationCode }) });
+      // const response = await fetch(`/auth/verify-code`, { method: 'POST', body: JSON.stringify({ userId, verificationCode }) });
       setIsLoading(false);
       setIsVerified(true);
     } catch (error) {
