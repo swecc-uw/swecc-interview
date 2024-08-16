@@ -4,7 +4,7 @@ import api from './api';
 
 export async function getCurrentUser(): Promise<User> {
   try {
-    const url = '/api/members/profile';
+    const url = '/members/profile';
     const res: any = await api.get(url);
     devPrint('res:', res);
 
@@ -25,7 +25,7 @@ export async function getCurrentUser(): Promise<User> {
 
 export async function getMemberProfile(userId: number): Promise<Member> {
   try {
-    const url = `/api/members/${userId}`;
+    const url = `/members/${userId}`;
     const res: any = await api.get(url);
     devPrint('res:', res);
 
@@ -49,7 +49,7 @@ export async function updateMemberProfile(
   profile: Partial<Member>
 ): Promise<Member> {
   try {
-    const url = `/api/members/${userId}`;
+    const url = `/members/${userId}`;
     const res: any = await api.put(url, profile);
     devPrint('res:', res);
 
