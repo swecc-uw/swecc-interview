@@ -12,8 +12,9 @@ import {
   TabPanel,
   VStack,
   Heading,
-  useColorModeValue,
   Container,
+  Spinner,
+  Flex,
 } from '@chakra-ui/react';
 
 const AuthPage: React.FC = () => {
@@ -21,68 +22,101 @@ const AuthPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordUsername, setDiscordUsername] = useState('');
+  const [shouldBeVerifyingDiscord, setShouldBeVerifyingDiscord] =
+    useState(false);
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [userId, setUserId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   const navigate = useNavigate();
-  const { isAuthenticated, login, register, error: authError } = useAuth();
+  const {
+    isAuthenticated,
+    login,
+    register,
+    error: authError,
+    clearError,
+  } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
-      alert('You are already logged in.');
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
+  useEffect(() => {
+    if (authError) {
+      if (
+        authError ===
+        'Your account does not have a Discord ID associated with it.'
+      ) {
+        setShouldBeVerifyingDiscord(true);
+      } else {
+        setError(authError);
+      }
+    }
+  }, [authError]);
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-    setSuccessMessage('');
+    setLoading(true);
     await login(username, password);
+    setLoading(false);
   };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-    setSuccessMessage('');
 
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
+    setLoading(true);
     const userId = await register(username, password, discordUsername);
-    if (userId) {
-      setUserId(userId);
-      setIsRegistered(true);
+    if (!userId) {
+      setError(authError || 'An error occurred.');
     } else {
-      setError('Registration failed. Please try again.');
+      setShouldBeVerifyingDiscord(true);
     }
+    setLoading(false);
   };
 
-  const bgColor = useColorModeValue('gray.50', 'gray.800');
-  const tabBgColor = useColorModeValue('white', 'gray.700');
+  const handleGoBack = () => {
+    setShouldBeVerifyingDiscord(false);
+    clearError();
+    setError('');
+  };
 
   return (
-    <Box minHeight="100vh" backgroundColor={bgColor} py={12}>
+    <Box minHeight="100vh" py={12}>
       <Container maxW="md">
         <VStack spacing={8}>
           <Heading as="h1" size="xl">
             Welcome
           </Heading>
           <Box
-            backgroundColor={tabBgColor}
             borderRadius="lg"
             boxShadow="md"
             p={6}
             width="full"
+            position="relative"
           >
-            {isRegistered && userId ? (
-              <DiscordVerification username={username} userId={userId} />
+            {shouldBeVerifyingDiscord ? (
+              <DiscordVerification
+                username={username}
+                password={password}
+                tryLogin={login}
+                onGoBack={handleGoBack}
+              />
             ) : (
-              <Tabs isFitted variant="enclosed">
+              <Tabs
+                isFitted
+                variant="enclosed"
+                index={activeTab}
+                onChange={(index) => setActiveTab(index)}
+              >
                 <TabList mb="1em">
                   <Tab>Login</Tab>
                   <Tab>Register</Tab>
@@ -94,9 +128,12 @@ const AuthPage: React.FC = () => {
                       username={username}
                       password={password}
                       error={error || authError || ''}
-                      successMessage={successMessage}
-                      onUsernameChange={(e: any) => setUsername(e.target.value)}
-                      onPasswordChange={(e: any) => setPassword(e.target.value)}
+                      onUsernameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setUsername(e.target.value)}
+                      onPasswordChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setPassword(e.target.value)}
                       onSubmit={handleLogin}
                     />
                   </TabPanel>
@@ -108,20 +145,28 @@ const AuthPage: React.FC = () => {
                       confirmPassword={confirmPassword}
                       discordUsername={discordUsername}
                       error={error || authError || ''}
-                      successMessage={successMessage}
-                      onUsernameChange={(e: any) => setUsername(e.target.value)}
-                      onPasswordChange={(e: any) => setPassword(e.target.value)}
-                      onConfirmPasswordChange={(e: any) =>
-                        setConfirmPassword(e.target.value)
-                      }
-                      onDiscordUsernameChange={(e: any) =>
-                        setDiscordUsername(e.target.value)
-                      }
+                      onUsernameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setUsername(e.target.value)}
+                      onPasswordChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setPassword(e.target.value)}
+                      onConfirmPasswordChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setConfirmPassword(e.target.value)}
+                      onDiscordUsernameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setDiscordUsername(e.target.value)}
                       onSubmit={handleRegister}
                     />
                   </TabPanel>
                 </TabPanels>
               </Tabs>
+            )}
+            {loading && (
+              <Flex justify="center" mt={4}>
+                <Spinner size="sm" />
+              </Flex>
             )}
           </Box>
         </VStack>

@@ -1,6 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 
+//////////////////////////////////////////////////////
+///////// Only a fool would review this file /////////
+//////////////////////////////////////////////////////
+
 interface TimeSlot {
   day: number;
   time: number;

@@ -89,7 +89,7 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
                   <Button
                     size="sm"
                     colorScheme={
-                      selectedSlots[dayIndex][timeIndex] ? 'teal' : 'gray'
+                      selectedSlots[dayIndex][timeIndex] ? 'brand' : 'gray'
                     }
                     onClick={() => toggleTimeSlot(dayIndex, timeIndex)}
                     flex={1}

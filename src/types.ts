@@ -1,54 +1,48 @@
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-}
-
 export interface SocialField {
   username: string;
   isPrivate: boolean;
 }
 
 export interface InterviewAvailability {
-  member: User;
-  interviewAvailabilitySlots: boolean[][];
-  mentorAvailabilitySlots: boolean[][];
+  userId: number; // user id
+  availability: boolean[][];
 }
 
 export interface InterviewPool {
-  member: User;
+  member: Member;
 }
 
 type Status = 'pending' | 'active' | 'inactive';
 
 export interface Interview {
   interviewId: string;
-  interviewer: User;
-  technicalQuestion: TechnicalQuestion | null;
+  interviewer: Member;
+  technicalQuestion?: TechnicalQuestion;
   behavioralQuestions: BehavioralQuestion[];
-  interviewee: User;
+  interviewee: Member;
   status: Status;
   dateEffective: string; // ISO 8601 date string
-  dateCompleted: string | null; // ISO 8601 date string or null
+  dateCompleted?: string; // ISO 8601 date string or null
 }
 
 export interface Member {
-  user: User;
+  id: number; // user id
+  username: string;
   created: string; // ISO 8601 date string
   email: string;
   role: string;
   firstName: string;
   lastName: string;
-  preview: string | null;
-  major: string | null;
-  gradDate: string | null; // ISO 8601 date string or null
+  preview?: string;
+  major?: string;
+  gradDate?: string; // ISO 8601 date string or null
   discordUsername: string;
-  linkedin: SocialField | null;
-  github: SocialField | null;
-  leetcode: SocialField | null;
-  resumeUrl: string | null;
-  local: string | null;
-  bio: string | null;
+  linkedin?: SocialField;
+  github?: SocialField;
+  leetcode?: SocialField;
+  resumeUrl?: string;
+  local?: string;
+  bio?: string;
   discordId: number;
 }
 
@@ -61,24 +55,24 @@ export interface QuestionTopic {
 export interface TechnicalQuestion {
   questionId: string;
   created: string; // ISO 8601 date string
-  createdBy: User;
-  approvedBy: User | null;
-  lastAssigned: string | null; // ISO 8601 date string or null
+  createdBy: Member;
+  approvedBy?: Member;
+  lastAssigned?: string; // ISO 8601 date string or null
   topic: QuestionTopic;
   prompt: string;
   solution: string;
-  followUps: string | null;
-  source: string | null;
+  followUps?: string;
+  source?: string;
 }
 
 export interface BehavioralQuestion {
   questionId: string;
   created: string; // ISO 8601 date string
-  createdBy: User;
-  approvedBy: User | null;
-  lastAssigned: string | null; // ISO 8601 date string or null
+  createdBy: Member;
+  approvedBy?: Member;
+  lastAssigned?: string; // ISO 8601 date string or null
   prompt: string;
   solution: string;
-  followUps: string | null;
-  source: string | null;
+  followUps?: string;
+  source?: string;
 }

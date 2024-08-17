@@ -8,9 +8,12 @@ import {
   VStack,
   Avatar,
   Stack,
+  Center,
+  Spinner,
 } from '@chakra-ui/react';
 import { Member } from '../types';
-import { getMemberById } from '../services/mock/directory';
+import { getMemberById } from '../services/directory';
+import { devPrint } from './utils/RandomUtils';
 
 const MemberProfile: React.FC = () => {
   const { userId } = useParams();
@@ -19,8 +22,7 @@ const MemberProfile: React.FC = () => {
   useEffect(() => {
     const fetchMember = async () => {
       if (!userId) {
-        console.error('No user ID provided in URL');
-        alert('No user ID provided in URL');
+        devPrint('No user ID provided in URL');
         return;
       }
 
@@ -28,36 +30,39 @@ const MemberProfile: React.FC = () => {
       try {
         parsedUserId = parseInt(userId);
       } catch (error) {
-        console.error('Invalid user ID provided in URL');
+        devPrint('Invalid user ID provided in URL');
         return;
       }
 
       const memberData = await getMemberById(parsedUserId);
       setMember(memberData);
     };
-
-    fetchMember();
+    try {
+      fetchMember();
+    } catch (error) {
+      devPrint('Failed to fetch member:', error);
+    }
   }, [userId]);
 
   if (!member) {
-    return <Text>Loading...</Text>;
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    )
   }
 
   return (
     <Container maxW="container.lg" py={8}>
-      <Box p={6} bg="white" borderRadius="lg" boxShadow="sm">
+      <Box p={6} borderRadius="lg" boxShadow="sm">
         <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-          <Avatar
-            name={member.user.username}
-            src={member.user.username}
-            size="2xl"
-          />
+          <Avatar name={member.username} src={member.username} size="2xl" />
           <VStack align="start">
             <Heading as="h2" size="lg">
               {member.firstName} {member.lastName}
             </Heading>
-            <Text>Username: {member.user.username}</Text>
-            <Text>Email: {member.user.email}</Text>
+            <Text>Username: {member.username}</Text>
+            <Text>Email: {member.email}</Text>
             <Text>Major: {member.major}</Text>
             <Text>Graduation Date: {member.gradDate}</Text>
             <Text>Bio: {member.bio}</Text>

@@ -6,8 +6,10 @@ import {
   VStack,
   Heading,
   Spinner,
+  Center,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { devPrint } from './utils/RandomUtils';
 
 type LeetcodeProfileProps = {
   username: string;
@@ -46,7 +48,7 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
           profileCache[username] = stats;
           setSubmissions(stats);
         } catch (error) {
-          console.error(error);
+          devPrint(error);
           setSubmissions({ easy: 0, medium: 0, hard: 0 });
         } finally {
           setLoading(false);
@@ -69,7 +71,7 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
   ) : (
     <Box p={6} textAlign="center">
       {submissions === undefined ? (
-        <Text>Loading...</Text>
+        <Center><Spinner/></Center>
       ) : (
         <VStack spacing={1}>
           <Heading as="h3" size="lg">

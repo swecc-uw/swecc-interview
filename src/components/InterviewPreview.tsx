@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Text, Badge, Flex, useColorModeValue } from '@chakra-ui/react';
 import { Interview } from '../types';
 import { useNavigate } from 'react-router-dom';

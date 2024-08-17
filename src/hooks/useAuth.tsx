@@ -7,11 +7,14 @@ import React, {
 } from 'react';
 import api, { getCSRF } from '../services/api';
 import { devPrint } from '../components/utils/RandomUtils';
+import { Member } from '../types';
+import { getCurrentUser } from '../services/member';
 
 interface AuthContextType {
-  isAuthenticated: boolean | null;
+  isAuthenticated: boolean;
   error: string;
   loading: boolean;
+  member?: Member;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (
@@ -19,6 +22,7 @@ interface AuthContextType {
     password: string,
     email: string
   ) => Promise<number | null>;
+  clearError: () => void;
 }
 
 interface AuthProviderProps {
@@ -38,13 +42,27 @@ export const useAuth = (): AuthContextType => {
 };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [member, setMember] = useState<Member>();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getSession();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getCurrentUser()
+        .then((mem) => setMember(mem))
+        .catch((err) => {
+          devPrint('Failed to get current user:', err);
+          setMember(undefined);
+        });
+    } else {
+      setMember(undefined);
+    }
+  }, [isAuthenticated]);
 
   const getSession = async (): Promise<void> => {
     try {
@@ -59,10 +77,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (username: string, password: string): Promise<void> => {
     try {
-      const res = await api.post(
-        '/auth/login/',
-        { username, password }
-      );
+      const res = await api.post('/auth/login/', { username, password });
 
       if (res.status === 200) {
         getCSRF();
@@ -92,9 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<void> => {
     try {
-      const res = await api.post(
-        '/auth/logout/'
-      );
+      const res = await api.post('/auth/logout/');
 
       if (res.status === 200) {
         devPrint('Logout successful');
@@ -114,10 +127,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     discord_username: string
   ): Promise<number | null> => {
     try {
-      const res = await api.post(
-        '/auth/register/',
-        { username, password, discord_username }
-      );
+      const res = await api.post('/auth/register/', {
+        username,
+        password,
+        discord_username,
+      });
 
       if (res.status !== 201) throw new Error('Registration failed.');
 
@@ -137,9 +151,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const clearError = (): void => {
+    setError('');
+  };
+
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, error, loading, login, logout, register }}
+      value={{
+        isAuthenticated,
+        error,
+        loading,
+        member,
+        login,
+        logout,
+        register,
+        clearError,
+      }}
     >
       {children}
     </AuthContext.Provider>

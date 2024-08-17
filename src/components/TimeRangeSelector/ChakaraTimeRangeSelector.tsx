@@ -60,6 +60,10 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   const lastSlotEntered = useRef<TimeSlot | null>(null);
   const color = useColorModeValue('gray.700', 'gray.300');
 
+  useEffect(() => {
+    setSelectedSlots(availability);
+  }, [availability]);
+
   // Handle global mouse up event
   useEffect(() => {
     const handleMouseUp = () => {

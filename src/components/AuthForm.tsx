@@ -19,7 +19,6 @@ interface AuthFormProps {
   confirmPassword?: string;
   discordUsername?: string;
   error: string;
-  successMessage: string;
   onUsernameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onConfirmPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -34,7 +33,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
   confirmPassword,
   discordUsername,
   error,
-  successMessage,
   onUsernameChange,
   onPasswordChange,
   onConfirmPasswordChange,
@@ -49,6 +47,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         <FormControl isRequired>
           <FormLabel>Username</FormLabel>
           <Input
+            colorScheme="brand"
             type="text"
             value={username}
             onChange={onUsernameChange}
@@ -59,6 +58,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           <FormControl isRequired>
             <FormLabel>Discord Username</FormLabel>
             <Input
+              colorScheme="brand"
               type="text"
               value={discordUsername}
               onChange={onDiscordUsernameChange}
@@ -70,6 +70,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           <FormLabel>Password</FormLabel>
           <InputGroup>
             <Input
+              colorScheme="brand"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={onPasswordChange}
@@ -77,6 +78,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             />
             <InputRightElement>
               <IconButton
+                colorScheme="brand"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
                 icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                 onClick={() => setShowPassword(!showPassword)}
@@ -89,6 +91,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           <FormControl isRequired>
             <FormLabel>Confirm Password</FormLabel>
             <Input
+              colorScheme="brand"
               type="password"
               value={confirmPassword}
               onChange={onConfirmPasswordChange}
@@ -97,8 +100,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           </FormControl>
         )}
         {error && <Text color="red.500">{error}</Text>}
-        {successMessage && <Text color="green.500">{successMessage}</Text>}
-        <Button type="submit" colorScheme="blue" width="full">
+        <Button type="submit" colorScheme="brand" width="full">
           {isLogin ? 'Login' : 'Register'}
         </Button>
       </VStack>

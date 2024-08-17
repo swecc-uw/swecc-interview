@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Badge,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Heading, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { Interview, TechnicalQuestion, BehavioralQuestion } from '../types';
 
 interface InterviewViewProps {
@@ -21,17 +13,8 @@ export const InterviewView: React.FC<InterviewViewProps> = ({
   technicalQuestions,
   behavioralQuestions,
 }) => {
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-
   return (
-    <Box
-      borderWidth="1px"
-      borderRadius="lg"
-      p={6}
-      bg={bgColor}
-      borderColor={borderColor}
-    >
+    <Box borderWidth="1px" borderRadius="lg" p={6}>
       <VStack align="stretch" spacing={4}>
         <Heading size="lg">Interview Details</Heading>
         <HStack justify="space-between">

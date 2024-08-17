@@ -6,9 +6,9 @@ import { InterviewView } from '../components/InterviewView';
 import {
   getTechnicalQuestionsForInterview,
   getBehavioralQuestionsForInterview,
-} from '../services/mock/question';
-import { getInterviewById } from '../services/mock/interview';
-import { useMember } from '../context/MemberContext';
+} from '../services/question';
+import { getInterviewById } from '../services/interview';
+import { useAuth } from '../hooks/useAuth';
 
 export const ViewInterviewPage: React.FC = () => {
   const { interviewId } = useParams<{ interviewId: string }>();
@@ -20,7 +20,7 @@ export const ViewInterviewPage: React.FC = () => {
     BehavioralQuestion[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const { member } = useMember();
+  const { member } = useAuth();
   const toast = useToast();
 
   useEffect(() => {

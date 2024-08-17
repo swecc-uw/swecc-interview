@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Box } from '@chakra-ui/react';
+import { Container, Box, Center, Spinner } from '@chakra-ui/react';
 import InterviewSignupForm from '../components/InterviewSignupForm';
-import { getInterviewAvailabilityForUser } from '../services/mock/interview';
-import { useMember } from '../context/MemberContext';
+import { getInterviewAvailabilityForCurrentUser } from '../services/interview';
+import { useAuth } from '../hooks/useAuth';
+import { devPrint } from '../components/utils/RandomUtils';
 
 const InterviewSignupPage: React.FC = () => {
-  const { member } = useMember();
-  const [availability, setAvailability] = useState<boolean[][]>(
-    Array.from({ length: 7 }, () => Array.from({ length: 48 }, () => false))
-  );
+  const { member } = useAuth();
+  const [availability, setAvailability] = useState<boolean[][]>();
 
   useEffect(() => {
-    // Fetch the user's availability from the server
-    // and update the availability state
     if (member) {
-      getInterviewAvailabilityForUser(member.user.id).then((availability) => {
-        setAvailability(availability.interviewAvailabilitySlots);
-      });
+      getInterviewAvailabilityForCurrentUser()
+        .then((availability) => {
+          setAvailability(availability.availability);
+        })
+        .catch((error) => {
+          devPrint('Error fetching availability:', error);
+        });
     }
-  }, []);
+  }, [member]);
 
   const handleAvailabilityChange = (newAvailability: boolean[][]) => {
     setAvailability(newAvailability);
@@ -27,13 +28,19 @@ const InterviewSignupPage: React.FC = () => {
   return (
     <Container maxW="container.lg" py={8}>
       <Box borderRadius="lg" boxShadow="md" p={6}>
-        <InterviewSignupForm
-          title="Select Your Availability for the following week..."
-          availability={availability}
-          onChange={handleAvailabilityChange}
-          // dayLabels={dayLabels}
-          // timeLabels={timeLabels}
-        />
+        {availability ? (
+          <InterviewSignupForm
+            title="Select Your Availability for the following week..."
+            availability={availability}
+            onChange={handleAvailabilityChange}
+          />
+        ) : (
+          <Box>
+            <Center>
+              <Spinner />
+            </Center>
+          </Box>
+        )}
       </Box>
     </Container>
   );
