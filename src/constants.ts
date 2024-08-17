@@ -8,4 +8,3 @@ export const SERVER_URL = isProd
   ? 'https://api.swecc.org'
   : 'http://localhost:8000';
 
-console.log('isProd:', isProd);
