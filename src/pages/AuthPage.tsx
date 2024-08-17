@@ -80,7 +80,7 @@ const AuthPage: React.FC = () => {
             width="full"
           >
             {isRegistered && userId ? (
-              <DiscordVerification userId={userId} />
+              <DiscordVerification username={username} userId={userId} />
             ) : (
               <Tabs isFitted variant="enclosed">
                 <TabList mb="1em">

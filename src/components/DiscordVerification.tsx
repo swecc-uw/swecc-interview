@@ -15,10 +15,12 @@ import { CheckCircleIcon } from '@chakra-ui/icons';
 
 interface DiscordVerificationProps {
   userId: number;
+  username: string;
 }
 
 const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   userId,
+  username,
 }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
@@ -87,7 +89,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
               <Text fontSize="lg">
                 Run{' '}
                 <Text as="span" fontWeight="bold">
-                  `/auth {userId}`
+                  `/auth {username}`
                 </Text>{' '}
                 in the Discord server and paste the code here.
               </Text>
