@@ -1,6 +1,6 @@
 {
   "name": "swecc-client",
-  "homepage": "https://interviews.swecc.org",
+  "homepage": "https://interview.swecc.org",
   "private": true,
   "version": "0.0.0",
   "type": "module",
