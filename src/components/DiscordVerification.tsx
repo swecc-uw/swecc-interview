@@ -20,7 +20,7 @@ interface DiscordVerificationProps {
 
 const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   userId,
-  username
+  username,
 }) => {
   const [verificationCode, setVerificationCode] = useState('');
   const [isVerified, setIsVerified] = useState(false);
