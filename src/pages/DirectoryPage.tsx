@@ -28,7 +28,8 @@ const DirectoryPage: React.FC = () => {
     }
   };
 
-  const qChange = (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value);
+  const qChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setQuery(e.target.value);
 
   return (
     <Container maxW="container.lg" py={8}>
@@ -39,11 +40,7 @@ const DirectoryPage: React.FC = () => {
         <form onSubmit={handleSearch}>
           <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
             <FormControl>
-              <Input
-                colorScheme="brand"
-                value={query}
-                onChange={qChange}
-              />
+              <Input colorScheme="brand" value={query} onChange={qChange} />
             </FormControl>
             <Button colorScheme="brand" type="submit">
               Search
