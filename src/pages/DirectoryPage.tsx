@@ -6,6 +6,7 @@ import {
   Button,
   Heading,
   Stack,
+  FormControl,
 } from '@chakra-ui/react';
 import { searchMembers } from '../services/directory';
 import { Member } from '../types';
@@ -16,7 +17,8 @@ const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     try {
       const results = await searchMembers(query);
       setMembers(results);
@@ -26,23 +28,28 @@ const DirectoryPage: React.FC = () => {
     }
   };
 
+  const qChange = (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value);
+
   return (
     <Container maxW="container.lg" py={8}>
       <VStack spacing={4} align="stretch">
         <Heading as="h1" size="lg">
           Member Directory
         </Heading>
-        <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-          <Input
-            colorScheme="brand"
-            placeholder="Search members by name..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <Button colorScheme="brand" onClick={handleSearch}>
-            Search
-          </Button>
-        </Stack>
+        <form onSubmit={handleSearch}>
+          <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+            <FormControl>
+              <Input
+                colorScheme="brand"
+                value={query}
+                onChange={qChange}
+              />
+            </FormControl>
+            <Button colorScheme="brand" type="submit">
+              Search
+            </Button>
+          </Stack>
+        </form>
         <MemberList members={members} />
       </VStack>
     </Container>

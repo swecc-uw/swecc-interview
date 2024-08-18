@@ -49,7 +49,7 @@ const MemberProfile: React.FC = () => {
       <Center>
         <Spinner />
       </Center>
-    )
+    );
   }
 
   return (

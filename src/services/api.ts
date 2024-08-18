@@ -2,7 +2,9 @@ import axios from 'axios';
 import { devPrint } from '../components/utils/RandomUtils';
 
 const api = axios.create({
-  baseURL: import.meta.env.DEV ? 'http://localhost:8000/' : 'https://api.swecc.org',
+  baseURL: import.meta.env.DEV
+    ? 'http://localhost:8000/'
+    : 'https://api.swecc.org',
   withCredentials: true,
 });
 
