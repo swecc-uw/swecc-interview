@@ -12,23 +12,22 @@ const MemberList: React.FC<MemberListProps> = ({ members }) => {
     <VStack spacing={4} align="stretch">
       {members.map((member) => (
         <Box
-          key={member.user.id}
+          key={member.id}
           p={4}
           borderWidth={1}
           borderRadius="lg"
           overflow="hidden"
-          bg="white"
           boxShadow="sm"
         >
           <HStack spacing={4}>
-            <Avatar name={member.user.username} src={member.user.username} />
+            <Avatar name={member.username} src={member.username} />
             <VStack align="start">
-              <Text fontWeight="bold">{member.user.username}</Text>
+              <Text fontWeight="bold">{member.username}</Text>
               <Text>
                 {member.firstName} {member.lastName}
               </Text>
-              <Link to={`/directory/${member.user.id}`}>
-                <Button size="sm" colorScheme="teal">
+              <Link to={`/directory/${member.id}`}>
+                <Button size="sm" colorScheme="brand">
                   View Profile
                 </Button>
               </Link>

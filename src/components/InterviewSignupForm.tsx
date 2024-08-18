@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Box, Button, Heading, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Box, Button, VStack } from '@chakra-ui/react';
 import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector';
 import MobileTimeRangeSelector from './TimeRangeSelector/MobileTimeRangeSelector';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep';
-import { updateInterviewAvailabilityForUser } from '../services/mock/interview';
-import { useMember } from '../context/MemberContext';
+import { signupCurrentUserForInterviewPool } from '../services/interview';
 import { InterviewAvailability } from '../types';
 import { devPrint } from './utils/RandomUtils';
+import { useAuth } from '../hooks/useAuth';
 
 const getNextSunday = () => {
   const today = new Date();
@@ -30,7 +30,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   dayLabels,
   timeLabels,
 }) => {
-  const { member } = useMember();
+  const { member } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const steps = ['Availability', 'Confirmation'];
 
@@ -52,18 +52,12 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
     }
 
     const interviewAvailability: InterviewAvailability = {
-      member: member.user,
-      interviewAvailabilitySlots: availability,
-      mentorAvailabilitySlots: Array.from({ length: 7 }, () =>
-        Array.from({ length: 48 }, () => false)
-      ),
+      userId: member.id,
+      availability: availability,
     };
 
     try {
-      await updateInterviewAvailabilityForUser(
-        member.user.id,
-        interviewAvailability
-      );
+      await signupCurrentUserForInterviewPool(interviewAvailability);
       alert('Availability updated successfully!');
     } catch (error) {
       alert('Failed to update availability');
@@ -104,9 +98,6 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
 
   return (
     <VStack spacing={6} align="stretch">
-      <Heading as="h1" size="xl" textAlign="center" mb={6}>
-        {steps[currentStep]}
-      </Heading>
       <Box
         position="relative"
         height="500px"
@@ -130,10 +121,15 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
         </AnimatePresence>
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Button onClick={handlePrev} isDisabled={currentStep === 0}>
+        <Button
+          onClick={handlePrev}
+          isDisabled={currentStep === 0}
+          colorScheme="brand"
+        >
           Previous
         </Button>
         <Button
+          colorScheme="brand"
           onClick={
             currentStep === steps.length - 1 ? handleConfirm : handleNext
           }

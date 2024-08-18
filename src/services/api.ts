@@ -2,7 +2,7 @@ import axios from 'axios';
 import { devPrint } from '../components/utils/RandomUtils';
 
 const api = axios.create({
-  baseURL: 'https://api.swecc.org',
+  baseURL: import.meta.env.DEV ? 'http://localhost:8000/' : 'https://api.swecc.org',
   withCredentials: true,
 });
 
@@ -24,7 +24,7 @@ api.interceptors.request.use(async (config) => {
     return config;
   }
   if (!api.defaults.headers.common['X-CSRFToken']) {
-    await getCSRF(); 
+    await getCSRF();
   }
   return config;
 });

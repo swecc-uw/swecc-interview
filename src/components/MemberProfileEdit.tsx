@@ -26,7 +26,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
+    setProfile((p) => ({ ...p, [name]: value }));
   };
 
   const handleSave = () => {
@@ -34,12 +34,13 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   };
 
   return (
-    <Box bg="white" p={8} rounded="lg" shadow="lg">
+    <Box p={8} rounded="lg" shadow="lg">
       <VStack spacing={4} align="stretch">
         <HStack spacing={4}>
           <FormControl>
             <FormLabel>First Name</FormLabel>
             <Input
+              colorScheme="brand"
               name="firstName"
               value={profile.firstName || ''}
               onChange={handleChange}
@@ -48,6 +49,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormControl>
             <FormLabel>Last Name</FormLabel>
             <Input
+              colorScheme="brand"
               name="lastName"
               value={profile.lastName || ''}
               onChange={handleChange}
@@ -57,6 +59,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Email</FormLabel>
           <Input
+            colorScheme="brand"
             name="email"
             value={profile.email || ''}
             onChange={handleChange}
@@ -65,6 +68,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Major</FormLabel>
           <Input
+            colorScheme="brand"
             name="major"
             value={profile.major || ''}
             onChange={handleChange}
@@ -73,6 +77,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Graduation Date</FormLabel>
           <Input
+            colorScheme="brand"
             name="gradDate"
             value={profile.gradDate || ''}
             onChange={handleChange}
@@ -90,6 +95,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Location</FormLabel>
           <Input
+            colorScheme="brand"
             name="local"
             value={profile.local || ''}
             onChange={handleChange}
@@ -98,12 +104,13 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         <FormControl>
           <FormLabel>Bio</FormLabel>
           <Textarea
+            colorScheme="brand"
             name="bio"
             value={profile.bio || ''}
             onChange={handleChange}
           />
         </FormControl>
-        <Button colorScheme="teal" onClick={handleSave} alignSelf="end">
+        <Button colorScheme="brand" onClick={handleSave} alignSelf="end">
           Save
         </Button>
       </VStack>

@@ -7,12 +7,22 @@ import {
   HStack,
   Text,
   Button,
+  Spinner,
+  Center,
   Link as ChakraLink,
   useColorModeValue,
+  IconButton,
+  useDisclosure,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { Member } from '../types';
-import { useMember } from '../context/MemberContext';
 import { useAuth } from '../hooks/useAuth';
 
 interface LayoutProps {
@@ -25,15 +35,24 @@ interface NavLinkProps {
 }
 
 interface NavBarProps {
-  member: Member | null;
+  member?: Member;
+  isAuthenticated: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { member } = useMember();
+  const { isAuthenticated, loading, member } = useAuth();
+
+  if (loading) {
+    return (
+      <Center h="100vh">
+        <Spinner />
+      </Center>
+    );
+  }
 
   return (
     <Flex direction="column" minHeight="100vh">
-      <Navbar member={member} />
+      <Navbar member={member} isAuthenticated={isAuthenticated} />
       <Box as="main" flexGrow={1}>
         <Container maxW="container.xl" py={8}>
           {children}
@@ -44,72 +63,77 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-const Navbar: React.FC<NavBarProps> = ({ member }) => {
-  const bg = useColorModeValue('white', 'gray.800');
+const Navbar: React.FC<NavBarProps> = ({ member, isAuthenticated }) => {
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { isAuthenticated } = useAuth();
-
-  const SignUpOrSignIn: React.FC = () => {
-    return (
-      <HStack>
-        <Button colorScheme="blue" onClick={() => navigate('/auth')}>
-          Sign in or register
-        </Button>
-      </HStack>
-    );
-  };
-
-  const ProfileIcon: React.FC<NavBarProps> = ({ member }) => {
-    return (
-      <HStack>
-        <Text fontSize="lg" fontWeight="bold" marginRight={3}>
-          {member?.firstName}
-        </Text>
-        <Button
-          onClick={() => navigate('/profile')}
-          colorScheme="blue"
-          variant="outline"
-        >
-          Profile
-        </Button>
-      </HStack>
-    );
-  };
+  const NavLinks = () => (
+    <>
+      {isAuthenticated && (
+        <>
+          <NavLink to="/interview-signup">Sign up for an interview</NavLink>
+          <NavLink to="/interviews">View your interviews</NavLink>
+          <NavLink to="/directory">Directory</NavLink>
+        </>
+      )}
+      {!isAuthenticated && <NavLink to="/join-swecc">Join SWECC</NavLink>}
+    </>
+  );
 
   return (
-    <Box as="nav" bg={bg} boxShadow="sm">
+    <Box as="nav" boxShadow="sm" position="sticky" top={0} zIndex="sticky">
       <Container maxW="container.xl" py={4}>
         <Flex justify="space-between" align="center">
           <Link to="/">
             <ChakraLink as="span" _hover={{ textDecoration: 'none' }}>
-              <HStack spacing={2}>
-                <Text fontSize="xl" fontWeight="bold">
-                  SWECC
-                </Text>
-              </HStack>
+              <Text fontSize="2xl" fontWeight="bold" color="blue.500">
+                SWECC
+              </Text>
             </ChakraLink>
           </Link>
+
           <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
-            {isAuthenticated && (
-              <NavLink to="/interview-signup">Sign up for an interview</NavLink>
-            )}
-            {isAuthenticated && (
-              <NavLink to="/interviews">View your interviews</NavLink>
-            )}
-            {isAuthenticated && <NavLink to="/protected">protected</NavLink>}
-            {isAuthenticated && <NavLink to="/directory">Directory</NavLink>}
-            {!isAuthenticated && <NavLink to="/join-swecc">Join SWECC</NavLink>}
+            <NavLinks />
           </HStack>
-          <HStack spacing={8}>
+
+          <HStack>
             {member && isAuthenticated ? (
-              <ProfileIcon member={member} />
+              <Button
+                colorScheme="brand"
+                onClick={() => navigate('/profile')}
+                variant="ghost"
+              >
+                {member.firstName || 'Profile'}
+              </Button>
             ) : (
-              <SignUpOrSignIn />
+              <Button colorScheme="brand" onClick={() => navigate('/auth')}>
+                Sign in
+              </Button>
             )}
+            <IconButton
+              display={{ base: 'flex', md: 'none' }}
+              colorScheme="brand"
+              onClick={onOpen}
+              icon={<HamburgerIcon />}
+              aria-label="Open menu"
+              variant="ghost"
+            />
           </HStack>
         </Flex>
       </Container>
+
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Menu</DrawerHeader>
+          <DrawerBody>
+            <VStack align="start" spacing={4}>
+              <NavLinks />
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 };
@@ -133,7 +157,7 @@ const Footer: React.FC = () => {
   const color = useColorModeValue('gray.700', 'gray.200');
 
   return (
-    <Box as="footer" bg={bg} color={color}>
+    <Box as="footer" bg={bg} color={color} mt="auto">
       <Container maxW="container.xl" py={12}>
         <Flex direction={{ base: 'column', md: 'row' }} justify="space-between">
           <VStack align="start" spacing={4} mb={{ base: 8, md: 0 }}>
@@ -158,7 +182,7 @@ const Footer: React.FC = () => {
           </VStack>
         </Flex>
         <Text mt={12} textAlign="center" fontSize="sm">
-          Created with ❤️ by SWECC
+          © {new Date().getFullYear()} SWECC. All rights reserved.
         </Text>
       </Container>
     </Box>

@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import MemberProfileEdit from '../components/MemberProfileEdit';
 import MemberProfileView from '../components/MemberProfileView';
-import { useMember } from '../context/MemberContext';
+import { useAuth } from '../hooks/useAuth';
 import { Member } from '../types';
 import {
   Box,
   Button,
   Container,
   Heading,
-  useColorModeValue,
   VStack,
   Stack,
   HStack,
@@ -41,12 +40,7 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
   };
 
   return (
-    <Box
-      bg={useColorModeValue('white', 'gray.800')}
-      borderRadius="lg"
-      p={6}
-      mt={6}
-    >
+    <Box borderRadius="lg" p={6} mt={6}>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
         {member.leetcode && (
           <Box p={4} flex="1">
@@ -72,10 +66,9 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
 };
 
 const MemberProfilePage: React.FC = () => {
-  const { member } = useMember();
+  const { logout, member } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const color = useColorModeValue('white', 'gray.800');
 
   const onSave = (member: Partial<Member>) => {};
 
@@ -89,6 +82,11 @@ const MemberProfilePage: React.FC = () => {
     return null;
   }
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/auth');
+  };
+
   const Content: React.FC = () => {
     if (isEditing) {
       return <MemberProfileEdit member={member} onSave={onSave} />;
@@ -99,14 +97,17 @@ const MemberProfilePage: React.FC = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
-      <Box p={6} bg={color}>
+      <Box p={6}>
         <VStack spacing={4} align="stretch">
           <HStack spacing={4}>
             <Heading as="h1" size="lg" flex="1">
               Profile
             </Heading>
-            <Button colorScheme="teal" onClick={() => setIsEditing(!isEditing)}>
+            <Button colorScheme="brand" onClick={() => setIsEditing((p) => !p)}>
               {isEditing ? 'Cancel' : 'Edit'}
+            </Button>
+            <Button colorScheme="brand" onClick={handleLogout}>
+              Logout
             </Button>
           </HStack>
           <Content />

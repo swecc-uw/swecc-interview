@@ -1,47 +1,34 @@
 import { devPrint } from '../components/utils/RandomUtils';
-import { User, Member } from '../types';
+import { Member } from '../types';
 import api from './api';
 
-export async function getCurrentUser(): Promise<User> {
-  try {
-    const url = '/members/profile';
-    const res: any = await api.get(url);
-    devPrint('res:', res);
+export async function getCurrentUser(): Promise<Member> {
+  const url = '/members/profile';
+  const res: any = await api.get(url);
+  devPrint('res:', res);
 
-    if (res.status !== 200) {
-      throw new Error('Failed to get current user');
-    }
+  if (res.status !== 200) throw new Error('Failed to get current user');
 
-    if (!Object.prototype.hasOwnProperty.call(res, 'data')) {
-      throw new Error('Failed to get current user');
-    }
+  if (!Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to get current user');
 
-    return res.data;
-  } catch (error) {
-    console.error('Failed to get current user:', error);
-    return {} as User;
-  }
+  return {
+    ...res.data,
+    id: res.data.user,
+  };
 }
 
 export async function getMemberProfile(userId: number): Promise<Member> {
-  try {
-    const url = `/members/${userId}`;
-    const res: any = await api.get(url);
-    devPrint('res:', res);
+  const url = `/members/${userId}`;
+  const res: any = await api.get(url);
+  devPrint('res:', res);
 
-    if (res.status !== 200) {
-      throw new Error('Failed to get member profile');
-    }
+  if (res.status !== 200) throw new Error('Failed to get member profile');
 
-    if (!Object.prototype.hasOwnProperty.call(res, 'data')) {
-      throw new Error('Failed to get member profile');
-    }
+  if (!Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to get member profile');
 
-    return res.data;
-  } catch (error) {
-    console.error('Failed to get member profile:', error);
-    return {} as Member;
-  }
+  return res.data;
 }
 
 export async function updateMemberProfile(
@@ -63,7 +50,7 @@ export async function updateMemberProfile(
 
     return res.data;
   } catch (error) {
-    console.error('Failed to update member profile:', error);
+    devPrint('Failed to update member profile:', error);
     return {} as Member;
   }
 }

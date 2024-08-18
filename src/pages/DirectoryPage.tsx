@@ -7,17 +7,23 @@ import {
   Heading,
   Stack,
 } from '@chakra-ui/react';
-import { searchMembers } from '../services/mock/directory';
+import { searchMembers } from '../services/directory';
 import { Member } from '../types';
 import MemberList from '../components/MemberList';
+import { devPrint } from '../components/utils/RandomUtils';
 
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
 
   const handleSearch = async () => {
-    const results = await searchMembers(query);
-    setMembers(results);
+    try {
+      const results = await searchMembers(query);
+      setMembers(results);
+    } catch (error) {
+      devPrint('Error searching for members:', error);
+      setMembers([]);
+    }
   };
 
   return (
@@ -28,11 +34,12 @@ const DirectoryPage: React.FC = () => {
         </Heading>
         <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
           <Input
+            colorScheme="brand"
             placeholder="Search members by name..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Button colorScheme="teal" onClick={handleSearch}>
+          <Button colorScheme="brand" onClick={handleSearch}>
             Search
           </Button>
         </Stack>

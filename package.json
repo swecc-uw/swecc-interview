@@ -16,6 +16,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@saas-ui/theme-glass": "^0.5.5",
     "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.7.2",
     "cspell": "^8.13.2",
