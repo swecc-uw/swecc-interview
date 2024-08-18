@@ -1,4 +1,4 @@
-import { Interview, InterviewAvailability } from '../types';
+import { DetailedResponse, Interview, InterviewAvailability } from '../types';
 import api from './api';
 
 export async function getInterviewsForUser(): Promise<Interview[]> {
@@ -36,10 +36,22 @@ export async function updateInterviewAvailabilityForCurrentUser(
   return res.data;
 }
 
+export async function isCurrentUserSignedUpForInterviewPool(): Promise<boolean> {
+  const res = await api.get('/interview/pool/');
+
+  return res.data.sign_up;
+}
+
 export async function signupCurrentUserForInterviewPool(
   availability: InterviewAvailability
-): Promise<{ detail: string }> {
+): Promise<DetailedResponse> {
   const res = await api.post('/interview/pool/', availability);
+
+  return res.data;
+}
+
+export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResponse> {
+  const res = await api.delete('/interview/pool/');
 
   return res.data;
 }
