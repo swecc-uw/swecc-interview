@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Divider,
   Stack,
+  Badge,
 } from '@chakra-ui/react';
 import { Member } from '../types';
 
@@ -16,58 +17,67 @@ interface MemberProfileViewProps {
 }
 
 const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
-  const color = useColorModeValue('gray.700', 'gray.300');
+  const linkColor = useColorModeValue('brand.500', 'brand.300');
 
   return (
-    <Box p={6} borderRadius="lg" boxShadow="md">
+    <Box
+      p={8}
+      borderRadius="xl"
+      boxShadow="lg"
+      bg={useColorModeValue('white', 'gray.800')}
+    >
       <Stack
         direction={{ base: 'column', md: 'row' }}
-        spacing={6}
+        spacing={8}
         align="center"
       >
-        <Avatar
-          name={`${member.firstName} ${member.lastName}`}
-          src={member.resumeUrl || ''}
-          size="xl"
-        />
-        <VStack align="start" spacing={1} flex="1">
-          <Text fontSize="2xl" fontWeight="bold">
+        <Avatar name={`${member.firstName} ${member.lastName}`} size="2xl" />
+        <VStack align="start" spacing={2} flex="1">
+          <Text fontSize="3xl" fontWeight="bold">
             {member.firstName} {member.lastName}
           </Text>
-          <Text fontSize="lg" color="gray.500">
+          <Badge colorScheme="brand" fontSize="lg">
             {member.role}
-          </Text>
+          </Badge>
           <Text fontSize="md" color="gray.500">
             {member.email}
           </Text>
         </VStack>
       </Stack>
-      <Divider my={4} />
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={4}>
-        <VStack align="start" spacing={2}>
-          <Text fontSize="md" color={color}>
-            <b>Major:</b> {member.major}
-          </Text>
-          <Text fontSize="md" color={color}>
-            <b>Graduation Date:</b> {member.gradDate}
-          </Text>
-          <Text fontSize="md" color={color}>
+      <Divider my={6} />
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={6}>
+        <VStack align="start" spacing={3}>
+          {member.major && (
+            <Text fontSize="md">
+              <b>Major:</b> {member.major}
+            </Text>
+          )}
+          {member.gradDate && (
+            <Text fontSize="md">
+              <b>Graduation Date:</b> {member.gradDate}
+            </Text>
+          )}
+          <Text fontSize="md">
             <b>Discord:</b> {member.discordUsername}
           </Text>
         </VStack>
-        <VStack align="start" spacing={2}>
-          <Text fontSize="md" color={color}>
-            <b>Location:</b> {member.local}
-          </Text>
-          <Text fontSize="md" color={color}>
-            <b>Bio:</b> {member.bio}
-          </Text>
+        <VStack align="start" spacing={3}>
+          {member.local && (
+            <Text fontSize="md">
+              <b>Location:</b> {member.local}
+            </Text>
+          )}
+          {member.bio && (
+            <Text fontSize="md">
+              <b>Bio:</b> {member.bio}
+            </Text>
+          )}
         </VStack>
       </SimpleGrid>
-      <Divider my={4} />
-      <VStack align="start" spacing={2}>
+      <Divider my={6} />
+      <VStack align="start" spacing={3}>
         {member.resumeUrl && (
-          <Text fontSize="md" color={color}>
+          <Text fontSize="md">
             <b>Resume:</b>{' '}
             <Link
               href={
@@ -76,14 +86,14 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
                   : `https://${member.resumeUrl}`
               }
               isExternal
-              color="teal.500"
+              color={linkColor}
             >
-              {member.resumeUrl}
+              View Resume
             </Link>
           </Text>
         )}
-        {member.linkedin && (
-          <Text fontSize="md" color={color}>
+        {member.linkedin?.username && (
+          <Text fontSize="md">
             <b>LinkedIn:</b>{' '}
             <Link
               href={
@@ -92,14 +102,14 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
                   : `https://${member.linkedin.username}`
               }
               isExternal
-              color="teal.500"
+              color={linkColor}
             >
               {member.linkedin.username}
             </Link>
           </Text>
         )}
-        {member.github && (
-          <Text fontSize="md" color={color}>
+        {member.github?.username && (
+          <Text fontSize="md">
             <b>GitHub:</b>{' '}
             <Link
               href={
@@ -108,14 +118,14 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
                   : `https://${member.github.username}`
               }
               isExternal
-              color="teal.500"
+              color={linkColor}
             >
               {member.github.username}
             </Link>
           </Text>
         )}
-        {member.leetcode && (
-          <Text fontSize="md" color={color}>
+        {member.leetcode?.username && (
+          <Text fontSize="md">
             <b>LeetCode:</b>{' '}
             <Link
               href={
@@ -124,7 +134,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
                   : `https://${member.leetcode.username}`
               }
               isExternal
-              color="teal.500"
+              color={linkColor}
             >
               {member.leetcode.username}
             </Link>

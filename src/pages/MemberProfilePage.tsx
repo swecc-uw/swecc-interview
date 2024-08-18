@@ -15,6 +15,8 @@ import {
 import { useEffect, useState } from 'react';
 import LeetcodeProfile from '../components/LeetcodeProfile';
 import GitHubCalendar, { ThemeInput } from 'react-github-calendar';
+import { updateMemberProfile } from '../services/member';
+import { devPrint } from '../components/utils/RandomUtils';
 
 const selectLastHalfYear = (contributions: any) => {
   const currentYear = new Date().getFullYear();
@@ -33,6 +35,14 @@ const selectLastHalfYear = (contributions: any) => {
   });
 };
 
+const getUserFromUrlIfThisIsAUrl = (url: string): string => {
+  if (url.startsWith('http')) {
+    const parts = url.split('/');
+    return parts[parts.length - 1];
+  }
+  return url;
+};
+
 const Widgets: React.FC<{ member: Member }> = ({ member }) => {
   const githubTheme: ThemeInput = {
     dark: ['#f0f0f0', '#dcd0ff', '#c4a3ff', '#a876ff', '#8a00d4'],
@@ -44,13 +54,15 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
       <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
         {member.leetcode && (
           <Box p={4} flex="1">
-            <LeetcodeProfile username={member.leetcode.username} />
+            <LeetcodeProfile
+              username={getUserFromUrlIfThisIsAUrl(member.leetcode.username)}
+            />
           </Box>
         )}
         {member.github && (
           <Box p={4} overflowX="auto" flex="1">
             <GitHubCalendar
-              username={member.github.username}
+              username={getUserFromUrlIfThisIsAUrl(member.github.username)}
               transformData={selectLastHalfYear}
               theme={githubTheme}
               year={new Date().getFullYear()}
@@ -66,11 +78,31 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
 };
 
 const MemberProfilePage: React.FC = () => {
-  const { logout, member } = useAuth();
+  const { logout, member: authMember } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [member, setMember] = useState<Member | null>(authMember || null);
 
-  const onSave = (member: Partial<Member>) => {};
+  const onSave = (member: Partial<Member>) => {
+    updateMemberProfile(member)
+      .then(() => {
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        devPrint('Error updating profile:', error);
+      })
+      .finally(() => {
+        setMember((prevMember) => {
+          if (!prevMember) {
+            return prevMember;
+          }
+          return {
+            ...prevMember,
+            ...member,
+          };
+        });
+      });
+  };
 
   useEffect(() => {
     if (!member) {
