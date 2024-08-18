@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       <Center>
         <Spinner />
       </Center>
-    )
+    );
   }
 
   return isAuthenticated ? <>{children}</> : <Navigate to="/auth" />;

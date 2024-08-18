@@ -6,7 +6,7 @@ interface DiscordVerificationProps {
   username: string;
   password: string;
   tryLogin: (username: string, password: string) => void;
-  onGoBack: () => void; // Add this new prop
+  onGoBack: () => void;
 }
 
 const DiscordVerification: React.FC<DiscordVerificationProps> = ({

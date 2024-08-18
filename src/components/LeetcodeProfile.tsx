@@ -71,7 +71,9 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
   ) : (
     <Box p={6} textAlign="center">
       {submissions === undefined ? (
-        <Center><Spinner/></Center>
+        <Center>
+          <Spinner />
+        </Center>
       ) : (
         <VStack spacing={1}>
           <Heading as="h3" size="lg">
