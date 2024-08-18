@@ -5,12 +5,11 @@ import React, {
   useEffect,
   ReactNode,
 } from 'react';
-import api from '../services/api';
+import api, { getCSRF } from '../services/api';
 import { devPrint } from '../components/utils/RandomUtils';
 
 interface AuthContextType {
   isAuthenticated: boolean | null;
-  csrf: string;
   error: string;
   loading: boolean;
   login: (username: string, password: string) => Promise<void>;
@@ -40,7 +39,6 @@ export const useAuth = (): AuthContextType => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [csrf, setCsrf] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -50,94 +48,63 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getSession = async (): Promise<void> => {
     try {
-      const res = await api.get('/auth/session/');
-
-      const data = res.data;
-      devPrint('Session data:', data);
-
-      if (data.isAuthenticated) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-        getCSRF();
-      }
-
+      await api.get('/auth/session/');
+      setIsAuthenticated(true);
       setLoading(false);
     } catch (err) {
-      console.error('Failed to fetch session data:', err);
       setIsAuthenticated(false);
       setLoading(false);
     }
   };
 
-  const getCSRF = async (): Promise<void> => {
+  const login = async (username: string, password: string): Promise<void> => {
     try {
-      const res = await api.get('/auth/csrf/');
+      const res = await api.post(
+        '/auth/login/',
+        { username, password }
+      );
 
-      const csrfToken = res.headers['x-csrftoken'];
-      if (csrfToken) {
-        setCsrf(csrfToken);
-        devPrint('CSRF Token fetched and set:', csrfToken);
+      if (res.status === 200) {
+        getCSRF();
+        setIsAuthenticated(true);
+        setError('');
       } else {
-        throw new Error('CSRF token not found in response headers');
+        handleLoginError(res.data);
       }
-    } catch (err) {
-      console.error('Failed to fetch CSRF token:', err);
+    } catch (err: any) {
+      handleLoginError(err.response?.data);
     }
   };
 
-  const login = async (username: string, password: string): Promise<void> => {
-    try {
-      const res = await api.post('/auth/login/', {
-        username,
-        password,
-      });
-
-      if (res.status === 200) {
-        setIsAuthenticated(true);
-        setError('');
-
-        devPrint('Login successful:', res.data);
-      } else {
-        const errorData = res.data;
-        if (
-          errorData.detail ===
-          'Your account does not have a Discord ID associated with it.'
-        ) {
-          setError(
-            `Your discord is not verified. Please type /auth ${errorData.username} in the swecc server`
-          );
-        } else {
-          console.error('Login failed:', errorData);
-          setError('Invalid credentials. Please try again.');
-          setIsAuthenticated(false);
-        }
-      }
-    } catch (err: any) {
-      if (err.response) {
-        console.error('Error during login:', err.response.data);
-        setError(err.response.data.detail || 'Login failed. Please try again.');
-      } else {
-        console.error('Error during login:', err);
-        setError('An error occurred. Please try again later.');
-      }
+  const handleLoginError = (errorData: any) => {
+    if (
+      errorData?.detail ===
+      'Your account does not have a Discord ID associated with it.'
+    ) {
+      setError(
+        `Your discord is not verified. Please type /auth ${errorData.username} in the swecc server`
+      );
+    } else {
+      setError('Invalid credentials. Please try again.');
       setIsAuthenticated(false);
     }
   };
 
   const logout = async (): Promise<void> => {
     try {
-      const res = await api.post('/auth/logout/');
+      const res = await api.post(
+        '/auth/logout/'
+      );
 
       if (res.status === 200) {
         devPrint('Logout successful');
+        getCSRF();
         setIsAuthenticated(false);
-        await getCSRF();
       } else {
-        console.error('Logout failed');
+        devPrint('Logout failed');
       }
     } catch (err) {
-      console.error('Error during logout:', err);
+      devPrint('Logout failed');
     }
   };
 
@@ -147,41 +114,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     discord_username: string
   ): Promise<number | null> => {
     try {
-      const res = await api.post('/auth/register/', {
-        username,
-        password,
-        discord_username,
-      });
+      const res = await api.post(
+        '/auth/register/',
+        { username, password, discord_username }
+      );
 
-      if (res.status !== 201) {
-        throw new Error('Registration failed.');
-      }
+      if (res.status !== 201) throw new Error('Registration failed.');
 
       const data = res.data;
-      devPrint('Registration successful:', data);
       setError('');
-      //This shouldn't be an error but too lazy right now to create redirect page
       setError(
         `Registration successful. Please type /auth ${username} in the swecc server`
       );
+      getCSRF();
       return data.id;
     } catch (err: any) {
-      if (err.response) {
-        console.error('Registration failed:', err.response.data);
-        setError(
-          err.response.data.detail || 'Registration failed. Please try again.'
-        );
-      } else {
-        console.error('Error during registration:', err);
-        setError('Registration failed. Please try again.');
-      }
+      devPrint('Registration failed:', err.response?.data);
+      setError(
+        err.response?.data?.detail || 'Registration failed. Please try again.'
+      );
       return null;
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, csrf, error, loading, login, logout, register }}
+      value={{ isAuthenticated, error, loading, login, logout, register }}
     >
       {children}
     </AuthContext.Provider>
