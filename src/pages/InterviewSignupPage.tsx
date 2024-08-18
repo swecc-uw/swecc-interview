@@ -90,6 +90,11 @@ const InterviewSignupPage: React.FC = () => {
         })
         .catch((error) => {
           devPrint('Error fetching availability:', error);
+          setAvailability(
+            Array.from({ length: 7 }, () =>
+              Array.from({ length: 48 }, () => false)
+            )
+          );
         });
 
       isCurrentUserSignedUpForInterviewPool()
