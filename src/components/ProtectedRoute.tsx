@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Center, Spinner } from '@chakra-ui/react';
 
 // Define the props for ProtectedRoute
 interface ProtectedRouteProps {
@@ -9,15 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, member } = useAuth();
-
-  if (member === undefined) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
+  const { isAuthenticated } = useAuth();
 
   return isAuthenticated ? <>{children}</> : <Navigate to="/auth" />;
 };

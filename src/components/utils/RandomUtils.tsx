@@ -1,5 +1,5 @@
 export const devPrint = (...data: any[]): void => {
-  if (import.meta.env.VITE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.log(...data);
   }
 };
