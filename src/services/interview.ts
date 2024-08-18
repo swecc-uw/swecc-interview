@@ -50,7 +50,7 @@ export async function signupCurrentUserForInterviewPool(
   return res.data;
 }
 
-export async function unsignupCurrentUserForInterviewPool(): Promise<DetailedResponse> {
+export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResponse> {
   const res = await api.delete('/interview/pool/');
 
   return res.data;

@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Box, Center, Spinner, Text, Button } from '@chakra-ui/react';
+import {
+  Container,
+  Box,
+  Center,
+  Spinner,
+  Text,
+  Button,
+} from '@chakra-ui/react';
 import InterviewSignupForm from '../components/InterviewSignupForm';
-import { getInterviewAvailabilityForCurrentUser, isCurrentUserSignedUpForInterviewPool, unsignupCurrentUserForInterviewPool } from '../services/interview';
+import {
+  getInterviewAvailabilityForCurrentUser,
+  isCurrentUserSignedUpForInterviewPool,
+  deleteCurrentUserFromInterviewPool,
+} from '../services/interview';
 import { useAuth } from '../hooks/useAuth';
 import { devPrint } from '../components/utils/RandomUtils';
 
@@ -9,15 +20,16 @@ interface DeleteExistingSignupViewProps {
   setIsUserSignedUp: (isSignedUp: boolean) => void;
 }
 
-const DeleteExistingSignupView: React.FC<DeleteExistingSignupViewProps> = ({ setIsUserSignedUp }) => {
-
+const DeleteExistingSignupView: React.FC<DeleteExistingSignupViewProps> = ({
+  setIsUserSignedUp,
+}) => {
   const actuallyDeleteSignup = () => {
-    unsignupCurrentUserForInterviewPool()
+    deleteCurrentUserFromInterviewPool()
       .then(() => setIsUserSignedUp(false))
       .catch((error) => {
         devPrint('Error deleting signup:', error);
       });
-  }
+  };
 
   return (
     <Box borderRadius="lg" boxShadow="md" p={6}>
@@ -37,32 +49,33 @@ const DeleteExistingSignupView: React.FC<DeleteExistingSignupViewProps> = ({ set
       </Center>
     </Box>
   );
-}
+};
 
 interface SignUpForNewInterviewViewProps {
   availability: boolean[][];
   handleAvailabilityChange: (newAvailability: boolean[][]) => void;
 }
 
-const SignUpForNewInterviewView: React.FC<SignUpForNewInterviewViewProps> = ({ availability, handleAvailabilityChange }) => (
+const SignUpForNewInterviewView: React.FC<SignUpForNewInterviewViewProps> = ({
+  availability,
+  handleAvailabilityChange,
+}) => (
   <Box borderRadius="lg" boxShadow="md" p={6}>
-        {availability ? (
-          <InterviewSignupForm
-            title="Select Your Availability for the following week..."
-            availability={availability}
-            onChange={handleAvailabilityChange}
-          />
-        ) : (
-          <Box>
-            <Center>
-              <Spinner />
-            </Center>
-          </Box>
-        )}
+    {availability ? (
+      <InterviewSignupForm
+        title="Select Your Availability for the following week..."
+        availability={availability}
+        onChange={handleAvailabilityChange}
+      />
+    ) : (
+      <Box>
+        <Center>
+          <Spinner />
+        </Center>
       </Box>
-)
-
-
+    )}
+  </Box>
+);
 
 const InterviewSignupPage: React.FC = () => {
   const { member } = useAuth();
