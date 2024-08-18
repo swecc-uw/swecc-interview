@@ -76,3 +76,7 @@ export interface BehavioralQuestion {
   followUps?: string;
   source?: string;
 }
+
+export interface DetailedResponse {
+  detail: string;
+}
