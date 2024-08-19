@@ -1,6 +1,11 @@
 import React from 'react';
 import { Box, Heading, Text, VStack, HStack, Badge } from '@chakra-ui/react';
-import { Interview, TechnicalQuestion, BehavioralQuestion, Member } from '../types';
+import {
+  Interview,
+  TechnicalQuestion,
+  BehavioralQuestion,
+  Member,
+} from '../types';
 
 interface InterviewViewProps {
   interview: Interview;

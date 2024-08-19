@@ -13,7 +13,6 @@ export async function getTechnicalQuestionsForInterview(
 export async function getBehavioralQuestionsForInterview(
   _interviewId: string
 ): Promise<BehavioralQuestion[]> {
-
   return [];
   return new Promise((_resolve, reject) => {
     reject('Not implemented');

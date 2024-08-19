@@ -1,4 +1,13 @@
-import { Box, Text, Badge, Flex, Avatar, useColorModeValue, Center, Spinner } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Badge,
+  Flex,
+  Avatar,
+  useColorModeValue,
+  Center,
+  Spinner,
+} from '@chakra-ui/react';
 import { Interview, Member } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -45,30 +54,36 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
       transition="all 0.2s"
       _hover={{ boxShadow: 'md' }}
     >
-      {(interviewer && interviewee) ? (
+      {interviewer && interviewee ? (
         <>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex alignItems="center">
-          <Avatar size="md" name={interviewer?.firstName} mr={3} />
-          <Box>
-            <Text fontWeight="bold" color={textColor}>{`${interviewer?.firstName} ${interviewer?.lastName}` || 'Loading...'}</Text>
-            <Badge colorScheme="blue">Interviewer</Badge>
-          </Box>
-        </Flex>
-        <Flex alignItems="center">
-          <Box textAlign="right" mr={3}>
-            <Text fontWeight="bold" color={textColor}>{`${interviewee?.firstName} ${interviewee?.lastName}` || 'Loading...'}</Text>
-            <Badge colorScheme="green">Interviewee</Badge>
-          </Box>
-          <Avatar size="md" name={interviewee?.firstName} />
-        </Flex>
-      </Flex>
-      <Flex mt={4} justifyContent="space-between">
-        <Text fontSize="sm" color={textColor}>
-          Date: {new Date(interview.dateEffective).toLocaleDateString()}
-        </Text>
-      </Flex>
-      </>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Flex alignItems="center">
+              <Avatar size="md" name={interviewer?.firstName} mr={3} />
+              <Box>
+                <Text fontWeight="bold" color={textColor}>
+                  {`${interviewer?.firstName} ${interviewer?.lastName}` ||
+                    'Loading...'}
+                </Text>
+                <Badge colorScheme="blue">Interviewer</Badge>
+              </Box>
+            </Flex>
+            <Flex alignItems="center">
+              <Box textAlign="right" mr={3}>
+                <Text fontWeight="bold" color={textColor}>
+                  {`${interviewee?.firstName} ${interviewee?.lastName}` ||
+                    'Loading...'}
+                </Text>
+                <Badge colorScheme="green">Interviewee</Badge>
+              </Box>
+              <Avatar size="md" name={interviewee?.firstName} />
+            </Flex>
+          </Flex>
+          <Flex mt={4} justifyContent="space-between">
+            <Text fontSize="sm" color={textColor}>
+              Date: {new Date(interview.dateEffective).toLocaleDateString()}
+            </Text>
+          </Flex>
+        </>
       ) : (
         <Center h={20}>
           <Spinner />

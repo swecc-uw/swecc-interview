@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Heading, VStack, Spinner, useToast } from '@chakra-ui/react';
-import { Interview, TechnicalQuestion, BehavioralQuestion, Member } from '../types';
+import {
+  Interview,
+  TechnicalQuestion,
+  BehavioralQuestion,
+  Member,
+} from '../types';
 import { InterviewView } from '../components/InterviewView';
 import {
   getTechnicalQuestionsForInterview,
@@ -34,12 +39,13 @@ export const ViewInterviewPage: React.FC = () => {
 
           if (currentInterview) {
             setInterview(currentInterview);
-            const [technical, behavioral, interviewer, interviewee] = await Promise.all([
-              getTechnicalQuestionsForInterview(interviewId),
-              getBehavioralQuestionsForInterview(interviewId),
-              getMemberById(currentInterview.interviewer),
-              getMemberById(currentInterview.interviewee)
-            ]);
+            const [technical, behavioral, interviewer, interviewee] =
+              await Promise.all([
+                getTechnicalQuestionsForInterview(interviewId),
+                getBehavioralQuestionsForInterview(interviewId),
+                getMemberById(currentInterview.interviewer),
+                getMemberById(currentInterview.interviewee),
+              ]);
 
             setTechnicalQuestions(technical);
             setBehavioralQuestions(behavioral);
