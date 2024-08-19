@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Heading, VStack, Spinner, useToast } from '@chakra-ui/react';
-import { Interview, TechnicalQuestion, BehavioralQuestion } from '../types';
+import { Interview, TechnicalQuestion, BehavioralQuestion, Member } from '../types';
 import { InterviewView } from '../components/InterviewView';
 import {
   getTechnicalQuestionsForInterview,
@@ -9,10 +9,13 @@ import {
 } from '../services/question';
 import { getInterviewById } from '../services/interview';
 import { useAuth } from '../hooks/useAuth';
+import { getMemberById } from '../services/directory';
 
 export const ViewInterviewPage: React.FC = () => {
   const { interviewId } = useParams<{ interviewId: string }>();
   const [interview, setInterview] = useState<Interview | null>(null);
+  const [interviewer, setInterviewer] = useState<Member | null>(null);
+  const [interviewee, setInterviewee] = useState<Member | null>(null);
   const [technicalQuestions, setTechnicalQuestions] = useState<
     TechnicalQuestion[]
   >([]);
@@ -31,12 +34,17 @@ export const ViewInterviewPage: React.FC = () => {
 
           if (currentInterview) {
             setInterview(currentInterview);
-            const [technical, behavioral] = await Promise.all([
+            const [technical, behavioral, interviewer, interviewee] = await Promise.all([
               getTechnicalQuestionsForInterview(interviewId),
               getBehavioralQuestionsForInterview(interviewId),
+              getMemberById(currentInterview.interviewer),
+              getMemberById(currentInterview.interviewee)
             ]);
+
             setTechnicalQuestions(technical);
             setBehavioralQuestions(behavioral);
+            setInterviewer(interviewer);
+            setInterviewee(interviewee);
           } else {
             throw new Error('Interview not found');
           }
@@ -70,8 +78,13 @@ export const ViewInterviewPage: React.FC = () => {
     );
   }
 
-  if (!interview) {
-    return <Heading>Interview not found</Heading>;
+  const allFetched = interview && interviewer && interviewee;
+  if (!allFetched) {
+    return (
+      <Box>
+        <Heading size="md">Interview not found</Heading>
+      </Box>
+    );
   }
 
   return (
@@ -80,6 +93,8 @@ export const ViewInterviewPage: React.FC = () => {
         <Heading>Interview Details</Heading>
         <InterviewView
           interview={interview}
+          interviewee={interviewee}
+          interviewer={interviewer}
           technicalQuestions={technicalQuestions}
           behavioralQuestions={behavioralQuestions}
         />

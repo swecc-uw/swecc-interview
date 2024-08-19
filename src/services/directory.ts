@@ -2,6 +2,29 @@ import { Member } from '../types';
 import api from './api';
 import { devPrint } from '../components/utils/RandomUtils';
 
+function deserializeMember(data: any): Member {
+  return {
+    id: data.user,
+    username: data.username,
+    created: data.created,
+    email: data.email,
+    role: data.role,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    preview: data.preview,
+    major: data.major,
+    gradDate: data.grad_date,
+    discordUsername: data.discord_username,
+    linkedin: data.linkedin,
+    github: data.github,
+    leetcode: data.leetcode,
+    resumeUrl: data.resume_url,
+    local: data.local,
+    bio: data.bio,
+    discordId: data.discord_id,
+  };
+}
+
 export async function searchMembers(nameQuery: string): Promise<Member[]> {
   const url = `/directory/search/?q=${nameQuery}`;
   const res: any = await api.get(url);
@@ -15,28 +38,7 @@ export async function searchMembers(nameQuery: string): Promise<Member[]> {
     throw new Error('Failed to search for members');
   }
 
-  return res.data.map((member: any) => {
-    return {
-      id: member.user,
-      username: member.username,
-      created: member.created,
-      email: member.email,
-      role: member.role,
-      firstName: member.first_name,
-      lastName: member.last_name,
-      preview: member.preview,
-      major: member.major,
-      gradDate: member.grad_date,
-      discordUsername: member.discord_username,
-      linkedin: member.linkedin,
-      github: member.github,
-      leetcode: member.leetcode,
-      resumeUrl: member.resume_url,
-      local: member.local,
-      bio: member.bio,
-      discordId: member.discord_id,
-    };
-  });
+  return res.data.map(deserializeMember);
 }
 
 export async function getMemberById(userId: number): Promise<Member> {
@@ -49,5 +51,5 @@ export async function getMemberById(userId: number): Promise<Member> {
   if (!Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get member profile');
 
-  return res.data;
+  return deserializeMember(res.data);
 }

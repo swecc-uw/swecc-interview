@@ -16,10 +16,10 @@ type Status = 'pending' | 'active' | 'inactive';
 
 export interface Interview {
   interviewId: string;
-  interviewer: Member;
+  interviewer: number;
   technicalQuestion?: TechnicalQuestion;
   behavioralQuestions: BehavioralQuestion[];
-  interviewee: Member;
+  interviewee: number;
   status: Status;
   dateEffective: string; // ISO 8601 date string
   dateCompleted?: string; // ISO 8601 date string or null

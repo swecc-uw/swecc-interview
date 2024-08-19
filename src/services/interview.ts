@@ -1,10 +1,30 @@
 import { DetailedResponse, Interview, InterviewAvailability } from '../types';
 import api from './api';
 
+function deserializeInterview(data: any): Interview {
+  return {
+    interviewId: data.interview_id,
+    dateEffective: data.date_effective,
+    dateCompleted: data.date_completed,
+    interviewer: data.interviewer,
+    interviewee: data.interviewee,
+    status: data.status,
+    technicalQuestion: data.technical_question,
+    behavioralQuestions: data.behavioral_questions,
+  };
+}
+
+function deserializeInterviewAvailability(data: any): InterviewAvailability {
+  return {
+    userId: data.user_id,
+    availability: data.availability,
+  };
+}
+
 export async function getInterviewsForUser(): Promise<Interview[]> {
   const res = await api.get('/interview/interviews');
 
-  return res.data;
+  return res.data.map(deserializeInterview);
 }
 
 export async function getInterviewById(
@@ -12,20 +32,19 @@ export async function getInterviewById(
 ): Promise<Interview> {
   const res = await api.get(`/interview/interviews/${interviewId}`);
 
-  return res.data;
+  return deserializeInterview(res.data);
 }
 
 export async function getInterviewAvailabilityForCurrentUser(): Promise<InterviewAvailability> {
   const res = await api.get('/interview/availability');
-  return res.data;
+  return deserializeInterviewAvailability(res.data);
 }
 
 export async function getInterviewAvailabilityForUser(
   userId: number
 ): Promise<InterviewAvailability> {
-  return new Promise((resolve, reject) => {
-    reject('Not implemented');
-  });
+  const res = await api.get(`/interview/availability?member_id=${userId}`);
+  return deserializeInterviewAvailability(res.data);
 }
 
 export async function updateInterviewAvailabilityForCurrentUser(
@@ -33,7 +52,7 @@ export async function updateInterviewAvailabilityForCurrentUser(
 ): Promise<InterviewAvailability> {
   const res = await api.put('/interview/availability', availability);
 
-  return res.data;
+  return deserializeInterviewAvailability(res.data);
 }
 
 export async function isCurrentUserSignedUpForInterviewPool(): Promise<boolean> {
