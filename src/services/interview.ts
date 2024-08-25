@@ -7,16 +7,21 @@ import {
 } from '../types';
 import api from './api';
 
-function deserializeInterview(data: RawInterviewData): Interview {
+function deserializeInterview({
+  interview_id: interviewId,
+  date_effective: dateEffective,
+  date_completed: dateCompleted,
+  technical_question: technicalQuestion,
+  behavioral_questions: behavioralQuestions,
+  ...rest
+}: RawInterviewData): Interview {
   return {
-    interviewId: data.interview_id,
-    dateEffective: data.date_effective,
-    dateCompleted: data.date_completed,
-    interviewer: data.interviewer,
-    interviewee: data.interviewee,
-    status: data.status,
-    technicalQuestion: data.technical_question,
-    behavioralQuestions: data.behavioral_questions,
+    interviewId,
+    dateEffective,
+    dateCompleted,
+    technicalQuestion,
+    behavioralQuestions,
+    ...rest,
   };
 }
 

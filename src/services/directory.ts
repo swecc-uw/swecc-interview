@@ -3,26 +3,25 @@ import api from './api';
 import { devPrint } from '../components/utils/RandomUtils';
 import { AxiosResponse } from 'axios';
 
-function deserializeMember(data: RawMemberData): Member {
+function deserializeMember({
+  user: id,
+  first_name: firstName,
+  last_name: lastName,
+  grad_date: gradDate,
+  discord_username: discordUsername,
+  resume_url: resumeUrl,
+  discord_id: discordId,
+  ...rest
+}: RawMemberData): Member {
   return {
-    id: data.user,
-    username: data.username,
-    created: data.created,
-    email: data.email,
-    role: data.role,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    preview: data.preview,
-    major: data.major,
-    gradDate: data.grad_date,
-    discordUsername: data.discord_username,
-    linkedin: data.linkedin,
-    github: data.github,
-    leetcode: data.leetcode,
-    resumeUrl: data.resume_url,
-    local: data.local,
-    bio: data.bio,
-    discordId: data.discord_id,
+    id,
+    firstName,
+    lastName,
+    gradDate,
+    discordUsername,
+    resumeUrl,
+    discordId,
+    ...rest,
   };
 }
 
