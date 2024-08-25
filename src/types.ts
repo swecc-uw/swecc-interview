@@ -16,10 +16,10 @@ type Status = 'pending' | 'active' | 'inactive';
 
 export interface Interview {
   interviewId: string;
-  interviewer: Member;
+  interviewer: number;
   technicalQuestion?: TechnicalQuestion;
   behavioralQuestions: BehavioralQuestion[];
-  interviewee: Member;
+  interviewee: number;
   status: Status;
   dateEffective: string; // ISO 8601 date string
   dateCompleted?: string; // ISO 8601 date string or null
@@ -33,17 +33,17 @@ export interface Member {
   role: string;
   firstName: string;
   lastName: string;
+  discordUsername: string;
+  discordId: number;
   preview?: string;
   major?: string;
   gradDate?: string; // ISO 8601 date string or null
-  discordUsername: string;
   linkedin?: SocialField;
   github?: SocialField;
   leetcode?: SocialField;
   resumeUrl?: string;
   local?: string;
   bio?: string;
-  discordId: number;
 }
 
 export interface QuestionTopic {
@@ -79,4 +79,41 @@ export interface BehavioralQuestion {
 
 export interface DetailedResponse {
   detail: string;
+}
+
+export interface RawInterviewData {
+  interview_id: string;
+  date_effective: string;
+  date_completed: string;
+  interviewer: number;
+  interviewee: number;
+  status: Status;
+  technical_question: TechnicalQuestion;
+  behavioral_questions: BehavioralQuestion[];
+}
+
+export interface RawInterviewAvailabilityData {
+  user_id: number;
+  availability: boolean[][];
+}
+
+export interface RawMemberData {
+  user: number;
+  username: string;
+  created: string;
+  email: string;
+  role: string;
+  first_name: string;
+  last_name: string;
+  discord_id: number;
+  discord_username: string;
+  major?: string;
+  preview?: string;
+  grad_date?: string;
+  linkedin?: SocialField;
+  github?: SocialField;
+  leetcode?: SocialField;
+  resume_url?: string;
+  local?: string;
+  bio?: string;
 }
