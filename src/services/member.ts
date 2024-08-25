@@ -27,7 +27,7 @@ function serializeMember(member: any): Member {
 
 export async function getCurrentUser(): Promise<Member> {
   const url = '/members/profile';
-  const res: any = await api.get(url);
+  const res = await api.get(url);
   devPrint('res:', res);
 
   if (res.status !== 200) throw new Error('Failed to get current user');
@@ -40,7 +40,7 @@ export async function getCurrentUser(): Promise<Member> {
 
 export async function getMemberProfile(userId: number): Promise<Member> {
   const url = `/members/${userId}`;
-  const res: any = await api.get(url);
+  const res = await api.get(url);
   devPrint('res:', res);
 
   if (res.status !== 200) throw new Error('Failed to get member profile');
@@ -56,7 +56,7 @@ export async function updateMemberProfile(
 ): Promise<Member> {
   const url = `/members/profile`;
 
-  const res: any = await api.put(url, profile);
+  const res = await api.put(url, profile);
   devPrint('res:', res);
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
