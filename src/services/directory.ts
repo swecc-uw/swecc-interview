@@ -1,8 +1,9 @@
-import { Member } from '../types';
+import { Member, RawMemberData } from '../types';
 import api from './api';
 import { devPrint } from '../components/utils/RandomUtils';
+import { AxiosResponse } from 'axios';
 
-function deserializeMember(data: any): Member {
+function deserializeMember(data: RawMemberData): Member {
   return {
     id: data.user,
     username: data.username,
@@ -27,7 +28,7 @@ function deserializeMember(data: any): Member {
 
 export async function searchMembers(nameQuery: string): Promise<Member[]> {
   const url = `/directory/search/?q=${nameQuery}`;
-  const res: any = await api.get(url);
+  const res: AxiosResponse = await api.get(url);
   devPrint('res:', res);
 
   if (res.status !== 200) {
@@ -43,7 +44,7 @@ export async function searchMembers(nameQuery: string): Promise<Member[]> {
 
 export async function getMemberById(userId: number): Promise<Member> {
   const url = `/directory/${userId}`;
-  const res: any = await api.get(url);
+  const res: AxiosResponse = await api.get(url);
   devPrint('res:', res);
 
   if (res.status !== 200) throw new Error('Failed to get member profile');
