@@ -95,15 +95,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
         {member.linkedin?.username && (
           <Text fontSize="md">
             <b>LinkedIn:</b>{' '}
-            <Link
-              href={
-                member.linkedin.username.startsWith('http')
-                  ? member.linkedin.username
-                  : `https://${member.linkedin.username}`
-              }
-              isExternal
-              color={linkColor}
-            >
+            <Link href={member.linkedin.username} isExternal color={linkColor}>
               {member.linkedin.username}
             </Link>
           </Text>
@@ -112,11 +104,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           <Text fontSize="md">
             <b>GitHub:</b>{' '}
             <Link
-              href={
-                member.github.username.startsWith('http')
-                  ? member.github.username
-                  : `https://${member.github.username}`
-              }
+              href={`https://github.com/${member.github.username}`}
               isExternal
               color={linkColor}
             >
@@ -128,11 +116,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           <Text fontSize="md">
             <b>LeetCode:</b>{' '}
             <Link
-              href={
-                member.leetcode.username.startsWith('http')
-                  ? member.leetcode.username
-                  : `https://${member.leetcode.username}`
-              }
+              href={`https://leetcode.com/u/${member.leetcode.username}`}
               isExternal
               color={linkColor}
             >

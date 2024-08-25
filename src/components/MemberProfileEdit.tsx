@@ -8,6 +8,7 @@ import {
   Switch,
   Button,
   HStack,
+  FormHelperText,
 } from '@chakra-ui/react';
 import { Member, SocialField } from '../types';
 
@@ -76,6 +77,13 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   const handleSave = () => {
     onSave(profile);
   };
+
+  const githubIsInvalid =
+    profile.github?.username.includes('http') ||
+    profile.github?.username.includes('/');
+  const leetcodeIsInvalid =
+    profile.leetcode?.username.includes('http') ||
+    profile.leetcode?.username.includes('/');
 
   return (
     <Box p={8} borderRadius="xl" boxShadow="lg">
@@ -147,6 +155,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <FormLabel colorScheme="brand">GitHub</FormLabel>
           <HStack justifyContent="space-between" w="100%">
             <Input
+              isInvalid={githubIsInvalid}
               colorScheme="brand"
               name="github.username"
               value={profile.github?.username || ''}
@@ -159,6 +168,11 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
               onChange={() => handleSocialFieldToggle('github')}
             />
           </HStack>
+          {githubIsInvalid && (
+            <FormHelperText>
+              Please enter a valid GitHub username
+            </FormHelperText>
+          )}
         </FormControl>
 
         <FormControl>
@@ -166,6 +180,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           <HStack justifyContent="space-between" w="100%">
             <Input
               colorScheme="brand"
+              isInvalid={leetcodeIsInvalid}
               name="leetcode.username"
               value={profile.leetcode?.username || ''}
               onChange={handleSocialFieldChange}
@@ -177,11 +192,17 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
               onChange={() => handleSocialFieldToggle('leetcode')}
             />
           </HStack>
+          {leetcodeIsInvalid && (
+            <FormHelperText>
+              Please enter a valid LeetCode username
+            </FormHelperText>
+          )}
         </FormControl>
-
-        <Button colorScheme="brand" onClick={handleSave}>
-          Save Changes
-        </Button>
+        {!(githubIsInvalid || leetcodeIsInvalid) && (
+          <Button colorScheme="brand" onClick={handleSave}>
+            Save Changes
+          </Button>
+        )}
       </VStack>
     </Box>
   );

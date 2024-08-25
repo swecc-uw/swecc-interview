@@ -14,16 +14,16 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import LeetcodeProfile from '../components/LeetcodeProfile';
-import GitHubCalendar, { ThemeInput } from 'react-github-calendar';
+import GitHubCalendar, { Activity, ThemeInput } from 'react-github-calendar';
 import { updateMemberProfile } from '../services/member';
 import { devPrint } from '../components/utils/RandomUtils';
 
-const selectLastHalfYear = (contributions: any) => {
+const selectLastHalfYear = (contributions: Activity[]) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const shownMonths = 6;
 
-  return contributions.filter((activity: any) => {
+  return contributions.filter((activity) => {
     const date = new Date(activity.date);
     const monthOfDay = date.getMonth();
 
@@ -33,14 +33,6 @@ const selectLastHalfYear = (contributions: any) => {
       monthOfDay <= currentMonth
     );
   });
-};
-
-const getUserFromUrlIfThisIsAUrl = (url: string): string => {
-  if (url.startsWith('http')) {
-    const parts = url.split('/');
-    return parts[parts.length - 1];
-  }
-  return url;
 };
 
 const Widgets: React.FC<{ member: Member }> = ({ member }) => {
@@ -54,15 +46,13 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
       <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
         {member.leetcode && (
           <Box p={4} flex="1">
-            <LeetcodeProfile
-              username={getUserFromUrlIfThisIsAUrl(member.leetcode.username)}
-            />
+            <LeetcodeProfile username={member.leetcode.username} />
           </Box>
         )}
         {member.github && (
           <Box p={4} overflowX="auto" flex="1">
             <GitHubCalendar
-              username={getUserFromUrlIfThisIsAUrl(member.github.username)}
+              username={member.github.username}
               transformData={selectLastHalfYear}
               theme={githubTheme}
               year={new Date().getFullYear()}
