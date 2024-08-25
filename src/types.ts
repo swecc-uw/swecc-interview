@@ -33,17 +33,17 @@ export interface Member {
   role: string;
   firstName: string;
   lastName: string;
+  discordUsername: string;
+  discordId: number;
   preview?: string;
   major?: string;
   gradDate?: string; // ISO 8601 date string or null
-  discordUsername: string;
   linkedin?: SocialField;
   github?: SocialField;
   leetcode?: SocialField;
   resumeUrl?: string;
   local?: string;
   bio?: string;
-  discordId: number;
 }
 
 export interface QuestionTopic {
@@ -105,15 +105,15 @@ export interface RawMemberData {
   role: string;
   first_name: string;
   last_name: string;
-  preview: string;
-  major: string;
-  grad_date: string;
-  discord_username: string;
-  linkedin: SocialField;
-  github: SocialField;
-  leetcode: SocialField;
-  resume_url: string;
-  local: string;
-  bio: string;
   discord_id: number;
+  discord_username: string;
+  major?: string;
+  preview?: string;
+  grad_date?: string;
+  linkedin?: SocialField;
+  github?: SocialField;
+  leetcode?: SocialField;
+  resume_url?: string;
+  local?: string;
+  bio?: string;
 }
