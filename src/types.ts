@@ -80,3 +80,40 @@ export interface BehavioralQuestion {
 export interface DetailedResponse {
   detail: string;
 }
+
+export interface RawInterviewData {
+  interview_id: string;
+  date_effective: string;
+  date_completed: string;
+  interviewer: number;
+  interviewee: number;
+  status: Status;
+  technical_question: TechnicalQuestion;
+  behavioral_questions: BehavioralQuestion[];
+}
+
+export interface RawInterviewAvailabilityData {
+  user_id: number;
+  availability: boolean[][];
+}
+
+export interface RawMemberData {
+  user: number;
+  username: string;
+  created: string;
+  email: string;
+  role: string;
+  first_name: string;
+  last_name: string;
+  preview: string;
+  major: string;
+  grad_date: string;
+  discord_username: string;
+  linkedin: SocialField;
+  github: SocialField;
+  leetcode: SocialField;
+  resume_url: string;
+  local: string;
+  bio: string;
+  discord_id: number;
+}

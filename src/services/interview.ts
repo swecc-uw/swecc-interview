@@ -1,7 +1,13 @@
-import { DetailedResponse, Interview, InterviewAvailability } from '../types';
+import {
+  DetailedResponse,
+  Interview,
+  InterviewAvailability,
+  RawInterviewData,
+  RawInterviewAvailabilityData,
+} from '../types';
 import api from './api';
 
-function deserializeInterview(data: any): Interview {
+function deserializeInterview(data: RawInterviewData): Interview {
   return {
     interviewId: data.interview_id,
     dateEffective: data.date_effective,
@@ -14,7 +20,9 @@ function deserializeInterview(data: any): Interview {
   };
 }
 
-function deserializeInterviewAvailability(data: any): InterviewAvailability {
+function deserializeInterviewAvailability(
+  data: RawInterviewAvailabilityData
+): InterviewAvailability {
   return {
     userId: data.user_id,
     availability: data.availability,
@@ -51,13 +59,11 @@ export async function updateInterviewAvailabilityForCurrentUser(
   availability: InterviewAvailability
 ): Promise<InterviewAvailability> {
   const res = await api.put('/interview/availability', availability);
-
   return deserializeInterviewAvailability(res.data);
 }
 
 export async function isCurrentUserSignedUpForInterviewPool(): Promise<boolean> {
   const res = await api.get('/interview/pool/');
-
   return res.data.sign_up;
 }
 
@@ -65,12 +71,10 @@ export async function signupCurrentUserForInterviewPool(
   availability: InterviewAvailability
 ): Promise<DetailedResponse> {
   const res = await api.post('/interview/pool/', availability);
-
   return res.data;
 }
 
 export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResponse> {
   const res = await api.delete('/interview/pool/');
-
   return res.data;
 }

@@ -20,8 +20,8 @@ interface InterviewPreviewProps {
 export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   interview,
 }) => {
-  const [interviewer, setInterviewer] = useState<Member | null>(null);
-  const [interviewee, setInterviewee] = useState<Member | null>(null);
+  const [interviewer, setInterviewer] = useState<Member>();
+  const [interviewee, setInterviewee] = useState<Member>();
 
   const navigate = useNavigate();
   const bgColor = useColorModeValue('gray.100', 'gray.700');
@@ -58,10 +58,10 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
         <>
           <Flex justifyContent="space-between" alignItems="center">
             <Flex alignItems="center">
-              <Avatar size="md" name={interviewer?.firstName} mr={3} />
+              <Avatar size="md" name={interviewer.firstName} mr={3} />
               <Box>
                 <Text fontWeight="bold" color={textColor}>
-                  {`${interviewer?.firstName} ${interviewer?.lastName}` ||
+                  {`${interviewer.firstName} ${interviewer.lastName}` ||
                     'Loading...'}
                 </Text>
                 <Badge colorScheme="blue">Interviewer</Badge>
@@ -70,12 +70,12 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
             <Flex alignItems="center">
               <Box textAlign="right" mr={3}>
                 <Text fontWeight="bold" color={textColor}>
-                  {`${interviewee?.firstName} ${interviewee?.lastName}` ||
+                  {`${interviewee.firstName} ${interviewee.lastName}` ||
                     'Loading...'}
                 </Text>
                 <Badge colorScheme="green">Interviewee</Badge>
               </Box>
-              <Avatar size="md" name={interviewee?.firstName} />
+              <Avatar size="md" name={interviewee.firstName} />
             </Flex>
           </Flex>
           <Flex mt={4} justifyContent="space-between">

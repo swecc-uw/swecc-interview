@@ -1,6 +1,7 @@
 import { TechnicalQuestion, BehavioralQuestion } from '../types';
 // import api from './api'
 
+// TODO: Implement this endpoint
 export async function getTechnicalQuestionsForInterview(
   _interviewId: string
 ): Promise<TechnicalQuestion[]> {
@@ -10,6 +11,7 @@ export async function getTechnicalQuestionsForInterview(
   });
 }
 
+// TODO: Implement this endpoint
 export async function getBehavioralQuestionsForInterview(
   _interviewId: string
 ): Promise<BehavioralQuestion[]> {

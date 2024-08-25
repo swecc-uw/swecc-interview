@@ -18,8 +18,8 @@ import { getMemberById } from '../services/directory';
 
 export const ViewInterviewPage: React.FC = () => {
   const { interviewId } = useParams<{ interviewId: string }>();
-  const [interview, setInterview] = useState<Interview | null>(null);
-  const [interviewer, setInterviewer] = useState<Member | null>(null);
+  const [interview, setInterview] = useState<Interview>();
+  const [interviewer, setInterviewer] = useState<Member>();
   const [interviewee, setInterviewee] = useState<Member | null>(null);
   const [technicalQuestions, setTechnicalQuestions] = useState<
     TechnicalQuestion[]
