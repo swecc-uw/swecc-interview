@@ -1,15 +1,24 @@
 import React from 'react';
 import { Box, Heading, Text, VStack, HStack, Badge } from '@chakra-ui/react';
-import { Interview, TechnicalQuestion, BehavioralQuestion } from '../types';
+import {
+  Interview,
+  TechnicalQuestion,
+  BehavioralQuestion,
+  Member,
+} from '../types';
 
 interface InterviewViewProps {
   interview: Interview;
+  interviewer: Member;
+  interviewee: Member;
   technicalQuestions: TechnicalQuestion[];
   behavioralQuestions: BehavioralQuestion[];
 }
 
 export const InterviewView: React.FC<InterviewViewProps> = ({
   interview,
+  interviewer,
+  interviewee,
   technicalQuestions,
   behavioralQuestions,
 }) => {
@@ -30,8 +39,8 @@ export const InterviewView: React.FC<InterviewViewProps> = ({
             Date: {new Date(interview.dateEffective).toLocaleDateString()}
           </Text>
         </HStack>
-        <Text>Interviewer: {interview.interviewer.username}</Text>
-        <Text>Interviewee: {interview.interviewee.username}</Text>
+        <Text>Interviewer: {interviewer.username}</Text>
+        <Text>Interviewee: {interviewee.username}</Text>
 
         <Heading size="md" mt={4}>
           Technical Questions
