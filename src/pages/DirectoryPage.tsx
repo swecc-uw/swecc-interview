@@ -7,6 +7,8 @@ import {
   Heading,
   Stack,
   FormControl,
+  Spinner,
+  Center,
 } from '@chakra-ui/react';
 import { searchMembers } from '../services/directory';
 import { Member } from '../types';
@@ -16,9 +18,11 @@ import { devPrint } from '../components/utils/RandomUtils';
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    setLoading(true);
     try {
       const results = await searchMembers(query);
       setMembers(results);
@@ -26,6 +30,7 @@ const DirectoryPage: React.FC = () => {
       devPrint('Error searching for members:', error);
       setMembers([]);
     }
+    setLoading(false);
   };
 
   const qChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -47,7 +52,13 @@ const DirectoryPage: React.FC = () => {
             </Button>
           </Stack>
         </form>
-        <MemberList members={members} />
+        {loading ? (
+          <Center mt={10}>
+            <Spinner />
+          </Center>
+        ) : (
+          <MemberList members={members} />
+        )}
       </VStack>
     </Container>
   );

@@ -1,29 +1,8 @@
-import { Member, RawMemberData } from '../types';
+import { Member } from '../types';
 import api from './api';
 import { devPrint } from '../components/utils/RandomUtils';
 import { AxiosResponse } from 'axios';
-
-function deserializeMember({
-  user: id,
-  first_name: firstName,
-  last_name: lastName,
-  grad_date: gradDate,
-  discord_username: discordUsername,
-  resume_url: resumeUrl,
-  discord_id: discordId,
-  ...rest
-}: RawMemberData): Member {
-  return {
-    id,
-    firstName,
-    lastName,
-    gradDate,
-    discordUsername,
-    resumeUrl,
-    discordId,
-    ...rest,
-  };
-}
+import { deserializeMember } from './member';
 
 export async function searchMembers(nameQuery: string): Promise<Member[]> {
   const url = `/directory/search/?q=${nameQuery}`;

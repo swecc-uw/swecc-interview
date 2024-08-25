@@ -14,14 +14,16 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import LeetcodeProfile from '../components/LeetcodeProfile';
-import GitHubCalendar, { ThemeInput } from 'react-github-calendar';
+import GitHubCalendar, { Activity, ThemeInput } from 'react-github-calendar';
+import { updateMemberProfile } from '../services/member';
+import { devPrint } from '../components/utils/RandomUtils';
 
-const selectLastHalfYear = (contributions: any) => {
+const selectLastHalfYear = (contributions: Activity[]) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const shownMonths = 6;
 
-  return contributions.filter((activity: any) => {
+  return contributions.filter((activity) => {
     const date = new Date(activity.date);
     const monthOfDay = date.getMonth();
 
@@ -66,11 +68,31 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
 };
 
 const MemberProfilePage: React.FC = () => {
-  const { logout, member } = useAuth();
+  const { logout, member: authMember } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [member, setMember] = useState<Member | null>(authMember || null);
 
-  const onSave = (member: Partial<Member>) => {};
+  const onSave = (member: Partial<Member>) => {
+    updateMemberProfile(member)
+      .then(() => {
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        devPrint('Error updating profile:', error);
+      })
+      .finally(() => {
+        setMember((prevMember) => {
+          if (!prevMember) {
+            return prevMember;
+          }
+          return {
+            ...prevMember,
+            ...member,
+          };
+        });
+      });
+  };
 
   useEffect(() => {
     if (!member) {

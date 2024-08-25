@@ -1,10 +1,33 @@
 import { devPrint } from '../components/utils/RandomUtils';
-import { Member } from '../types';
+import { Member, RawMemberData } from '../types';
 import api from './api';
+
+export function deserializeMember({
+  user: id,
+  first_name: firstName,
+  last_name: lastName,
+  grad_date: gradDate,
+  discord_username: discordUsername,
+  resume_url: resumeUrl,
+  discord_id: discordId,
+  ...rest
+}: RawMemberData): Member {
+  return {
+    id,
+    firstName,
+    lastName,
+    gradDate,
+    discordUsername,
+    resumeUrl,
+    discordId,
+    ...rest,
+  };
+}
 
 export async function getCurrentUser(): Promise<Member> {
   const url = '/members/profile';
   const res = await api.get(url);
+
   devPrint('res:', res);
 
   if (res.status !== 200) throw new Error('Failed to get current user');
@@ -12,15 +35,13 @@ export async function getCurrentUser(): Promise<Member> {
   if (!Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get current user');
 
-  return {
-    ...res.data,
-    id: res.data.user,
-  };
+  return deserializeMember(res.data);
 }
 
 export async function getMemberProfile(userId: number): Promise<Member> {
   const url = `/members/${userId}`;
   const res = await api.get(url);
+
   devPrint('res:', res);
 
   if (res.status !== 200) throw new Error('Failed to get member profile');
@@ -28,29 +49,19 @@ export async function getMemberProfile(userId: number): Promise<Member> {
   if (!Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get member profile');
 
-  return res.data;
+  return deserializeMember(res.data);
 }
 
 export async function updateMemberProfile(
-  userId: number,
   profile: Partial<Member>
 ): Promise<Member> {
-  try {
-    const url = `/members/${userId}`;
-    const res = await api.put(url, profile);
-    devPrint('res:', res);
+  const url = `/members/profile`;
 
-    if (res.status !== 200) {
-      throw new Error('Failed to update member profile');
-    }
+  const res = await api.put(url, profile);
+  devPrint('res:', res);
 
-    if (!Object.prototype.hasOwnProperty.call(res, 'data')) {
-      throw new Error('Failed to update member profile');
-    }
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to update member profile');
 
-    return res.data;
-  } catch (error) {
-    devPrint('Failed to update member profile:', error);
-    return {} as Member;
-  }
+  return deserializeMember(res.data);
 }
