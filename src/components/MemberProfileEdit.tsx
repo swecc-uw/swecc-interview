@@ -21,6 +21,13 @@ const isSocialField = (field: keyof Member): boolean => {
   return field === 'linkedin' || field === 'github' || field === 'leetcode';
 };
 
+const shapeSocialField = (field: SocialField): SocialField => {
+  return {
+    username: field.username,
+    isPrivate: field.isPrivate || false,
+  };
+};
+
 const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   member,
   onSave,
@@ -29,9 +36,9 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     bio: member.bio,
     major: member.major,
     gradDate: member.gradDate,
-    linkedin: member.linkedin,
-    github: member.github,
-    leetcode: member.leetcode,
+    linkedin: member.linkedin ? shapeSocialField(member.linkedin) : undefined,
+    github: member.github ? shapeSocialField(member.github) : undefined,
+    leetcode: member.leetcode ? shapeSocialField(member.leetcode) : undefined,
     local: member.local,
   });
 

@@ -55,8 +55,9 @@ export async function getMemberProfile(userId: number): Promise<Member> {
 export async function updateMemberProfile(
   profile: Partial<Member>
 ): Promise<Member> {
-  const url = `/members/profile`;
+  const url = `/members/profile/`;
 
+  devPrint('profile:', profile);
   const res = await api.put(url, profile);
   devPrint('res:', res);
 
