@@ -24,7 +24,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
       p={8}
       borderRadius="xl"
       boxShadow="lg"
-      bg={useColorModeValue('white', 'gray.800')}
+      bg={useColorModeValue('gray.800', 'gray.800')}
     >
       <Stack
         direction={{ base: 'column', md: 'row' }}
