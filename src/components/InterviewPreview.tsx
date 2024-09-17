@@ -4,9 +4,9 @@ import {
   Badge,
   Flex,
   Avatar,
-  useColorModeValue,
   Center,
   Spinner,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Interview, Member } from '../types';
 import { useNavigate } from 'react-router-dom';
@@ -24,9 +24,8 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   const [interviewee, setInterviewee] = useState<Member>();
 
   const navigate = useNavigate();
-  const bgColor = useColorModeValue('gray.100', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const textColor = useColorModeValue('gray.800', 'gray.200');
+  const borderColor = 'gray.600';
+  const textColor = useColorModeValue('gray.800', 'white');
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -47,7 +46,6 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
       borderRadius="lg"
       p={4}
       mb={4}
-      bg={bgColor}
       borderColor={borderColor}
       cursor="pointer"
       onClick={() => navigate(`/interviews/${interview.interviewId}`)}

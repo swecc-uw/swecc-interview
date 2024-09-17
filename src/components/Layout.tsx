@@ -10,7 +10,6 @@ import {
   Spinner,
   Center,
   Link as ChakraLink,
-  useColorModeValue,
   IconButton,
   useDisclosure,
   Drawer,
@@ -153,8 +152,8 @@ const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
 };
 
 const Footer: React.FC = () => {
-  const bg = useColorModeValue('gray.50', 'gray.900');
-  const color = useColorModeValue('gray.700', 'gray.200');
+  const bg = 'gray.900';
+  const color = 'gray.200';
 
   return (
     <Box as="footer" bg={bg} color={color} mt="auto">

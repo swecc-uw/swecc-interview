@@ -7,7 +7,6 @@ import {
   Heading,
   Spinner,
   Center,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { devPrint } from './utils/RandomUtils';
 
@@ -59,10 +58,10 @@ const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
     }
   }, [username, profileCache]);
 
-  const easyColor = useColorModeValue('green.500', 'green.300');
-  const mediumColor = useColorModeValue('orange.500', 'orange.300');
-  const hardColor = useColorModeValue('red.500', 'red.300');
-  const totalColor = useColorModeValue('orange.500', 'orange.300');
+  const easyColor = 'green.300';
+  const mediumColor = 'orange.300';
+  const hardColor = 'red.300';
+  const totalColor = 'orange.300';
 
   return loading ? (
     <Box display="flex" justifyContent="center" alignItems="center">

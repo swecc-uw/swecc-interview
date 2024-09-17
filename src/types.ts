@@ -12,7 +12,16 @@ export interface InterviewPool {
   member: Member;
 }
 
-type Status = 'pending' | 'active' | 'inactive';
+type InterviewStatus =
+  | 'pending'
+  | 'active'
+  | 'inactive_completed'
+  | 'inactive_incomplete';
+
+// proposed_by = models.ForeignKey('members.User', on_delete=models.SET_NULL, null=True, related_name='proposed_interviews')
+// committed_time = models.DateTimeField(null=True, blank=True)
+// date_effective = models.DateTimeField()
+// date_completed = models.DateTimeField(null=True, blank=True)
 
 export interface Interview {
   interviewId: string;
@@ -20,9 +29,12 @@ export interface Interview {
   technicalQuestion?: TechnicalQuestion;
   behavioralQuestions: BehavioralQuestion[];
   interviewee: number;
-  status: Status;
+  status: InterviewStatus;
   dateEffective: string; // ISO 8601 date string
   dateCompleted?: string; // ISO 8601 date string or null
+  committedTime?: string; // ISO 8601 date string or null
+  proposedBy?: number; // user id
+  proposedTime?: string; // ISO 8601 date string or null
 }
 
 export interface Member {
@@ -87,9 +99,12 @@ export interface RawInterviewData {
   date_completed: string;
   interviewer: number;
   interviewee: number;
-  status: Status;
+  status: InterviewStatus;
   technical_question: TechnicalQuestion;
   behavioral_questions: BehavioralQuestion[];
+  proposed_time: string;
+  proposed_by: number;
+  committed_time: string;
 }
 
 export interface RawInterviewAvailabilityData {

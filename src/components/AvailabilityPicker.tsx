@@ -12,43 +12,36 @@ import {
   defaultDayLabels,
   defaultTimeLabels,
   getMinAndMaxTimeIndex,
-} from '../utils/RandomUtils';
+} from './utils/RandomUtils';
 
-interface MobileTimeRangeSelectorProps {
+interface AvailabilityPickerProps {
   availability: boolean[][];
-  onChange: (newAvailability: boolean[][]) => void;
+  onPick: (dayIndex: number, timeIndex: number) => void;
   title: string;
   dayLabels?: string[];
   timeLabels?: string[];
 }
 
-const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
+const AvailabilityPicker: React.FC<AvailabilityPickerProps> = ({
   availability,
-  onChange,
+  onPick,
   title,
   dayLabels = defaultDayLabels,
   timeLabels = defaultTimeLabels,
 }) => {
   const [minAvailableTimeIdx, maxAvailableTimeIdx] =
     getMinAndMaxTimeIndex(availability);
-
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
-  const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
   const [startTimeIdx, setStartTimeIdx] = useState<number>(minAvailableTimeIdx);
   const [endTimeIdx, setEndTimeIdx] = useState<number>(maxAvailableTimeIdx);
-
-  const toggleTimeSlot = (dayIndex: number, timeIndex: number) => {
-    const newSlots = selectedSlots.map((day, i) =>
-      i === dayIndex
-        ? day.map((slot, j) => (j === timeIndex ? !slot : slot))
-        : day
-    );
-    setSelectedSlots(newSlots);
-    onChange(newSlots);
-  };
+  const selectedSlots = availability;
 
   const handleDayClick = (index: number) => {
     setSelectedDayIndex(index === selectedDayIndex ? null : index);
+  };
+
+  const pickSlot = (dayIndex: number, timeIndex: number) => {
+    onPick(dayIndex, timeIndex);
   };
 
   const textColor = useColorModeValue('gray.800', 'white');
@@ -122,10 +115,10 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
                     </Text>
                     <Button
                       size="sm"
-                      color={
+                      colorScheme={
                         selectedSlots[dayIndex][timeIndex] ? 'brand' : 'gray'
                       }
-                      onClick={() => toggleTimeSlot(dayIndex, timeIndex)}
+                      onClick={() => pickSlot(dayIndex, timeIndex)}
                       flex={1}
                     >
                       {selectedSlots[dayIndex][timeIndex]
@@ -142,4 +135,4 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
   );
 };
 
-export default MobileTimeRangeSelector;
+export default AvailabilityPicker;

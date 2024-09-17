@@ -13,6 +13,9 @@ function deserializeInterview({
   date_completed: dateCompleted,
   technical_question: technicalQuestion,
   behavioral_questions: behavioralQuestions,
+  proposed_time: proposedTime,
+  proposed_by: proposedBy,
+  committed_time: committedTime,
   ...rest
 }: RawInterviewData): Interview {
   return {
@@ -21,6 +24,9 @@ function deserializeInterview({
     dateCompleted,
     technicalQuestion,
     behavioralQuestions,
+    proposedTime,
+    proposedBy,
+    committedTime,
     ...rest,
   };
 }
@@ -82,4 +88,55 @@ export async function signupCurrentUserForInterviewPool(
 export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResponse> {
   const res = await api.delete('/interview/pool/');
   return res.data;
+}
+
+export async function proposeInterviewTime(
+  time: Date,
+  interviewId: string
+): Promise<{
+  detail: string;
+  interview: Interview;
+}> {
+  const res = await api.post(`/interview/interviews/${interviewId}/propose/`, {
+    time: time.toISOString(),
+  });
+
+  return {
+    detail: res.data.detail,
+    interview: deserializeInterview(res.data.interview),
+  };
+}
+
+export async function commitInterviewTime(
+  time: Date,
+  interviewId: string
+): Promise<{
+  detail: string;
+  interview: Interview;
+}> {
+  const res = await api.post(`/interview/interviews/${interviewId}/commit/`, {
+    time: time.toISOString(),
+  });
+
+  return {
+    detail: res.data.detail,
+    interview: deserializeInterview(res.data.interview),
+  };
+}
+
+export async function completeInterview(
+  time: Date,
+  interviewId: string
+): Promise<{
+  detail: string;
+  interview: Interview;
+}> {
+  const res = await api.post(`/interview/interviews/${interviewId}/complete/`, {
+    time: time.toISOString(),
+  });
+
+  return {
+    detail: res.data.detail,
+    interview: deserializeInterview(res.data.interview),
+  };
 }

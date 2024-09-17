@@ -20,8 +20,7 @@ const pulseKeyframe = keyframes`
 const MotionBox = motion(Box);
 
 const JoinPage: React.FC = () => {
-  const bgColor = useColorModeValue('grey.100', 'gray.800');
-  const textColor = useColorModeValue('gray.800', 'gray.100');
+  const textColor = useColorModeValue('gray.800', 'white');
 
   return (
     <Box
@@ -29,7 +28,6 @@ const JoinPage: React.FC = () => {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      bg={bgColor}
       color={textColor}
     >
       <VStack spacing={8} align="center" maxWidth="600px" textAlign="center">

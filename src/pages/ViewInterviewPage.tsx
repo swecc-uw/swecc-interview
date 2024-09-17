@@ -7,14 +7,26 @@ import {
   BehavioralQuestion,
   Member,
 } from '../types';
-import { InterviewView } from '../components/InterviewView';
+import {
+  ActiveInterviewView,
+  InactiveCompletedInterviewView,
+  InactiveIncompleteInterviewView,
+  PendingInterviewView,
+} from '../components/InterviewView';
 import {
   getTechnicalQuestionsForInterview,
   getBehavioralQuestionsForInterview,
 } from '../services/question';
-import { getInterviewById } from '../services/interview';
+import {
+  commitInterviewTime,
+  completeInterview,
+  getInterviewAvailabilityForUser,
+  getInterviewById,
+  proposeInterviewTime,
+} from '../services/interview';
 import { useAuth } from '../hooks/useAuth';
 import { getMemberById } from '../services/directory';
+import { devPrint } from '../components/utils/RandomUtils';
 
 export const ViewInterviewPage: React.FC = () => {
   const { interviewId } = useParams<{ interviewId: string }>();
@@ -28,9 +40,11 @@ export const ViewInterviewPage: React.FC = () => {
     BehavioralQuestion[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const [partnerAvailability, setPartnerAvailability] = useState<boolean[][]>();
   const { member } = useAuth();
   const toast = useToast();
 
+  // Fetch interview data only once when `member` and `interviewId` are available
   useEffect(() => {
     const fetchInterviewData = async () => {
       try {
@@ -63,13 +77,37 @@ export const ViewInterviewPage: React.FC = () => {
           duration: 5000,
           isClosable: true,
         });
-      } finally {
-        setLoading(false);
       }
+      setLoading(false); // Set loading to false after data is fetched
     };
 
     fetchInterviewData();
   }, [member, interviewId, toast]);
+
+  // Fetch availability only when `interviewee` changes
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      if (!interviewee) return;
+      try {
+        const availability = await getInterviewAvailabilityForUser(
+          interviewee.id
+        );
+        setPartnerAvailability(availability.availability);
+      } catch (error) {
+        toast({
+          title: 'Failed to fetch availability',
+          description: 'Please try again later.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+
+    if (interviewee) {
+      fetchAvailability();
+    }
+  }, [interviewee, toast]);
 
   if (loading) {
     return (
@@ -84,7 +122,9 @@ export const ViewInterviewPage: React.FC = () => {
     );
   }
 
-  const allFetched = interview && interviewer && interviewee;
+  const allFetched =
+    interview && interviewer && interviewee && partnerAvailability && member;
+
   if (!allFetched) {
     return (
       <Box>
@@ -93,16 +133,81 @@ export const ViewInterviewPage: React.FC = () => {
     );
   }
 
+  let IVC;
+  switch (interview.status) {
+    case 'pending':
+      IVC = PendingInterviewView;
+      break;
+    case 'active':
+      IVC = ActiveInterviewView;
+      break;
+    case 'inactive_incomplete':
+      IVC = InactiveIncompleteInterviewView;
+      break;
+    case 'inactive_completed':
+      IVC = InactiveCompletedInterviewView;
+      break;
+    default:
+      throw new Error(`Invalid interview status: ${interview.status}`);
+  }
+
+  const handlePropose = async (time: Date) => {
+    if (!interview) return;
+
+    proposeInterviewTime(time, interview.interviewId)
+      .then((_res) => {
+        // TODO: optimistic update
+        // updated interview is already in the response
+        window.location.reload();
+      })
+      .catch((error) => {
+        devPrint('Failed to propose time', error);
+      });
+  };
+
+  const handleCommit = (time: Date) => {
+    if (!interview) return;
+
+    commitInterviewTime(time, interview.interviewId)
+      .then((_res) => {
+        // TODO: optimistic update
+        // updated interview is already in the response
+        window.location.reload();
+      })
+      .catch((error) => {
+        devPrint('Failed to commit time', error);
+      });
+  };
+
+  const handleComplete = (time: Date) => {
+    if (!interview) return;
+
+    completeInterview(time, interview.interviewId)
+      .then((_res) => {
+        // TODO: optimistic update
+        // updated interview is already in the response
+        window.location.reload();
+      })
+      .catch((error) => {
+        devPrint('Failed to complete interview', error);
+      });
+  };
+
   return (
     <Box maxWidth="800px" margin="auto" p={4}>
       <VStack spacing={6} align="stretch">
-        <Heading>Interview Details</Heading>
-        <InterviewView
+        <IVC
+          userId={member.id}
           interview={interview}
+          setInterview={setInterview}
           interviewee={interviewee}
           interviewer={interviewer}
           technicalQuestions={technicalQuestions}
           behavioralQuestions={behavioralQuestions}
+          partnerAvailability={partnerAvailability}
+          handlePropose={handlePropose}
+          handleCommit={handleCommit}
+          handleComplete={handleComplete}
         />
       </VStack>
     </Box>

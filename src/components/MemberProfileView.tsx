@@ -4,11 +4,11 @@ import {
   VStack,
   Avatar,
   Link,
-  useColorModeValue,
   SimpleGrid,
   Divider,
   Stack,
   Badge,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Member } from '../types';
 
@@ -17,15 +17,11 @@ interface MemberProfileViewProps {
 }
 
 const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
-  const linkColor = useColorModeValue('brand.500', 'brand.300');
+  const linkColor = 'brand.300';
+  const textColor = useColorModeValue('gray.800', 'white');
 
   return (
-    <Box
-      p={8}
-      borderRadius="xl"
-      boxShadow="lg"
-      bg={useColorModeValue('white', 'gray.800')}
-    >
+    <Box p={8} borderRadius="xl" boxShadow="lg">
       <Stack
         direction={{ base: 'column', md: 'row' }}
         spacing={8}
@@ -39,7 +35,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           <Badge colorScheme="brand" fontSize="lg">
             {member.role}
           </Badge>
-          <Text fontSize="md" color="gray.500">
+          <Text fontSize="md" color={textColor}>
             {member.email}
           </Text>
         </VStack>

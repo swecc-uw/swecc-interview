@@ -3,9 +3,21 @@ import {
   Box,
   Grid,
   GridItem,
+  HStack,
   Text,
   Tooltip,
   useColorModeValue,
+} from '@chakra-ui/react';
+import {
+  defaultDayLabels,
+  defaultTimeLabels,
+  getMinAndMaxTimeIndex,
+} from '../utils/RandomUtils';
+import {
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
 } from '@chakra-ui/react';
 
 interface TimeSlot {
@@ -23,27 +35,6 @@ interface TimeRangeSelectorProps {
   unselectedColor?: string; // Custom color for unselected slots
 }
 
-const getDefaultDayLabels = () => {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const today = new Date().getDate();
-  const nextSunday = new Date();
-  nextSunday.setDate(today + (7 - nextSunday.getDay()));
-  return days.map((day, i) => {
-    const date = new Date();
-    date.setDate(nextSunday.getDate() + i);
-    return `${day} ${date.getMonth() + 1}/${date.getDate()}`;
-  });
-};
-
-const defaultDayLabels = getDefaultDayLabels();
-const defaultTimeLabels = Array.from({ length: 48 }, (_, i) => {
-  const hour = (Math.floor(i / 2) + 7) % 24;
-  const minutes = i % 2 === 0 ? '00' : '30';
-  const adjustedHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  const amPm = hour >= 12 && hour < 24 ? 'PM' : 'AM';
-  return `${adjustedHour}:${minutes} ${amPm}`;
-});
-
 const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   availability,
   onChange,
@@ -53,12 +44,17 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   selectedColor = 'teal.400',
   unselectedColor = 'gray.100',
 }) => {
+  const [minAvailableTimeIdx, maxAvailableTimeIdx] =
+    getMinAndMaxTimeIndex(availability);
+
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<TimeSlot | null>(null);
   const [isSelecting, setIsSelecting] = useState(true);
+  const [startTimeIdx, setStartTimeIdx] = useState<number>(minAvailableTimeIdx);
+  const [endTimeIdx, setEndTimeIdx] = useState<number>(maxAvailableTimeIdx);
   const lastSlotEntered = useRef<TimeSlot | null>(null);
-  const color = useColorModeValue('gray.700', 'gray.300');
+  const textColor = useColorModeValue('gray.800', 'white');
 
   useEffect(() => {
     setSelectedSlots(availability);
@@ -126,6 +122,34 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
       <Text fontSize="2xl" mb={4} textAlign="center" fontWeight="bold">
         {title}
       </Text>
+      <HStack justify="space-between" mb={4}>
+        {/* Control the start time/end time with a two pointed slider */}
+        <RangeSlider
+          min={0}
+          max={48}
+          step={1}
+          width={600}
+          defaultValue={[startTimeIdx, endTimeIdx]}
+          onChange={(values) => {
+            setStartTimeIdx(values[0]);
+            setEndTimeIdx(values[1]);
+          }}
+        >
+          <RangeSliderTrack>
+            <RangeSliderFilledTrack />
+          </RangeSliderTrack>
+          <Tooltip label={timeLabels[startTimeIdx]} aria-label="Start time">
+            <RangeSliderThumb index={0} />
+          </Tooltip>
+          <Tooltip label={timeLabels[endTimeIdx]} aria-label="End time">
+            <RangeSliderThumb index={1} />
+          </Tooltip>
+        </RangeSlider>
+        <Text fontSize="lg" color={textColor}>
+          {timeLabels[startTimeIdx]} - {timeLabels[endTimeIdx]}
+        </Text>
+      </HStack>
+
       <Grid templateColumns={`repeat(${dayLabels.length + 1}, 1fr)`} gap={0}>
         <GridItem></GridItem>
         {dayLabels.map((day) => (
@@ -133,45 +157,48 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
             key={day}
             textAlign="center"
             fontWeight="bold"
-            color={color}
+            color={textColor}
             userSelect="none"
           >
             {day}
           </GridItem>
         ))}
-        {timeLabels.map((time, ti) => (
-          <React.Fragment key={time}>
-            <GridItem
-              textAlign="center"
-              fontWeight="bold"
-              color={color}
-              userSelect="none"
-            >
-              {time}
-            </GridItem>
-            {Array.from({ length: dayLabels.length }).map((_, di) => (
-              <Tooltip
-                key={`${di}-${ti}`}
-                label={`Day ${di + 1}, Time ${time}`}
-                aria-label={`Tooltip for day ${di + 1} and time ${time}`}
+        {timeLabels
+          .map((time, ti) => ({ time, ti }))
+          .slice(startTimeIdx, endTimeIdx)
+          .map(({ time, ti }) => (
+            <React.Fragment key={time}>
+              <GridItem
+                textAlign="center"
+                fontWeight="bold"
+                color={textColor}
+                userSelect="none"
               >
-                <GridItem
-                  bg={selectedSlots[di][ti] ? selectedColor : unselectedColor}
-                  p={2}
-                  borderRadius="md"
-                  borderWidth="1px"
-                  borderColor="gray.200"
-                  cursor="pointer"
-                  _hover={{
-                    bg: selectedSlots[di][ti] ? selectedColor : 'gray.200',
-                  }}
-                  onMouseDown={() => handleMouseDown(di, ti)}
-                  onMouseEnter={() => handleMouseEnter(di, ti)}
-                />
-              </Tooltip>
-            ))}
-          </React.Fragment>
-        ))}
+                {time}
+              </GridItem>
+              {Array.from({ length: dayLabels.length }).map((_, di) => (
+                <Tooltip
+                  key={`${di}-${ti}`}
+                  label={`Day ${di + 1}, Time ${time}`}
+                  aria-label={`Tooltip for day ${di + 1} and time ${time}`}
+                >
+                  <GridItem
+                    bg={selectedSlots[di][ti] ? selectedColor : unselectedColor}
+                    p={2}
+                    borderRadius="md"
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                    cursor="pointer"
+                    _hover={{
+                      bg: selectedSlots[di][ti] ? selectedColor : 'gray.200',
+                    }}
+                    onMouseDown={() => handleMouseDown(di, ti)}
+                    onMouseEnter={() => handleMouseEnter(di, ti)}
+                  />
+                </Tooltip>
+              ))}
+            </React.Fragment>
+          ))}
       </Grid>
     </Box>
   );
