@@ -49,7 +49,7 @@ const Widgets: React.FC<{ member: Member }> = ({ member }) => {
             <LeetcodeProfile username={member.leetcode.username} />
           </Box>
         )}
-        {member.github && (
+        {member.github && member.github.username.length > 0 && (
           <Box p={4} overflowX="auto" flex="1">
             <GitHubCalendar
               username={member.github.username}
