@@ -15,7 +15,6 @@ import MemberProfile from './components/MemberProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 
-// Import your custom theme
 import { theme } from './theme';
 
 const App: React.FC = () => {

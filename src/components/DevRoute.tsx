@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-// Define the props for ProtectedRoute
 interface DevRouteProps {
   children: React.ReactNode;
 }

@@ -44,7 +44,7 @@ export const ViewInterviewPage: React.FC = () => {
   const { member } = useAuth();
   const toast = useToast();
 
-  // Fetch interview data only once when `member` and `interviewId` are available
+  // fetch interview data only once when member and interviewId are available
   useEffect(() => {
     const fetchInterviewData = async () => {
       try {
@@ -78,13 +78,13 @@ export const ViewInterviewPage: React.FC = () => {
           isClosable: true,
         });
       }
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false); // set loading to false after data is fetched
     };
 
     fetchInterviewData();
   }, [member, interviewId, toast]);
 
-  // Fetch availability only when `interviewee` changes
+  // fetch availability only when interviewee changes
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!interviewee) return;

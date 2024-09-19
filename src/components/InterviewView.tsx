@@ -32,7 +32,6 @@ interface InterviewViewProps {
   handleComplete: (time: Date) => void;
 }
 
-// ProposeSelector Component
 const ProposeSelector: React.FC<{
   partnerAvailability: boolean[][];
   proposedTime: Date | undefined;
@@ -63,7 +62,6 @@ const ProposeSelector: React.FC<{
   </Box>
 );
 
-// CommitSelector Component
 const CommitSelector: React.FC<{
   proposedTime: Date;
   handleCommit: (time: Date) => void;
@@ -85,7 +83,6 @@ const CommitSelector: React.FC<{
   </VStack>
 );
 
-// PendingInterviewView Component
 export const PendingInterviewView: React.FC<InterviewViewProps> = ({
   userId,
   interview,
