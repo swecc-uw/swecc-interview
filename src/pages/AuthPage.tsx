@@ -19,6 +19,7 @@ import {
 
 const AuthPage: React.FC = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordUsername, setDiscordUsername] = useState('');
@@ -73,8 +74,13 @@ const AuthPage: React.FC = () => {
       return;
     }
 
+    if (!(discordUsername && username && email && password)) {
+      setError('Please fill out all fields.');
+      return;
+    }
+
     setLoading(true);
-    const userId = await register(username, password, discordUsername);
+    const userId = await register(username, email, password, discordUsername);
     if (!userId) {
       setError(authError || 'An error occurred.');
     } else {
@@ -126,11 +132,15 @@ const AuthPage: React.FC = () => {
                     <AuthForm
                       isLogin={true}
                       username={username}
+                      email={email}
                       password={password}
                       error={error || authError || ''}
                       onUsernameChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setUsername(e.target.value)}
+                      onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setEmail(e.target.value)
+                      }
                       onPasswordChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setPassword(e.target.value)}
@@ -148,6 +158,9 @@ const AuthPage: React.FC = () => {
                       onUsernameChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setUsername(e.target.value)}
+                      onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setEmail(e.target.value)
+                      }
                       onPasswordChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setPassword(e.target.value)}

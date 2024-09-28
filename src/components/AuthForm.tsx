@@ -15,11 +15,13 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 interface AuthFormProps {
   isLogin: boolean;
   username: string;
+  email?: string;
   password: string;
   confirmPassword?: string;
   discordUsername?: string;
   error: string;
   onUsernameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onConfirmPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDiscordUsernameChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -29,11 +31,13 @@ interface AuthFormProps {
 const AuthForm: React.FC<AuthFormProps> = ({
   isLogin,
   username,
+  email,
   password,
   confirmPassword,
   discordUsername,
   error,
   onUsernameChange,
+  onEmailChange,
   onPasswordChange,
   onConfirmPasswordChange,
   onDiscordUsernameChange,
@@ -55,16 +59,28 @@ const AuthForm: React.FC<AuthFormProps> = ({
           />
         </FormControl>
         {!isLogin && (
-          <FormControl isRequired>
-            <FormLabel>Discord Username</FormLabel>
-            <Input
-              colorScheme="brand"
-              type="text"
-              value={discordUsername}
-              onChange={onDiscordUsernameChange}
-              placeholder="Enter your Discord username"
-            />
-          </FormControl>
+          <>
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                colorScheme="brand"
+                type="email"
+                value={email}
+                onChange={onEmailChange}
+                placeholder="Enter your email"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Discord Username</FormLabel>
+              <Input
+                colorScheme="brand"
+                type="text"
+                value={discordUsername}
+                onChange={onDiscordUsernameChange}
+                placeholder="Enter your Discord username"
+              />
+            </FormControl>
+          </>
         )}
         <FormControl isRequired>
           <FormLabel>Password</FormLabel>

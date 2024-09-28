@@ -21,8 +21,9 @@ interface AuthContextType {
   logout: () => Promise<void>;
   register: (
     username: string,
+    email: string,
     password: string,
-    email: string
+    discord_username: string
   ) => Promise<number | null>;
   clearError: () => void;
 }
@@ -131,12 +132,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const register = async (
     username: string,
+    email: string,
     password: string,
     discord_username: string
   ): Promise<number | null> => {
     try {
       const res = await api.post('/auth/register/', {
         username,
+        email,
         password,
         discord_username,
       });
