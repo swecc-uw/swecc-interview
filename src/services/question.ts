@@ -106,7 +106,9 @@ export async function updateTechnicalQuestion(
 ): Promise<TechnicalQuestion> {
   const url = `/questions/technical/${question.questionId}`;
 
-  const res = await api.put(url, question);
+  const { followUps: follow_ups, ...rest } = question;
+
+  const res = await api.put(url, { ...rest, follow_ups });
   devPrint('res:', res);
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
