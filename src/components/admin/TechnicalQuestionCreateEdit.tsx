@@ -27,7 +27,6 @@ import {
   updateTechnicalQuestion,
 } from '../../services/question';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import { devPrint } from '../utils/RandomUtils';
 
 interface TechnicalQuestionCreateEditProps {
   questionDetails?: Partial<TechnicalQuestion>;
