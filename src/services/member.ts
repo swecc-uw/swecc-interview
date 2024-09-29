@@ -28,6 +28,7 @@ export function serializeMember(
   member: Partial<Member>
 ): Partial<RawMemberData> {
   return {
+    ...member,
     user: member.id,
     first_name: member.firstName,
     last_name: member.lastName,
@@ -35,8 +36,6 @@ export function serializeMember(
     discord_username: member.discordUsername,
     resume_url: member.resumeUrl,
     discord_id: member.discordId,
-    groups: member.groups?.map((name) => ({ name })) || [],
-    ...member,
   };
 }
 
