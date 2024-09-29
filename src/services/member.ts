@@ -21,7 +21,22 @@ export function deserializeMember({
     discordUsername,
     resumeUrl,
     discordId,
-    groups: rest.groups.map((group) => group.name),
+  };
+}
+
+export function serializeMember(
+  member: Partial<Member>
+): Partial<RawMemberData> {
+  return {
+    user: member.id,
+    first_name: member.firstName,
+    last_name: member.lastName,
+    grad_date: member.gradDate,
+    discord_username: member.discordUsername,
+    resume_url: member.resumeUrl,
+    discord_id: member.discordId,
+    groups: member.groups?.map((name) => ({ name })) || [],
+    ...member,
   };
 }
 
@@ -58,7 +73,7 @@ export async function updateMemberProfile(
 ): Promise<Member> {
   const url = `/members/profile`;
 
-  const res = await api.put(url, profile);
+  const res = await api.put(url, serializeMember(profile));
   devPrint('res:', res);
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))

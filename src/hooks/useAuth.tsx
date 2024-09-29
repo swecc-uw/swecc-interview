@@ -61,8 +61,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       getCurrentUser()
         .then((mem) => {
           setMember(mem);
-          setIsAdmin(mem.groups.includes('is_admin'));
-          setIsVerified(mem.groups.includes('is_verified'));
+          setIsAdmin(mem.groups?.includes('is_admin') || false);
+          setIsVerified(mem.groups?.includes('is_verified') || false);
         })
         .catch((err) => {
           devPrint('Failed to get current user:', err);
