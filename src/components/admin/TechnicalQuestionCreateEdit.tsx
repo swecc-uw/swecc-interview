@@ -184,11 +184,11 @@ const TechnicalQuestionCreateEdit: React.FC<
                 onChange={handleChange}
                 name="topic"
               >
-{topics.map(({ topicId, name }) => (
-  <option key={topicId} value={topicId}>
-    {name}
-  </option>
-))}
+                {topics.map(({ topicId, name }) => (
+                  <option key={topicId} value={topicId}>
+                    {name}
+                  </option>
+                ))}
               </Select>
               <Button onClick={onOpen} colorScheme="teal">
                 Create New
