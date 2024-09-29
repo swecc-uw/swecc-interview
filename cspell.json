@@ -8,7 +8,8 @@
         "csrftoken",
         "Chakara",
         "elimelt",
-        "Glassdoor"
+        "Glassdoor",
+        "Formik"
     ],
     "ignorePaths": [
         "node_modules/**",

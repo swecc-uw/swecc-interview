@@ -15,6 +15,8 @@ interface AuthContextType {
   error: string;
   loading: boolean;
   member?: Member;
+  isAdmin: boolean;
+  isVerified: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (
@@ -43,6 +45,8 @@ export const useAuth = (): AuthContextType => {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isVerified, setIsVerified] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [member, setMember] = useState<Member>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,7 +58,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     if (isAuthenticated) {
       getCurrentUser()
-        .then((mem) => setMember(mem))
+        .then((mem) => {
+          setMember(mem);
+          setIsAdmin(mem.groups.includes('is_admin'));
+          setIsVerified(mem.groups.includes('is_verified'));
+        })
         .catch((err) => {
           devPrint('Failed to get current user:', err);
           setMember(undefined);
@@ -162,6 +170,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         error,
         loading,
         member,
+        isAdmin,
+        isVerified,
         login,
         logout,
         register,

@@ -14,9 +14,10 @@ import DirectoryPage from './pages/DirectoryPage';
 import MemberProfile from './components/MemberProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
-
-// Import your custom theme
 import { theme } from './theme';
+import TechnicalQuestionsPage from './pages/admin/TechnicalQuestionsPage';
+import AdminRoute from './components/admin/AdminRoute';
+import TechnicalQuestionCreateEditPage from './pages/admin/TechnicalQuestionCreateEditPage';
 
 const App: React.FC = () => {
   return (
@@ -84,6 +85,36 @@ const App: React.FC = () => {
                   <DevRoute>
                     <ProtectedPage />
                   </DevRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions/technical/"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <TechnicalQuestionsPage />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions/technical/create"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <TechnicalQuestionCreateEditPage />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions/technical/edit/:id"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <TechnicalQuestionCreateEditPage />
+                  </AdminRoute>
                 </ProtectedRoute>
               }
             />

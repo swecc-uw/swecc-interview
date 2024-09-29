@@ -44,25 +44,13 @@ export interface Member {
   resumeUrl?: string;
   local?: string;
   bio?: string;
+  groups: string[];
 }
 
 export interface QuestionTopic {
   topicId: string;
   created: string; // ISO 8601 date string
   name: string;
-}
-
-export interface TechnicalQuestion {
-  questionId: string;
-  created: string; // ISO 8601 date string
-  createdBy: Member;
-  approvedBy?: Member;
-  lastAssigned?: string; // ISO 8601 date string or null
-  topic: QuestionTopic;
-  prompt: string;
-  solution: string;
-  followUps?: string;
-  source?: string;
 }
 
 export interface BehavioralQuestion {
@@ -116,4 +104,48 @@ export interface RawMemberData {
   resume_url?: string;
   local?: string;
   bio?: string;
+  groups: { name: string }[];
+}
+
+export interface Topic {
+  topicId: string;
+  created: string; // ISO 8601 date string
+  createdBy: Member;
+  name: string;
+}
+
+export interface RawTopic {
+  topic_id: string;
+  created: string; // ISO 8601 date string
+  created_by: Member;
+  name: string;
+}
+
+export interface TechnicalQuestion {
+  questionId: string;
+  title: string;
+  created: string; // ISO 8601 date string
+  createdBy: Member;
+  approvedBy: Member;
+  lastAssigned: string;
+  topic: string;
+  topicName: string;
+  prompt: string;
+  solution: string;
+  followUps: string;
+  source: string;
+}
+
+export interface RawTechnicalQuestion {
+  question_id: string;
+  title: string;
+  created: string;
+  created_by: Member;
+  approved_by: Member;
+  last_assigned: string;
+  topic: RawTopic;
+  prompt: string;
+  solution: string;
+  follow_ups: string;
+  source: string;
 }
