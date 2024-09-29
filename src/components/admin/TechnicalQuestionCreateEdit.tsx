@@ -63,7 +63,12 @@ const TechnicalQuestionCreateEdit: React.FC<
         setIsUpdate(true);
       })
       .catch((error) => {
-        devPrint('Error updating profile:', error);
+        toast({
+          title: `Error ${isUpdate ? 'updating' : 'creating'} question`,
+          description: error,
+          status: 'error',
+          duration: 2000,
+        });
       });
   };
 
@@ -179,13 +184,11 @@ const TechnicalQuestionCreateEdit: React.FC<
                 onChange={handleChange}
                 name="topic"
               >
-                {topics.map((topic) => {
-                  return (
-                    <option key={topic.topicId} value={topic.topicId}>
-                      {topic.name}
-                    </option>
-                  );
-                })}
+{topics.map(({ topicId, name }) => (
+  <option key={topicId} value={topicId}>
+    {name}
+  </option>
+))}
               </Select>
               <Button onClick={onOpen} colorScheme="teal">
                 Create New

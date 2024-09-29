@@ -7,8 +7,7 @@ interface MemberListProps {
   questions: TechnicalQuestion[];
 }
 
-const TechnicalQuestionList: React.FC<MemberListProps> = ({ questions }) => {
-  return (
+const TechnicalQuestionList: React.FC<MemberListProps> = ({ questions }) => (
     <VStack spacing={4} align="stretch">
       {questions.map((question) => (
         <Box
@@ -32,6 +31,5 @@ const TechnicalQuestionList: React.FC<MemberListProps> = ({ questions }) => {
       ))}
     </VStack>
   );
-};
 
 export default TechnicalQuestionList;

@@ -23,12 +23,11 @@ const TechnicalQuestionsPage: React.FC = () => {
     getTechnicalQuestions()
       .then((questions) => {
         setQuestions(questions);
-        setLoading(false);
       })
       .catch((err) => {
         devPrint('Failed to search members:', err);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (

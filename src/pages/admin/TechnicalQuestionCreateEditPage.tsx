@@ -24,12 +24,11 @@ const TechnicalQuestionCreateEditPage: React.FC = () => {
       getTechnicalQuestion(id)
         .then((question) => {
           setQuestion(question);
-          setIsLoading(false);
         })
         .catch((err) => {
           devPrint('Failed to get question:', err);
-          setIsLoading(false);
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [id]);
 
