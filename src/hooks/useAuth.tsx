@@ -23,7 +23,7 @@ interface AuthContextType {
     username: string,
     email: string,
     password: string,
-    discord_username: string
+    discordUsername: string
   ) => Promise<number | null>;
   clearError: () => void;
 }
@@ -134,14 +134,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     username: string,
     email: string,
     password: string,
-    discord_username: string
+    discordUsername: string
   ): Promise<number | null> => {
     try {
       const res = await api.post('/auth/register/', {
         username,
         email,
         password,
-        discord_username,
+        discord_username: discordUsername,
       });
 
       if (res.status !== 201) throw new Error('Registration failed.');
