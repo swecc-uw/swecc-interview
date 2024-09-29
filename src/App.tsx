@@ -123,9 +123,9 @@ const App: React.FC = () => {
               path="/pairing"
               element={
                 <ProtectedRoute>
-                  <DevRoute>
+                  <AdminRoute>
                     <PairInterviewDashboard />
-                  </DevRoute>
+                  </AdminRoute>
                 </ProtectedRoute>
               }
             />
