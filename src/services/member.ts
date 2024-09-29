@@ -13,6 +13,7 @@ export function deserializeMember({
   ...rest
 }: RawMemberData): Member {
   return {
+    ...rest,
     id,
     firstName,
     lastName,
@@ -20,7 +21,7 @@ export function deserializeMember({
     discordUsername,
     resumeUrl,
     discordId,
-    ...rest,
+    groups: rest.groups.map((group) => group.name),
   };
 }
 

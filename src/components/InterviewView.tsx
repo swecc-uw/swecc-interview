@@ -50,7 +50,7 @@ export const InterviewView: React.FC<InterviewViewProps> = ({
             <Text fontWeight="bold">
               Question {index + 1}: {q.prompt}
             </Text>
-            <Text mt={2}>Topic: {q.topic.name}</Text>
+            <Text mt={2}>Topic: {q.topicName}</Text>
           </Box>
         ))}
 
