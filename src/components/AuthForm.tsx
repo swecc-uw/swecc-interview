@@ -14,6 +14,8 @@ import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 interface AuthFormProps {
   isLogin: boolean;
+  firstName?: string;
+  lastName?: string;
   username: string;
   email?: string;
   password: string;
@@ -21,6 +23,8 @@ interface AuthFormProps {
   discordUsername?: string;
   error: string;
   onUsernameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onFirstNameChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onLastNameChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onConfirmPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -30,6 +34,8 @@ interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({
   isLogin,
+  firstName,
+  lastName,
   username,
   email,
   password,
@@ -37,6 +43,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
   discordUsername,
   error,
   onUsernameChange,
+  onFirstNameChange,
+  onLastNameChange,
   onEmailChange,
   onPasswordChange,
   onConfirmPasswordChange,
@@ -60,6 +68,26 @@ const AuthForm: React.FC<AuthFormProps> = ({
         </FormControl>
         {!isLogin && (
           <>
+            <FormControl isRequired>
+              <FormLabel>First Name</FormLabel>
+              <Input
+                colorScheme="brand"
+                type="text"
+                value={firstName}
+                onChange={onFirstNameChange}
+                placeholder="Enter your first name"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Last Name</FormLabel>
+              <Input
+                colorScheme="brand"
+                type="text"
+                value={lastName}
+                onChange={onLastNameChange}
+                placeholder="Enter your last name"
+              />
+            </FormControl>
             <FormControl isRequired>
               <FormLabel>Email</FormLabel>
               <Input

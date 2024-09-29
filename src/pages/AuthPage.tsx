@@ -18,6 +18,8 @@ import {
 } from '@chakra-ui/react';
 
 const AuthPage: React.FC = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,13 +76,30 @@ const AuthPage: React.FC = () => {
       return;
     }
 
-    if (!(discordUsername && username && email && password)) {
+    // Prettier is garbage
+    if (
+      !(
+        discordUsername &&
+        username &&
+        email &&
+        password &&
+        firstName &&
+        lastName
+      )
+    ) {
       setError('Please fill out all fields.');
       return;
     }
 
     setLoading(true);
-    const userId = await register(username, email, password, discordUsername);
+    const userId = await register(
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      discordUsername
+    );
     if (!userId) {
       setError(authError || 'An error occurred.');
     } else {
@@ -135,6 +154,12 @@ const AuthPage: React.FC = () => {
                       email={email}
                       password={password}
                       error={error || authError || ''}
+                      onFirstNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setFirstName(e.target.value)}
+                      onLastNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setLastName(e.target.value)}
                       onUsernameChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setUsername(e.target.value)}
@@ -161,6 +186,12 @@ const AuthPage: React.FC = () => {
                       onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setEmail(e.target.value)
                       }
+                      onFirstNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setFirstName(e.target.value)}
+                      onLastNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setLastName(e.target.value)}
                       onPasswordChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setPassword(e.target.value)}

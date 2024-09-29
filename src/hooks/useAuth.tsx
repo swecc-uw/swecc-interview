@@ -20,6 +20,8 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (
+    firstName: string,
+    lastName: string,
     username: string,
     email: string,
     password: string,
@@ -131,6 +133,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const register = async (
+    firstName: string,
+    lastName: string,
     username: string,
     email: string,
     password: string,
@@ -138,6 +142,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   ): Promise<number | null> => {
     try {
       const res = await api.post('/auth/register/', {
+        first_name: firstName,
+        last_name: lastName,
         username,
         email,
         password,
