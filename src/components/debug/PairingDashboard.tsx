@@ -35,7 +35,6 @@ const PairingDashboard = () => {
         });
       })
       .catch((error) => {
-        console.error(error);
         setResponse(JSON.stringify(error));
         toast({
           title: 'Error',
