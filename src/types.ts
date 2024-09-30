@@ -124,8 +124,8 @@ export interface TechnicalQuestion {
   questionId: string;
   title: string;
   created: string; // ISO 8601 date string
-  createdBy: Member;
-  approvedBy: Member;
+  createdBy: string;
+  approvedBy: string;
   lastAssigned: string;
   topic: string;
   topicName: string;
@@ -139,8 +139,8 @@ export interface RawTechnicalQuestion {
   question_id: string;
   title: string;
   created: string;
-  created_by: Member;
-  approved_by: Member;
+  created_by: string;
+  approved_by: string;
   last_assigned: string;
   topic: RawTopic;
   prompt: string;
