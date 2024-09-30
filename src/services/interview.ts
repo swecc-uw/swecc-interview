@@ -16,12 +16,12 @@ function deserializeInterview({
   ...rest
 }: RawInterviewData): Interview {
   return {
+    ...rest,
     interviewId,
     dateEffective,
     dateCompleted,
     technicalQuestion,
     behavioralQuestions,
-    ...rest,
   };
 }
 

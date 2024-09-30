@@ -44,7 +44,7 @@ export interface Member {
   resumeUrl?: string;
   local?: string;
   bio?: string;
-  groups: string[];
+  groups?: string[];
 }
 
 export interface QuestionTopic {
@@ -104,7 +104,6 @@ export interface RawMemberData {
   resume_url?: string;
   local?: string;
   bio?: string;
-  groups: { name: string }[];
 }
 
 export interface Topic {

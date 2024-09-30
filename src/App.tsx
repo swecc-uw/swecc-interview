@@ -9,7 +9,7 @@ import { ViewInterviewsPage } from './pages/ViewInterviewsPage';
 import { ViewInterviewPage } from './pages/ViewInterviewPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProtectedPage from './pages/TestPage';
-import DevRoute from './components/DevRoute';
+import DevRoute from './components/debug/DevRoute';
 import DirectoryPage from './pages/DirectoryPage';
 import MemberProfile from './components/MemberProfile';
 import AuthPage from './pages/AuthPage';
@@ -18,6 +18,7 @@ import { theme } from './theme';
 import TechnicalQuestionsPage from './pages/admin/TechnicalQuestionsPage';
 import AdminRoute from './components/admin/AdminRoute';
 import TechnicalQuestionCreateEditPage from './pages/admin/TechnicalQuestionCreateEditPage';
+import PairInterviewDashboard from './components/debug/PairingDashboard';
 
 const App: React.FC = () => {
   return (
@@ -114,6 +115,16 @@ const App: React.FC = () => {
                 <ProtectedRoute>
                   <AdminRoute>
                     <TechnicalQuestionCreateEditPage />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pairing"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <PairInterviewDashboard />
                   </AdminRoute>
                 </ProtectedRoute>
               }

@@ -20,9 +20,12 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (
+    firstName: string,
+    lastName: string,
     username: string,
+    email: string,
     password: string,
-    email: string
+    discordUsername: string
   ) => Promise<number | null>;
   clearError: () => void;
 }
@@ -60,8 +63,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       getCurrentUser()
         .then((mem) => {
           setMember(mem);
-          setIsAdmin(mem.groups.includes('is_admin'));
-          setIsVerified(mem.groups.includes('is_verified'));
+          setIsAdmin(mem.groups?.includes('is_admin') || false);
+          setIsVerified(mem.groups?.includes('is_verified') || false);
         })
         .catch((err) => {
           devPrint('Failed to get current user:', err);
@@ -130,15 +133,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const register = async (
+    firstName: string,
+    lastName: string,
     username: string,
+    email: string,
     password: string,
-    discord_username: string
+    discordUsername: string
   ): Promise<number | null> => {
     try {
       const res = await api.post('/auth/register/', {
+        first_name: firstName,
+        last_name: lastName,
         username,
+        email,
         password,
-        discord_username,
+        discord_username: discordUsername,
       });
 
       if (res.status !== 201) throw new Error('Registration failed.');
