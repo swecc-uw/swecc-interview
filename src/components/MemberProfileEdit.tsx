@@ -26,6 +26,8 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   onSave,
 }) => {
   const [profile, setProfile] = useState<Partial<Member>>({
+    firstName: member.firstName,
+    lastName: member.lastName,
     bio: member.bio,
     major: member.major,
     gradDate: member.gradDate,
@@ -88,6 +90,26 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   return (
     <Box p={8} borderRadius="xl" boxShadow="lg">
       <VStack spacing={6}>
+        <FormControl>
+          <FormLabel colorScheme="brand">First Name</FormLabel>
+          <Input
+            colorScheme="brand"
+            name="firstName"
+            value={profile.firstName || ''}
+            onChange={handleChange}
+            placeholder="Enter your first name"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel colorScheme="brand">Last Name</FormLabel>
+          <Input
+            colorScheme="brand"
+            name="lastName"
+            value={profile.lastName || ''}
+            onChange={handleChange}
+            placeholder="Enter your last name"
+          />
+        </FormControl>
         <FormControl>
           <FormLabel colorScheme="brand">Bio</FormLabel>
           <Input

@@ -18,7 +18,10 @@ import {
 } from '@chakra-ui/react';
 
 const AuthPage: React.FC = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordUsername, setDiscordUsername] = useState('');
@@ -73,8 +76,30 @@ const AuthPage: React.FC = () => {
       return;
     }
 
+    // Prettier is garbage
+    if (
+      !(
+        discordUsername &&
+        username &&
+        email &&
+        password &&
+        firstName &&
+        lastName
+      )
+    ) {
+      setError('Please fill out all fields.');
+      return;
+    }
+
     setLoading(true);
-    const userId = await register(username, password, discordUsername);
+    const userId = await register(
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      discordUsername
+    );
     if (!userId) {
       setError(authError || 'An error occurred.');
     } else {
@@ -126,11 +151,21 @@ const AuthPage: React.FC = () => {
                     <AuthForm
                       isLogin={true}
                       username={username}
+                      email={email}
                       password={password}
                       error={error || authError || ''}
+                      onFirstNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setFirstName(e.target.value)}
+                      onLastNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setLastName(e.target.value)}
                       onUsernameChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setUsername(e.target.value)}
+                      onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setEmail(e.target.value)
+                      }
                       onPasswordChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setPassword(e.target.value)}
@@ -148,6 +183,15 @@ const AuthPage: React.FC = () => {
                       onUsernameChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setUsername(e.target.value)}
+                      onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setEmail(e.target.value)
+                      }
+                      onFirstNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setFirstName(e.target.value)}
+                      onLastNameChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => setLastName(e.target.value)}
                       onPasswordChange={(
                         e: React.ChangeEvent<HTMLInputElement>
                       ) => setPassword(e.target.value)}
