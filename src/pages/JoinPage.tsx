@@ -62,9 +62,7 @@ const JoinPage: React.FC = () => {
           colorScheme="purple"
           _hover={{ transform: 'translateY(-5px)' }}
           transition="all 0.2s"
-          onClick={() =>
-            window.open('https://swecc.org/discord', '_blank')
-          }
+          onClick={() => window.open('https://swecc.org/discord', '_blank')}
           animation={`${pulseKeyframe} 2s infinite`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
