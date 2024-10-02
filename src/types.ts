@@ -103,7 +103,7 @@ export interface RawMemberData {
   leetcode?: SocialField;
   resume_url?: string;
   local?: string;
-  bio?: string
+  bio?: string;
   groups?: { name: string }[];
 }
 

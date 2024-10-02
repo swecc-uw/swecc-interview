@@ -64,7 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         .then((mem) => {
           setMember(mem);
           const groups = mem.groups?.map((value) => value.name);
-          setIsAdmin(groups?.includes("is_admin") || false);
+          setIsAdmin(groups?.includes('is_admin') || false);
           setIsVerified(groups?.includes('is_verified') || false);
         })
         .catch((err) => {
