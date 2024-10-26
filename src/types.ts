@@ -86,7 +86,7 @@ export interface RawInterviewAvailabilityData {
 }
 
 export interface RawMemberData {
-  user: number;
+  id: number;
   username: string;
   created: string;
   email: string;

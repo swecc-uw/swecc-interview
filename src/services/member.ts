@@ -3,7 +3,6 @@ import { Member, RawMemberData } from '../types';
 import api from './api';
 
 export function deserializeMember({
-  user: id,
   first_name: firstName,
   last_name: lastName,
   grad_date: gradDate,
@@ -14,7 +13,6 @@ export function deserializeMember({
 }: RawMemberData): Member {
   return {
     ...rest,
-    id,
     firstName,
     lastName,
     gradDate,
@@ -29,7 +27,6 @@ export function serializeMember(
 ): Partial<RawMemberData> {
   return {
     ...member,
-    user: member.id,
     first_name: member.firstName,
     last_name: member.lastName,
     grad_date: member.gradDate,
