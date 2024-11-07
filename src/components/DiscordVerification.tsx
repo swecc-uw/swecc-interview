@@ -47,7 +47,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
             <Text fontSize="lg" textAlign="center">
               Run{' '}
               <Text as="span" fontWeight="bold">
-                `/auth {username}`
+                `/verify {username}`
               </Text>{' '}
               in the Discord server to verify your account.
             </Text>
