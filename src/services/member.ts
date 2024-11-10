@@ -9,6 +9,7 @@ export function deserializeMember({
   discord_username: discordUsername,
   resume_url: resumeUrl,
   discord_id: discordId,
+  profile_picture_url: profilePictureUrl,
   ...rest
 }: RawMemberData): Member {
   return {
@@ -19,6 +20,7 @@ export function deserializeMember({
     discordUsername,
     resumeUrl,
     discordId,
+    profilePictureUrl,
   };
 }
 
@@ -33,6 +35,7 @@ export function serializeMember(
     discord_username: member.discordUsername,
     resume_url: member.resumeUrl,
     discord_id: member.discordId,
+    profile_picture_url: member.profilePictureUrl,
   };
 }
 

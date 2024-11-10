@@ -30,6 +30,7 @@ import {
   FaExclamationTriangle,
 } from 'react-icons/fa';
 import { Member, SocialField } from '../types';
+import ProfilePictureUpload from './ProfilePictureUpload';
 
 interface MemberProfileEditProps {
   member: Member;
