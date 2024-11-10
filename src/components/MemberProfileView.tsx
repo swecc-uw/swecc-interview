@@ -72,12 +72,8 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
   const sectionBg = useColorModeValue('gray.50', 'gray.700');
 
   const toast = useToast();
-  const { hasCopied: hasDiscordCopied, onCopy: onDiscordCopy } = useClipboard(
-    member.discordId?.toString()
-  );
-  const { hasCopied: hasEmailCopied, onCopy: onEmailCopy } = useClipboard(
-    member.email
-  );
+  const { onCopy: onDiscordCopy } = useClipboard(member.discordId?.toString());
+  const { onCopy: onEmailCopy } = useClipboard(member.email);
 
   const formatDate = (dateString: string, includeTime: boolean = false) => {
     const date = new Date(dateString);
