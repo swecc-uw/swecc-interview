@@ -2,11 +2,12 @@ import { Box, Text, VStack } from '@chakra-ui/react';
 
 interface ConfirmInterviewSignupStepProps {
   weekOf: string;
-  handleConfirm: () => void;
+  _handleConfirm: () => void;
 }
 
 const ConfirmInterviewSignupStep: React.FC<ConfirmInterviewSignupStepProps> = ({
   weekOf,
+  _handleConfirm,
 }) => {
   return (
     <VStack>

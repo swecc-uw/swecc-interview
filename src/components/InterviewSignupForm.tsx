@@ -88,7 +88,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
         return (
           <ConfirmInterviewSignupStep
             weekOf={getNextSunday().toLocaleDateString()}
-            handleConfirm={handleConfirm}
+            _handleConfirm={handleConfirm}
           />
         );
       default:
