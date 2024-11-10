@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ProtectedPage from './pages/TestPage';
 import DevRoute from './components/debug/DevRoute';
 import DirectoryPage from './pages/DirectoryPage';
-import MemberProfile from './components/MemberProfile';
+import MemberProfile from './pages/MemberProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import { theme } from './theme';
