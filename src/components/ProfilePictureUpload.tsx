@@ -131,7 +131,7 @@ export default function ProfilePictureUpload({
     setLoading(false);
     onClose();
   };
-  console.log('currentImageUrl:', currentImageUrl);
+
   return (
     <>
       <Avatar

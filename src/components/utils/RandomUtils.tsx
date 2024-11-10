@@ -6,7 +6,7 @@ export const devPrint = (...data: any[]): void => {
   }
 };
 
-export const fallbackOnMissingName = (member: Member): string => {
+export const resolveName = (member: Member): string => {
   return member.firstName?.length === 0
     ? member.username
     : `${member.firstName} ${member.lastName}`;

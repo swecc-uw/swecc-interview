@@ -5,6 +5,7 @@ import {
   RawInterviewData,
   RawInterviewAvailabilityData,
   HydratedInterview,
+  RawMemberData,
 } from '../types';
 import api from './api';
 import { deserializeMember } from './member';
@@ -42,12 +43,22 @@ export async function getInterviewsForUser(): Promise<Interview[]> {
   return res.data.map(deserializeInterview);
 }
 
+interface InterviewsResponse {
+  interviews: Array<
+    RawInterviewData & {
+      interviewer: RawMemberData;
+      interviewee: RawMemberData;
+    }
+  >;
+}
+
 export async function getInterviewsHydratedForUser(): Promise<
   Array<HydratedInterview>
 > {
-  const res = await api.get('/interview/all/details');
+  const res = await api.get<InterviewsResponse>('/interview/all/details');
   const interviews = res.data.interviews;
-  return interviews.map((interview: any) => {
+
+  return interviews.map((interview) => {
     const iv = deserializeInterview(interview);
     return {
       ...iv,

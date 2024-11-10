@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Member } from '../types';
 import { getMemberById } from '../services/directory';
-import { devPrint, fallbackOnMissingName } from './utils/RandomUtils';
+import { devPrint, resolveName } from './utils/RandomUtils';
 
 const MemberProfile: React.FC = () => {
   const { userId } = useParams();
@@ -57,7 +57,7 @@ const MemberProfile: React.FC = () => {
       <Box p={6} borderRadius="lg" boxShadow="sm">
         <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
           <Avatar
-            name={fallbackOnMissingName(member)}
+            name={resolveName(member)}
             src={member.profilePictureUrl || member.username}
             size="2xl"
           />

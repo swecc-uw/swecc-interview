@@ -33,7 +33,7 @@ import {
   FaCopy,
 } from 'react-icons/fa';
 import { Member } from '../types';
-import { fallbackOnMissingName } from './utils/RandomUtils';
+import { resolveName } from './utils/RandomUtils';
 
 interface MemberProfileViewProps {
   member: Member;

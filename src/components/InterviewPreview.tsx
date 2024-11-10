@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { HydratedInterview } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { fallbackOnMissingName } from './utils/RandomUtils';
+import { resolveName } from './utils/RandomUtils';
 
 interface InterviewPreviewProps {
   interview: HydratedInterview;
@@ -46,13 +46,13 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
             <Flex alignItems="center">
               <Avatar
                 size="md"
-                name={fallbackOnMissingName(interviewer)}
+                name={resolveName(interviewer)}
                 src={interviewer.profilePictureUrl || interviewer.username}
                 mr={3}
               />
               <Box>
                 <Text fontWeight="bold" color={textColor}>
-                  {fallbackOnMissingName(interviewer) || 'Loading...'}
+                  {resolveName(interviewer) || 'Loading...'}
                 </Text>
                 <Badge colorScheme="blue">Interviewer</Badge>
               </Box>
@@ -60,13 +60,13 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
             <Flex alignItems="center">
               <Box textAlign="right" mr={3}>
                 <Text fontWeight="bold" color={textColor}>
-                  {fallbackOnMissingName(interviewee) || 'Loading...'}
+                  {resolveName(interviewee) || 'Loading...'}
                 </Text>
                 <Badge colorScheme="green">Interviewee</Badge>
               </Box>
               <Avatar
                 size="md"
-                name={fallbackOnMissingName(interviewee)}
+                name={resolveName(interviewee)}
                 src={interviewee.profilePictureUrl || interviewee.username}
               />
             </Flex>
