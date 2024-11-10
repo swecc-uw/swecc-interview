@@ -22,7 +22,7 @@ type Stats = {
 };
 
 const LeetcodeProfile = ({ username }: LeetcodeProfileProps) => {
-  const [submissions, setSubmissions] = useState<Stats | undefined>(undefined);
+  const [submissions, setSubmissions] = useState<Stats>();
   const [loading, setLoading] = useState(true);
 
   const profileCache: Record<string, Stats> = useMemo(() => ({}), []);
