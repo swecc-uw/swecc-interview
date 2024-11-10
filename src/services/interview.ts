@@ -56,7 +56,7 @@ export async function getInterviewAvailabilityForCurrentUser(): Promise<Intervie
 export async function getInterviewAvailabilityForUser(
   userId: number
 ): Promise<InterviewAvailability> {
-  const res = await api.get(`/interview/availability?member_id=${userId}/`);
+  const res = await api.get(`/interview/availability/?member_id=${userId}`);
   return deserializeInterviewAvailability(res.data);
 }
 
