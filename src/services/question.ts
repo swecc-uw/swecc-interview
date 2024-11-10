@@ -73,6 +73,18 @@ export async function getTechnicalQuestions(): Promise<TechnicalQuestion[]> {
   return res.data.map(deserializeQuestion);
 }
 
+export async function getBehavioralQuestions(): Promise<BehavioralQuestion[]> {
+  const url = `/questions/behavioral/all`;
+
+  const res = await api.get(url);
+  devPrint('res:', res);
+
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to get questions');
+
+  return res.data;
+}
+
 export async function getTechnicalQuestion(
   id: string
 ): Promise<TechnicalQuestion> {
@@ -138,4 +150,49 @@ export async function createNewTopic(topicName: string): Promise<Topic> {
   if (res.status !== 201) throw new Error('Failed to create topic name');
 
   return deserializeTopic(res.data);
+}
+
+export async function updateTechnicalQuestionQueue(
+  questionIds: string[]
+): Promise<boolean> {
+  const url = `/questions/technical/queue/`;
+  const body = { question_queue: questionIds };
+  const res = await api.put(url, body);
+  devPrint('res:', res);
+
+  if (res.status !== 200) throw new Error('Failed to update question queue');
+
+  return true;
+}
+
+export async function getTechnicalQuestionQueue(): Promise<string[]> {
+  const url = `/questions/technical/queue/`;
+  const res = await api.get(url);
+
+  if (res.status !== 200) throw new Error('Failed to get question queue');
+
+  return res.data.question_queue;
+}
+
+export async function getBehavioralQuestionQueue(): Promise<string[]> {
+  const url = `/questions/behavioral/queue/`;
+  const res = await api.get(url);
+
+  if (res.status !== 200)
+    throw new Error('Failed to get behavioral question queue');
+
+  return res.data.question_queue;
+}
+
+export async function updateBehavioralQuestionQueue(
+  questionIds: string[]
+): Promise<boolean> {
+  const url = `/questions/behavioral/queue/`;
+  const body = { question_queue: questionIds };
+  const res = await api.put(url, body);
+
+  if (res.status !== 200)
+    throw new Error('Failed to update behavioral question queue');
+
+  return true;
 }

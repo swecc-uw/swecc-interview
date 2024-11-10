@@ -37,10 +37,11 @@ interface NavLinkProps {
 interface NavBarProps {
   member?: Member;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isAuthenticated, loading, member } = useAuth();
+  const { isAuthenticated, isAdmin, loading, member } = useAuth();
 
   if (loading) {
     return (
@@ -52,7 +53,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <Flex direction="column" minHeight="100vh">
-      <Navbar member={member} isAuthenticated={isAuthenticated} />
+      <Navbar
+        member={member}
+        isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
+      />
       <Box as="main" flexGrow={1}>
         <Container maxW="container.xl" py={8}>
           {children}
@@ -74,6 +79,7 @@ const Navbar: React.FC<NavBarProps> = ({ member, isAuthenticated }) => {
           <NavLink to="/interview-signup">Sign up for an interview</NavLink>
           <NavLink to="/interviews">View your interviews</NavLink>
           <NavLink to="/directory">Directory</NavLink>
+          <NavLink to="/admin">Admin Dashboard</NavLink>
         </>
       )}
       {!isAuthenticated && <NavLink to="/join-swecc">Join SWECC</NavLink>}
