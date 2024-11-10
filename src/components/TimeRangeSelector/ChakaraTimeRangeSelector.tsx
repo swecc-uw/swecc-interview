@@ -55,9 +55,9 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
 }) => {
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState<TimeSlot | null>(null);
+  const [dragStart, setDragStart] = useState<TimeSlot>();
   const [isSelecting, setIsSelecting] = useState(true);
-  const lastSlotEntered = useRef<TimeSlot | null>(null);
+  const lastSlotEntered = useRef<TimeSlot>();
   const color = useColorModeValue('gray.700', 'gray.300');
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
         );
       }
       setIsDragging(false);
-      setDragStart(null);
+      setDragStart(undefined);
       onChange(selectedSlots);
     };
 

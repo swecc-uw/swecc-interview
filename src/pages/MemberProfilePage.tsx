@@ -169,7 +169,7 @@ const MemberProfilePage: React.FC = () => {
   const { logout, member: authMember } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [member, setMember] = useState<Member | undefined>(authMember);
+  const [member, setMember] = useState<Member>();
   const [isSaving, setIsSaving] = useState(false);
   const borderColor = useColorModeValue('gray.200', 'gray.700');
 
@@ -189,10 +189,10 @@ const MemberProfilePage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!member) {
-      navigate('/');
+    if (authMember) {
+      setMember(authMember);
     }
-  }, [member, navigate]);
+  }, [authMember]);
 
   if (!member) {
     return null;

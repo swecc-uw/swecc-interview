@@ -35,10 +35,10 @@ const InterviewAvailabilitySelector2D: React.FC<
 > = ({ availability, onChange }) => {
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState<TimeSlot | null>(null);
+  const [dragStart, setDragStart] = useState<TimeSlot>();
   const [isSelecting, setIsSelecting] = useState(true);
-  const lastSlotEntered = useRef<TimeSlot | null>(null as any);
-  const directionChangePivot = useRef<TimeSlot | null>(null as any);
+  const lastSlotEntered = useRef<TimeSlot>();
+  const directionChangePivot = useRef<TimeSlot>();
 
   // const handleSlotChange = (day: number, time: number) => {
   //   const updatedAvailability = selectedSlots.map((slotRow, rowIndex) =>
@@ -115,7 +115,7 @@ const InterviewAvailabilitySelector2D: React.FC<
     }
 
     setIsDragging(false);
-    setDragStart(null);
+    setDragStart(undefined);
     onChange(selectedSlots);
   };
 
