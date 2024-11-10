@@ -22,6 +22,7 @@ import PairInterviewDashboard from './components/debug/PairingDashboard';
 import QuestionQueueDashboard from './pages/admin/QuestionQueueDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import APIClient from './pages/admin/APIClient';
+import { QuestionType } from './types';
 
 const App: React.FC = () => {
   return (
@@ -107,7 +108,9 @@ const App: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <AdminRoute>
-                    <QuestionQueueDashboard questionType={'technical'} />
+                    <QuestionQueueDashboard
+                      questionType={QuestionType.Technical}
+                    />
                   </AdminRoute>
                 </ProtectedRoute>
               }
@@ -117,7 +120,9 @@ const App: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <AdminRoute>
-                    <QuestionQueueDashboard questionType={'behavioral'} />
+                    <QuestionQueueDashboard
+                      questionType={QuestionType.Behavioral}
+                    />
                   </AdminRoute>
                 </ProtectedRoute>
               }

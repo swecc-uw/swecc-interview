@@ -37,13 +37,11 @@ interface APIResponse {
 
 export default function APIClient() {
   const [method, setMethod] = useState<HTTPMethod>('GET');
-  const [url, setUrl] = useState<string>('');
-  const [body, setBody] = useState<string>('');
+  const [url, setUrl] = useState<string>();
+  const [body, setBody] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<APIResponse[]>([]);
-  const [selectedResponse, setSelectedResponse] = useState<APIResponse | null>(
-    null
-  );
+  const [selectedResponse, setSelectedResponse] = useState<APIResponse>();
   const toast = useToast();
   const { onCopy } = useClipboard(
     JSON.stringify(selectedResponse?.response, null, 2) || ''
@@ -53,7 +51,8 @@ export default function APIClient() {
     setBody(event.target.value);
   };
 
-  const validateBody = (bodyString: string): boolean => {
+  const validateBody = (bodyString?: string): boolean => {
+    if (!bodyString) return true;
     if (!bodyString.trim()) return true;
     try {
       JSON.parse(bodyString);
@@ -139,7 +138,7 @@ export default function APIClient() {
 
   const clearHistory = () => {
     setHistory([]);
-    setSelectedResponse(null);
+    setSelectedResponse(undefined);
   };
 
   const formatDuration = (duration: number): string => {

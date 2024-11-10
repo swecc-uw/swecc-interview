@@ -68,20 +68,20 @@ function useQuestionQueue<T extends BaseQuestion>({
   const toast = useToast();
 
   const getQuestions = useCallback(() => {
-    return questionType === 'technical'
+    return questionType === QuestionType.Technical
       ? getTechnicalQuestions()
       : getBehavioralQuestions();
   }, [questionType]);
 
   const getQueue = useCallback(() => {
-    return questionType === 'technical'
+    return questionType === QuestionType.Technical
       ? getTechnicalQuestionQueue()
       : getBehavioralQuestionQueue();
   }, [questionType]);
 
   const updateQueue = useCallback(
     (ids: string[]) => {
-      return questionType === 'technical'
+      return questionType === QuestionType.Technical
         ? updateTechnicalQuestionQueue(ids)
         : updateBehavioralQuestionQueue(ids);
     },
@@ -365,8 +365,10 @@ function QuestionQueueDashboard({ questionType }: QuestionQueueDashboardProps) {
       <VStack spacing={6} align="stretch">
         <HStack justify="space-between">
           <Heading size="lg">
-            {questionType === 'technical' ? 'Technical' : 'Behavioral'} Question
-            Queue
+            {questionType === QuestionType.Technical
+              ? QuestionType.Technical
+              : QuestionType.Behavioral}{' '}
+            Question Queue
           </Heading>
           <HStack spacing={4}>
             <FormControl display="flex" alignItems="center">

@@ -68,7 +68,10 @@ export interface BehavioralQuestion extends BaseQuestion {
   source?: string;
 }
 
-export type QuestionType = 'technical' | 'behavioral';
+export enum QuestionType {
+  Technical = 'technical',
+  Behavioral = 'behavioral',
+}
 export interface DetailedResponse {
   detail: string;
 }

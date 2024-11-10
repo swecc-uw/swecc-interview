@@ -19,8 +19,8 @@ interface InterviewSignupFormProps {
   title: string;
   availability: boolean[][];
   onChange: (newAvailability: boolean[][]) => void;
-  dayLabels?: string[] | undefined;
-  timeLabels?: string[] | undefined;
+  dayLabels?: string[];
+  timeLabels?: string[];
 }
 
 const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
