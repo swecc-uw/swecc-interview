@@ -53,18 +53,22 @@ export interface QuestionTopic {
   name: string;
 }
 
-export interface BehavioralQuestion {
+export interface BaseQuestion {
   questionId: string;
-  created: string; // ISO 8601 date string
+  created: string;
+  prompt: string;
+}
+
+export interface BehavioralQuestion extends BaseQuestion {
   createdBy: Member;
   approvedBy?: Member;
   lastAssigned?: string; // ISO 8601 date string or null
-  prompt: string;
   solution: string;
   followUps?: string;
   source?: string;
 }
 
+export type QuestionType = 'technical' | 'behavioral';
 export interface DetailedResponse {
   detail: string;
 }
@@ -79,7 +83,6 @@ export interface RawInterviewData {
   technical_question: TechnicalQuestion;
   behavioral_questions: BehavioralQuestion[];
 }
-
 export interface RawInterviewAvailabilityData {
   user_id: number;
   availability: boolean[][];
@@ -121,20 +124,19 @@ export interface RawTopic {
   name: string;
 }
 
-export interface TechnicalQuestion {
-  questionId: string;
+export interface TechnicalQuestion extends BaseQuestion {
   title: string;
-  created: string; // ISO 8601 date string
   createdBy: string;
   approvedBy: string;
   lastAssigned: string;
   topic: string;
   topicName: string;
-  prompt: string;
   solution: string;
   followUps: string;
   source: string;
 }
+
+export type Question = TechnicalQuestion | BehavioralQuestion;
 
 export interface RawTechnicalQuestion {
   question_id: string;

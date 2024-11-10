@@ -19,6 +19,9 @@ import TechnicalQuestionsPage from './pages/admin/TechnicalQuestionsPage';
 import AdminRoute from './components/admin/AdminRoute';
 import TechnicalQuestionCreateEditPage from './pages/admin/TechnicalQuestionCreateEditPage';
 import PairInterviewDashboard from './components/debug/PairingDashboard';
+import QuestionQueueDashboard from './pages/admin/QuestionQueueDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import APIClient from './pages/admin/APIClient';
 
 const App: React.FC = () => {
   return (
@@ -80,12 +83,42 @@ const App: React.FC = () => {
             <Route path="/home" element={<HomePage />} />
             <Route path="*" element={<div>Not Found</div>} />
             <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/protected"
               element={
                 <ProtectedRoute>
                   <DevRoute>
                     <ProtectedPage />
                   </DevRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions/queue/technical"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <QuestionQueueDashboard questionType={'technical'} />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions/queue/behavioral"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <QuestionQueueDashboard questionType={'behavioral'} />
+                  </AdminRoute>
                 </ProtectedRoute>
               }
             />
@@ -125,6 +158,16 @@ const App: React.FC = () => {
                 <ProtectedRoute>
                   <AdminRoute>
                     <PairInterviewDashboard />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/api-client"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <APIClient />
                   </AdminRoute>
                 </ProtectedRoute>
               }
