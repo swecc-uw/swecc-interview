@@ -8,7 +8,7 @@ import MemberProfileView from '../components/MemberProfileView';
 
 const MemberProfile: React.FC = () => {
   const { userId } = useParams();
-  const [member, setMember] = useState<Member | null>(null);
+  const [member, setMember] = useState<Member>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

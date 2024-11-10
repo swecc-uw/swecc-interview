@@ -12,13 +12,11 @@ interface TechnicalQuestionListProps {
 const TechnicalQuestionList: React.FC<TechnicalQuestionListProps> = ({
   questions,
 }) => {
-  const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(
-    null
-  );
+  const [expandedQuestionId, setExpandedQuestionId] = useState<string>();
 
   const toggleExpand = (questionId: string) => {
     setExpandedQuestionId((prevId) =>
-      prevId === questionId ? null : questionId
+      prevId === questionId ? undefined : questionId
     );
   };
 

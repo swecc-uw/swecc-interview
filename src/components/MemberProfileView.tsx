@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  Text,
   VStack,
   HStack,
   Avatar,
@@ -33,32 +32,7 @@ import {
   FaUsers,
   FaCopy,
 } from 'react-icons/fa';
-
-interface SocialField {
-  username: string;
-}
-
-interface Member {
-  id: number;
-  username: string;
-  created: string;
-  email: string;
-  role: string;
-  firstName: string;
-  lastName: string;
-  discordUsername: string;
-  discordId: number;
-  preview?: string;
-  major?: string;
-  gradDate?: string;
-  linkedin?: SocialField;
-  github?: SocialField;
-  leetcode?: SocialField;
-  resumeUrl?: string;
-  local?: string;
-  bio?: string;
-  groups?: { name: string }[];
-}
+import { Member } from '../types';
 
 interface MemberProfileViewProps {
   member: Member;
@@ -113,7 +87,9 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
         gap={2}
       >
         <Icon as={icon} boxSize={5} />
-        <Text fontSize="sm">{username}</Text>
+        <Box as="span" fontSize="sm">
+          {username}
+        </Box>
       </Link>
     </Tooltip>
   );
@@ -130,10 +106,16 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
     <Flex align="start" gap={2}>
       <Icon as={icon} color={iconColor} mt={1} />
       <Box>
-        <Text fontWeight="semibold" fontSize="sm" color="gray.500">
+        <Box
+          as="span"
+          fontWeight="semibold"
+          fontSize="sm"
+          color="gray.500"
+          display="block"
+        >
           {label}
-        </Text>
-        <Text>{value}</Text>
+        </Box>
+        <Box mt={1}>{value}</Box>
       </Box>
     </Flex>
   );
@@ -164,12 +146,12 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           />
           <VStack align={{ base: 'center', md: 'start' }} spacing={3} flex="1">
             <Box>
-              <Text fontSize="3xl" fontWeight="bold" lineHeight="shorter">
+              <Box fontSize="3xl" fontWeight="bold" lineHeight="shorter">
                 {member.firstName} {member.lastName}
-              </Text>
-              <Text color="gray.500" fontSize="md">
+              </Box>
+              <Box color="gray.500" fontSize="md">
                 @{member.username}
-              </Text>
+              </Box>
             </Box>
             <HStack spacing={2} flexWrap="wrap">
               <Badge colorScheme="purple" fontSize="sm">
@@ -189,13 +171,13 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
 
       {/* contact */}
       <Box px={8} py={6} bg={sectionBg}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
+        <Box fontSize="lg" fontWeight="bold" mb={4}>
           Contact Information
-        </Text>
+        </Box>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           <HStack spacing={2}>
             <Icon as={FaEnvelope} color={iconColor} />
-            <Text flex="1">{member.email}</Text>
+            <Box flex="1">{member.email}</Box>
             <Button
               size="sm"
               leftIcon={<FaCopy />}
@@ -213,7 +195,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           </HStack>
           <HStack spacing={2}>
             <Icon as={FaDiscord} color={iconColor} />
-            <Text flex="1">{member.discordUsername}</Text>
+            <Box flex="1">{member.discordUsername}</Box>
             <Button
               size="sm"
               leftIcon={<FaCopy />}
@@ -236,9 +218,9 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
 
       {/* profile info */}
       <Box px={8} py={6}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
+        <Box fontSize="lg" fontWeight="bold" mb={4}>
           Profile Details
-        </Text>
+        </Box>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           <VStack align="start" spacing={4}>
             <InfoItem
@@ -292,10 +274,16 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
             )}
             {member.bio && (
               <Box>
-                <Text fontWeight="semibold" fontSize="sm" color="gray.500">
+                <Box
+                  as="span"
+                  fontWeight="semibold"
+                  fontSize="sm"
+                  color="gray.500"
+                  display="block"
+                >
                   Bio
-                </Text>
-                <Text mt={1}>{member.bio}</Text>
+                </Box>
+                <Box mt={1}>{member.bio}</Box>
               </Box>
             )}
           </VStack>
@@ -306,9 +294,9 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
 
       {/* social */}
       <Box px={8} py={6}>
-        <Text fontSize="lg" fontWeight="bold" mb={4}>
+        <Box fontSize="lg" fontWeight="bold" mb={4}>
           External Profiles & Links
-        </Text>
+        </Box>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
           {member.github?.username && (
             <SocialLink

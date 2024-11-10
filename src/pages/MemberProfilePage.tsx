@@ -169,7 +169,7 @@ const MemberProfilePage: React.FC = () => {
   const { logout, member: authMember } = useAuth();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [member, setMember] = useState<Member | null>(authMember || null);
+  const [member, setMember] = useState<Member | undefined>(authMember);
   const [isSaving, setIsSaving] = useState(false);
   const borderColor = useColorModeValue('gray.200', 'gray.700');
 
@@ -178,7 +178,9 @@ const MemberProfilePage: React.FC = () => {
     try {
       await updateMemberProfile(updatedMember);
       setIsEditing(false);
-      setMember((prev) => (prev ? { ...prev, ...updatedMember } : null));
+      setMember((prev) =>
+        prev && updatedMember ? { ...prev, ...updatedMember } : prev
+      );
     } catch (error) {
       devPrint('Error updating profile:', error);
     } finally {

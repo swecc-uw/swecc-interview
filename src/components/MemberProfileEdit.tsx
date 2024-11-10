@@ -109,13 +109,18 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
       },
     }));
   };
+  const githubRegex = new RegExp(
+    '^(https?:\\/\\/)?(www\\.)?github\\.com\\/.+$'
+  );
+  const leetcodeRegex = new RegExp(
+    '^(https?:\\/\\/)?(www\\.)?leetcode\\.com\\/.+$'
+  );
 
   const githubIsInvalid =
-    profile.github?.username?.includes('http') ||
-    profile.github?.username?.includes('/');
+    profile.github?.username && !githubRegex.test(profile.github?.username);
   const leetcodeIsInvalid =
-    profile.leetcode?.username?.includes('http') ||
-    profile.leetcode?.username?.includes('/');
+    profile.leetcode?.username &&
+    !leetcodeRegex.test(profile.leetcode?.username);
 
   return (
     <Box
