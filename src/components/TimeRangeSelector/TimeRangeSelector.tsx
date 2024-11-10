@@ -71,7 +71,7 @@ const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
         );
       }
       setIsDragging(false);
-      setDragStart(null);
+      setDragStart(undefined);
       onChange(selectedSlots);
     };
 
