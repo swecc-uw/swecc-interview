@@ -46,7 +46,7 @@ export default function ProfilePictureUpload({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // File size validation (5MB)
+    // validate file size
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
     if (file.size > MAX_FILE_SIZE) {
       toast({
@@ -58,7 +58,7 @@ export default function ProfilePictureUpload({
       return;
     }
 
-    // Validate file type
+    // validate file type
     const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!validTypes.includes(file.type)) {
       toast({
@@ -70,7 +70,7 @@ export default function ProfilePictureUpload({
       return;
     }
 
-    // Create preview
+    // preview
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       if (e.target?.result) {
@@ -100,19 +100,6 @@ export default function ProfilePictureUpload({
         throw new Error(data.error || 'Upload failed');
       }
 
-      // const response = await fetch('/api/upload-profile-picture/', {
-      //   method: 'POST',
-      //   body: formData,
-      //   credentials: 'include',
-      // });
-
-      // const data: UploadResponse = await response.json();
-
-      // if (!response.ok) {
-      //   throw new Error(data.error || 'Upload failed');
-      // }
-
-      // Call success callback with new URL
       if (onUploadSuccess) {
         onUploadSuccess(data.url);
       }
@@ -124,7 +111,7 @@ export default function ProfilePictureUpload({
         duration: 3000,
       });
 
-      // Close modal after successful upload
+      // close modal after upload
       setTimeout(handleClose, 1000);
     } catch (err) {
       toast({
