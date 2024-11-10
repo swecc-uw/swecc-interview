@@ -116,10 +116,13 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     '^(https?:\\/\\/)?(www\\.)?leetcode\\.com\\/.+$'
   );
 
-  const githubIsInvalid =
-    profile.github?.username && !githubRegex.test(profile.github?.username);
-  const leetcodeIsInvalid =
-    profile.leetcode?.username &&
+  const githubIsInvalid: boolean =
+    profile.github?.username !== undefined &&
+    profile.github?.username !== '' &&
+    !githubRegex.test(profile.github?.username);
+  const leetcodeIsInvalid: boolean =
+    profile.leetcode?.username !== undefined &&
+    profile.leetcode?.username !== '' &&
     !leetcodeRegex.test(profile.leetcode?.username);
 
   return (
