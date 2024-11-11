@@ -14,7 +14,6 @@ import {
   SimpleGrid,
   Divider,
   Stack,
-  Avatar,
   Icon,
   Tooltip,
   Badge,
@@ -30,7 +29,11 @@ import {
   FaExclamationTriangle,
 } from 'react-icons/fa';
 import { Member, SocialField } from '../types';
+import ProfilePictureUpload from './ProfilePictureUpload';
 
+const GITHUB_BASE = 'https://github.com/';
+const LINKEDIN_BASE = 'https://linkedin.com/in/';
+const LEETCODE_BASE = 'https://leetcode.com/u/';
 interface MemberProfileEditProps {
   member: Member;
   onSave: (profile: Partial<Member>) => void;
@@ -88,11 +91,13 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     const [field, key] = e.target.name.split('.');
     if (!isSocialField(field as keyof Member)) return;
 
+    const val = e.target.value?.split('/').pop();
+
     setProfile((prev) => ({
       ...prev,
       [field]: {
         ...((prev[field as keyof Member] as SocialField) || {}),
-        [key]: e.target.value,
+        [key]: val,
       },
     }));
   };
@@ -115,15 +120,22 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
   const leetcodeRegex = new RegExp(
     '^(https?:\\/\\/)?(www\\.)?leetcode\\.com\\/.+$'
   );
+  const linkedinRegex = new RegExp(
+    '^(https?:\\/\\/)?(www\\.)?linkedin\\.com\\/in.+$'
+  );
 
   const githubIsInvalid: boolean =
     profile.github?.username !== undefined &&
     profile.github?.username !== '' &&
-    !githubRegex.test(profile.github?.username);
+    !githubRegex.test(GITHUB_BASE + profile.github?.username);
   const leetcodeIsInvalid: boolean =
     profile.leetcode?.username !== undefined &&
     profile.leetcode?.username !== '' &&
-    !leetcodeRegex.test(profile.leetcode?.username);
+    !leetcodeRegex.test(LEETCODE_BASE + profile.leetcode?.username);
+  const linkedinIsInvalid: boolean =
+    profile.linkedin?.username !== undefined &&
+    profile.linkedin?.username !== '' &&
+    !linkedinRegex.test(LINKEDIN_BASE + profile.linkedin?.username);
 
   return (
     <Box
@@ -143,11 +155,11 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
           spacing={8}
           align="center"
         >
-          <Avatar
-            size="2xl"
-            name={`${profile.firstName} ${profile.lastName}`}
-            src={member.preview}
-            bg="blue.500"
+          <ProfilePictureUpload
+            currentImageUrl={member.profilePictureUrl}
+            onUploadSuccess={(url: string) =>
+              setProfile((prev) => ({ ...prev, profilePictureUrl: url }))
+            }
           />
           <VStack align={{ base: 'center', md: 'start' }} spacing={3} flex="1">
             <HStack spacing={2}>
@@ -273,7 +285,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
       <Box px={8} py={6}>
         <FormSection title="Social Links">
           <VStack spacing={6}>
-            <FormControl>
+            <FormControl isInvalid={linkedinIsInvalid}>
               <FormLabel>
                 <HStack spacing={2}>
                   <Icon as={FaLinkedin} color={iconColor} />
@@ -283,9 +295,9 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
               <HStack spacing={2}>
                 <Input
                   name="linkedin.username"
-                  value={profile.linkedin?.username || ''}
+                  value={LINKEDIN_BASE + (profile.linkedin?.username || '')}
                   onChange={handleSocialFieldChange}
-                  placeholder="Enter your LinkedIn URL"
+                  placeholder={LINKEDIN_BASE}
                 />
                 <Tooltip
                   label={
@@ -313,9 +325,9 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
               <HStack spacing={2}>
                 <Input
                   name="github.username"
-                  value={profile.github?.username || ''}
+                  value={GITHUB_BASE + (profile.github?.username || '')}
                   onChange={handleSocialFieldChange}
-                  placeholder="Enter your GitHub username"
+                  placeholder={GITHUB_BASE}
                 />
                 <Tooltip
                   label={
@@ -349,9 +361,9 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
               <HStack spacing={2}>
                 <Input
                   name="leetcode.username"
-                  value={profile.leetcode?.username || ''}
+                  value={LEETCODE_BASE + (profile.leetcode?.username || '')}
                   onChange={handleSocialFieldChange}
-                  placeholder="Enter your LeetCode username"
+                  placeholder={LEETCODE_BASE}
                 />
                 <Tooltip
                   label={

@@ -7,13 +7,14 @@ import {
   Spinner,
   Center,
 } from '@chakra-ui/react';
-import { Interview } from '../types';
+import { HydratedInterview } from '../types';
 import { InterviewPreview } from '../components/InterviewPreview';
-import { getInterviewsForUser } from '../services/interview';
+import { getInterviewsHydratedForUser } from '../services/interview';
 import { useAuth } from '../hooks/useAuth';
+import { devPrint } from '../components/utils/RandomUtils';
 
 export const ViewInterviewsPage: React.FC = () => {
-  const [interviews, setInterviews] = useState<Interview[]>([]);
+  const [interviews, setInterviews] = useState<HydratedInterview[]>([]);
   const [loading, setLoading] = useState(true);
   const { member } = useAuth();
   const toast = useToast();
@@ -22,11 +23,12 @@ export const ViewInterviewsPage: React.FC = () => {
     const fetchInterviews = async () => {
       try {
         if (member) {
-          const fetchedInterviews = await getInterviewsForUser();
+          const fetchedInterviews = await getInterviewsHydratedForUser();
           setInterviews(fetchedInterviews);
           setLoading(false);
         }
       } catch (error) {
+        devPrint(error);
         toast({
           title: 'Error fetching interviews',
           description: 'Please try again later.',

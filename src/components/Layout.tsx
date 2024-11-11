@@ -113,7 +113,9 @@ const Navbar: React.FC<NavBarProps> = ({
                 onClick={() => navigate('/profile')}
                 variant="ghost"
               >
-                {member.firstName || 'Profile'}
+                {member.firstName?.length === 0
+                  ? 'Finish setting up your profile'
+                  : member.firstName}
               </Button>
             ) : (
               <Button colorScheme="brand" onClick={() => navigate('/auth')}>

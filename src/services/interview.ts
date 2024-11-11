@@ -4,8 +4,11 @@ import {
   InterviewAvailability,
   RawInterviewData,
   RawInterviewAvailabilityData,
+  HydratedInterview,
+  RawMemberData,
 } from '../types';
 import api from './api';
+import { deserializeMember } from './member';
 
 function deserializeInterview({
   interview_id: interviewId,
@@ -38,6 +41,31 @@ export async function getInterviewsForUser(): Promise<Interview[]> {
   const res = await api.get('/interview/interviews/');
 
   return res.data.map(deserializeInterview);
+}
+
+interface InterviewsResponse {
+  interviews: Array<
+    RawInterviewData & {
+      interviewer: RawMemberData;
+      interviewee: RawMemberData;
+    }
+  >;
+}
+
+export async function getInterviewsHydratedForUser(): Promise<
+  Array<HydratedInterview>
+> {
+  const res = await api.get<InterviewsResponse>('/interview/all/details');
+  const interviews = res.data.interviews;
+
+  return interviews.map((interview) => {
+    const iv = deserializeInterview(interview);
+    return {
+      ...iv,
+      interviewer: deserializeMember(interview.interviewer),
+      interviewee: deserializeMember(interview.interviewee),
+    };
+  });
 }
 
 export async function getInterviewById(

@@ -33,7 +33,23 @@ import {
   FaCopy,
 } from 'react-icons/fa';
 import { Member } from '../types';
+import { resolveName } from './utils/RandomUtils';
 
+const stripEmptySocials = (member: Member) => {
+  if (member.leetcode?.username?.length == 0) {
+    member.leetcode = undefined;
+  }
+
+  if (member.github?.username?.length == 0) {
+    member.github = undefined;
+  }
+
+  if (member.linkedin?.username?.length == 0) {
+    member.linkedin = undefined;
+  }
+
+  return member;
+};
 interface MemberProfileViewProps {
   member: Member;
 }
@@ -48,6 +64,12 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
   const toast = useToast();
   const { onCopy: onDiscordCopy } = useClipboard(member.discordId?.toString());
   const { onCopy: onEmailCopy } = useClipboard(member.email);
+
+  if (!member) {
+    return null;
+  }
+
+  member = stripEmptySocials(member);
 
   const formatDate = (dateString: string, includeTime: boolean = false) => {
     const date = new Date(dateString);
@@ -140,7 +162,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
         >
           <Avatar
             size="2xl"
-            name={`${member.firstName} ${member.lastName}`}
+            name={resolveName(member)}
             src={member.preview}
             bg="blue.500"
           />

@@ -25,6 +25,17 @@ export interface Interview {
   dateCompleted?: string; // ISO 8601 date string or null
 }
 
+export interface HydratedInterview {
+  interviewId: string;
+  interviewer: Member;
+  technicalQuestion?: TechnicalQuestion;
+  behavioralQuestions: BehavioralQuestion[];
+  interviewee: Member;
+  status: Status;
+  dateEffective: string; // ISO 8601 date string
+  dateCompleted?: string; // ISO 8601 date string or null
+}
+
 export interface Member {
   id: number; // user id
   username: string;
@@ -45,6 +56,7 @@ export interface Member {
   local?: string;
   bio?: string;
   groups?: { name: string }[];
+  profilePictureUrl?: string;
 }
 
 export interface QuestionTopic {
@@ -111,6 +123,7 @@ export interface RawMemberData {
   local?: string;
   bio?: string;
   groups?: { name: string }[];
+  profile_picture_url?: string;
 }
 
 export interface Topic {

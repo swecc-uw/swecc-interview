@@ -8,38 +8,24 @@ import {
   Center,
   Spinner,
 } from '@chakra-ui/react';
-import { Interview, Member } from '../types';
+import { HydratedInterview } from '../types';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getMemberById } from '../services/directory';
+import { resolveName } from './utils/RandomUtils';
 
 interface InterviewPreviewProps {
-  interview: Interview;
+  interview: HydratedInterview;
 }
 
 export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
   interview,
 }) => {
-  const [interviewer, setInterviewer] = useState<Member>();
-  const [interviewee, setInterviewee] = useState<Member>();
-
   const navigate = useNavigate();
   const bgColor = useColorModeValue('gray.100', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const textColor = useColorModeValue('gray.800', 'gray.200');
 
-  useEffect(() => {
-    const fetchMembers = async () => {
-      const [fetchedInterviewer, fetchedInterviewee] = await Promise.all([
-        getMemberById(interview.interviewer, true),
-        getMemberById(interview.interviewee, true),
-      ]);
-      setInterviewer(fetchedInterviewer);
-      setInterviewee(fetchedInterviewee);
-    };
-
-    fetchMembers();
-  }, [interview.interviewer, interview.interviewee]);
+  const interviewer = interview.interviewer;
+  const interviewee = interview.interviewee;
 
   return (
     <Box
@@ -58,11 +44,15 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
         <>
           <Flex justifyContent="space-between" alignItems="center">
             <Flex alignItems="center">
-              <Avatar size="md" name={interviewer.firstName} mr={3} />
+              <Avatar
+                size="md"
+                name={resolveName(interviewer)}
+                src={interviewer.profilePictureUrl || interviewer.username}
+                mr={3}
+              />
               <Box>
                 <Text fontWeight="bold" color={textColor}>
-                  {`${interviewer.firstName} ${interviewer.lastName}` ||
-                    'Loading...'}
+                  {resolveName(interviewer) || 'Loading...'}
                 </Text>
                 <Badge colorScheme="blue">Interviewer</Badge>
               </Box>
@@ -70,12 +60,15 @@ export const InterviewPreview: React.FC<InterviewPreviewProps> = ({
             <Flex alignItems="center">
               <Box textAlign="right" mr={3}>
                 <Text fontWeight="bold" color={textColor}>
-                  {`${interviewee.firstName} ${interviewee.lastName}` ||
-                    'Loading...'}
+                  {resolveName(interviewee) || 'Loading...'}
                 </Text>
                 <Badge colorScheme="green">Interviewee</Badge>
               </Box>
-              <Avatar size="md" name={interviewee.firstName} />
+              <Avatar
+                size="md"
+                name={resolveName(interviewee)}
+                src={interviewee.profilePictureUrl || interviewee.username}
+              />
             </Flex>
           </Flex>
           <Flex mt={4} justifyContent="space-between">
