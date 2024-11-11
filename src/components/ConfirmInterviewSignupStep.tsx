@@ -7,7 +7,6 @@ interface ConfirmInterviewSignupStepProps {
 
 const ConfirmInterviewSignupStep: React.FC<ConfirmInterviewSignupStepProps> = ({
   weekOf,
-  handleConfirm,
 }) => {
   return (
     <VStack>

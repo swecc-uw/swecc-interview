@@ -30,7 +30,7 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
   dayLabels = defaultDayLabels,
   timeLabels = defaultTimeLabels,
 }) => {
-  const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number>();
   const [selectedSlots, setSelectedSlots] = useState<boolean[][]>(availability);
 
   const toggleTimeSlot = (dayIndex: number, timeIndex: number) => {
@@ -44,7 +44,7 @@ const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
   };
 
   const handleDayClick = (index: number) => {
-    setSelectedDayIndex(index === selectedDayIndex ? null : index);
+    setSelectedDayIndex(index === selectedDayIndex ? undefined : index);
   };
 
   const bgColor = useColorModeValue('white', 'gray.800');
