@@ -141,7 +141,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
         >
           <Avatar
             size="2xl"
-            name={`${member.firstName} ${member.lastName}`}
+            name={resolveName(member)}
             src={member.preview}
             bg="blue.500"
           />

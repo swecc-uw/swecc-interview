@@ -31,6 +31,7 @@ import {
 } from 'react-icons/fa';
 import { Member, SocialField } from '../types';
 import ProfilePictureUpload from './ProfilePictureUpload';
+import { resolveName } from './utils/RandomUtils';
 
 interface MemberProfileEditProps {
   member: Member;
@@ -146,7 +147,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
         >
           <Avatar
             size="2xl"
-            name={`${profile.firstName} ${profile.lastName}`}
+            name={resolveName(member)}
             src={member.preview}
             bg="blue.500"
           />
