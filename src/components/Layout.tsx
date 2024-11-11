@@ -68,7 +68,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-const Navbar: React.FC<NavBarProps> = ({ member, isAuthenticated }) => {
+const Navbar: React.FC<NavBarProps> = ({
+  member,
+  isAuthenticated,
+  isAdmin,
+}) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -79,9 +83,9 @@ const Navbar: React.FC<NavBarProps> = ({ member, isAuthenticated }) => {
           <NavLink to="/interview-signup">Sign up for an interview</NavLink>
           <NavLink to="/interviews">View your interviews</NavLink>
           <NavLink to="/directory">Directory</NavLink>
-          <NavLink to="/admin">Admin Dashboard</NavLink>
         </>
       )}
+      {isAdmin && <NavLink to="/admin">Admin Dashboard</NavLink>}
       {!isAuthenticated && <NavLink to="/join-swecc">Join SWECC</NavLink>}
     </>
   );
