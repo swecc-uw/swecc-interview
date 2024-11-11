@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import {
   Box,
   Heading,
@@ -12,8 +13,12 @@ import { InterviewPreview } from '../components/InterviewPreview';
 import { getInterviewsHydratedForUser } from '../services/interview';
 import { useAuth } from '../hooks/useAuth';
 import { devPrint } from '../components/utils/RandomUtils';
+import { ViewInterviewPage } from './ViewInterviewPage';
 
 export const ViewInterviewsPage: React.FC = () => {
+  // get id from the URL
+  const url = window.location.href;
+  const currId = url.split('/').pop();
   const [interviews, setInterviews] = useState<HydratedInterview[]>([]);
   const [loading, setLoading] = useState(true);
   const { member } = useAuth();
@@ -41,6 +46,21 @@ export const ViewInterviewsPage: React.FC = () => {
 
     fetchInterviews();
   }, [member, toast]);
+
+  if (loading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  if (currId) {
+    const selected = interviews.find(
+      (interview) => interview.interviewId === currId
+    );
+    if (selected) return <ViewInterviewPage interview={selected} />;
+  }
 
   return (
     <Box maxWidth="800px" margin="auto" p={4}>

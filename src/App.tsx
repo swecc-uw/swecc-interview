@@ -6,7 +6,6 @@ import Layout from './components/Layout';
 import MemberProfilePage from './pages/MemberProfilePage';
 import JoinPage from './pages/JoinPage';
 import { ViewInterviewsPage } from './pages/ViewInterviewsPage';
-import { ViewInterviewPage } from './pages/ViewInterviewPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProtectedPage from './pages/TestPage';
 import DevRoute from './components/debug/DevRoute';
@@ -50,7 +49,7 @@ const App: React.FC = () => {
               path="/interviews/:interviewId"
               element={
                 <ProtectedRoute>
-                  <ViewInterviewPage />
+                  <ViewInterviewsPage />
                 </ProtectedRoute>
               }
             />

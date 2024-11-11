@@ -17,8 +17,8 @@ type Status = 'pending' | 'active' | 'inactive';
 export interface Interview {
   interviewId: string;
   interviewer: number;
-  technicalQuestion?: TechnicalQuestion;
-  behavioralQuestions: BehavioralQuestion[];
+  technicalQuestions?: TechnicalQuestion[];
+  behavioralQuestions?: BehavioralQuestion[];
   interviewee: number;
   status: Status;
   dateEffective: string; // ISO 8601 date string
@@ -28,8 +28,8 @@ export interface Interview {
 export interface HydratedInterview {
   interviewId: string;
   interviewer: Member;
-  technicalQuestion?: TechnicalQuestion;
-  behavioralQuestions: BehavioralQuestion[];
+  technicalQuestions?: TechnicalQuestion[];
+  behavioralQuestions?: BehavioralQuestion[];
   interviewee: Member;
   status: Status;
   dateEffective: string; // ISO 8601 date string
@@ -95,7 +95,7 @@ export interface RawInterviewData {
   interviewer: number;
   interviewee: number;
   status: Status;
-  technical_question: TechnicalQuestion;
+  technical_questions: TechnicalQuestion[];
   behavioral_questions: BehavioralQuestion[];
 }
 export interface RawInterviewAvailabilityData {

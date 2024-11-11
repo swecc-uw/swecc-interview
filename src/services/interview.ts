@@ -14,7 +14,7 @@ function deserializeInterview({
   interview_id: interviewId,
   date_effective: dateEffective,
   date_completed: dateCompleted,
-  technical_question: technicalQuestion,
+  technical_questions: technicalQuestions,
   behavioral_questions: behavioralQuestions,
   ...rest
 }: RawInterviewData): Interview {
@@ -23,7 +23,7 @@ function deserializeInterview({
     interviewId,
     dateEffective,
     dateCompleted,
-    technicalQuestion,
+    technicalQuestions,
     behavioralQuestions,
   };
 }
@@ -64,6 +64,8 @@ export async function getInterviewsHydratedForUser(): Promise<
       ...iv,
       interviewer: deserializeMember(interview.interviewer),
       interviewee: deserializeMember(interview.interviewee),
+      technicalQuestions: iv.technicalQuestions || [],
+      behavioralQuestions: iv.behavioralQuestions || [],
     };
   });
 }

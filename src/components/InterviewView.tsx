@@ -1,27 +1,30 @@
 import React from 'react';
 import { Box, Heading, Text, VStack, HStack, Badge } from '@chakra-ui/react';
-import {
-  Interview,
-  TechnicalQuestion,
-  BehavioralQuestion,
-  Member,
-} from '../types';
+import { HydratedInterview } from '../types';
 
 interface InterviewViewProps {
-  interview: Interview;
-  interviewer: Member;
-  interviewee: Member;
-  technicalQuestions: TechnicalQuestion[];
-  behavioralQuestions: BehavioralQuestion[];
+  interview: HydratedInterview;
 }
 
+// eslint-disable-next-line prettier/prettier
 export const InterviewView: React.FC<InterviewViewProps> = ({
   interview,
-  interviewer,
-  interviewee,
-  technicalQuestions,
-  behavioralQuestions,
 }) => {
+  let { technicalQuestions, behavioralQuestions } = interview;
+  const { interviewer, interviewee } = interview;
+  const allFetched = interviewer && interviewee;
+  if (!allFetched) {
+    return null;
+  }
+
+  if (!technicalQuestions) {
+    technicalQuestions = [];
+  }
+
+  if (!behavioralQuestions) {
+    behavioralQuestions = [];
+  }
+
   return (
     <Box borderWidth="1px" borderRadius="lg" p={6}>
       <VStack align="stretch" spacing={4}>
