@@ -27,7 +27,6 @@ import {
   User,
   CheckCircle,
   Clock,
-  FileText,
 } from 'lucide-react';
 import type { TechnicalQuestion } from '../../types';
 
