@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -9,27 +9,27 @@ import {
   HStack,
   useToast,
   Code,
-} from '@chakra-ui/react';
-import { SpinnerIcon } from '@chakra-ui/icons';
-import api from '../../services/api';
+} from "@chakra-ui/react";
+import { SpinnerIcon } from "@chakra-ui/icons";
+import api from "../../services/api";
 
 const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState("");
   const toast = useToast();
 
   const handleToggle = () => {
     setLoading(true);
     setSignal(!signal);
     api
-      .post('/interview/pair/', { signal: !signal })
+      .post("/interview/pair/", { signal: !signal })
       .then((res) => {
         setResponse(res.data);
         toast({
-          title: 'Success',
-          description: 'Pair interview pool status updated',
-          status: 'success',
+          title: "Success",
+          description: "Pair interview pool status updated",
+          status: "success",
           duration: 3000,
           isClosable: true,
         });
@@ -37,9 +37,9 @@ const PairingDashboard = () => {
       .catch((error) => {
         setResponse(JSON.stringify(error));
         toast({
-          title: 'Error',
-          description: 'Failed to update pair interview pool status',
-          status: 'error',
+          title: "Error",
+          description: "Failed to update pair interview pool status",
+          status: "error",
           duration: 3000,
           isClosable: true,
         });
@@ -66,7 +66,7 @@ const PairingDashboard = () => {
               isLoading={loading}
               loadingText="Processing"
               spinnerPlacement="start"
-              colorScheme={signal ? 'red' : 'green'}
+              colorScheme={signal ? "red" : "green"}
             >
               {loading ? <SpinnerIcon mr={2} /> : null}
               Pair Interview Pool

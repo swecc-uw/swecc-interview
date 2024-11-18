@@ -1,31 +1,31 @@
-import axios from 'axios';
-import { devPrint } from '../components/utils/RandomUtils';
+import axios from "axios";
+import { devPrint } from "../components/utils/RandomUtils";
 
 const api = axios.create({
   baseURL: import.meta.env.DEV
-    ? 'http://localhost:8000/'
-    : 'https://api.swecc.org',
+    ? "http://localhost:8000/"
+    : "https://api.swecc.org",
   withCredentials: true,
 });
 
 export const getCSRF = async () => {
   try {
-    const response = await api.get('/auth/csrf/');
-    const csrfToken = response.headers['x-csrftoken'];
+    const response = await api.get("/auth/csrf/");
+    const csrfToken = response.headers["x-csrftoken"];
     if (csrfToken) {
-      api.defaults.headers.common['X-CSRFToken'] = csrfToken;
-      devPrint('CSRF token updated:', csrfToken);
+      api.defaults.headers.common["X-CSRFToken"] = csrfToken;
+      devPrint("CSRF token updated:", csrfToken);
     }
   } catch (error) {
-    devPrint('Failed to fetch CSRF token:', error);
+    devPrint("Failed to fetch CSRF token:", error);
   }
 };
 
 api.interceptors.request.use(async (config) => {
-  if (config.url === '/auth/csrf/') {
+  if (config.url === "/auth/csrf/") {
     return config;
   }
-  if (!api.defaults.headers.common['X-CSRFToken']) {
+  if (!api.defaults.headers.common["X-CSRFToken"]) {
     await getCSRF();
   }
   return config;
