@@ -53,16 +53,16 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
   };
 
-  const giveUp = () => {
-    clearIntervals();
-    setIsPolling(false);
-    setVerificationFailed(true);
-    setIsLoading(false);
-    setProgress(0);
-    attemptCount.current = 0;
-  };
-
   useEffect(() => {
+    const giveUp = () => {
+      clearIntervals();
+      setIsPolling(false);
+      setVerificationFailed(true);
+      setIsLoading(false);
+      setProgress(0);
+      attemptCount.current = 0;
+    };
+
     if (isPolling) {
       setProgress(0);
       attemptCount.current = 0;
