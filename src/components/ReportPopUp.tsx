@@ -17,7 +17,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { createReport, getAllReport } from "../services/report";
+import { createReport } from "../services/report";
 
 interface ReportPopUpProps {
   associated_id: string;
