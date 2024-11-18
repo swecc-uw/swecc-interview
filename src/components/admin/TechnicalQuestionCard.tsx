@@ -2,7 +2,33 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
-import { Box, VStack, HStack, Text, Button } from '@chakra-ui/react';
+import {
+  Box,
+  VStack,
+  HStack,
+  Text,
+  Button,
+  Badge,
+  Card,
+  CardHeader,
+  CardBody,
+  Collapse,
+  Divider,
+  Grid,
+  GridItem,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import {
+  ChevronDown,
+  ChevronUp,
+  Edit2,
+  Calendar,
+  Link as LinkIcon,
+  User,
+  CheckCircle,
+  Clock,
+  FileText,
+} from 'lucide-react';
 import type { TechnicalQuestion } from '../../types';
 
 interface TechnicalQuestionCardProps {
@@ -11,96 +37,185 @@ interface TechnicalQuestionCardProps {
   onToggleExpand: (questionId: string) => void;
 }
 
-const TechnicalQuestionCard: React.FC<TechnicalQuestionCardProps> = ({
+const InfoRow = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | React.ReactNode;
+}) => {
+  const labelColor = useColorModeValue('gray.600', 'gray.400');
+
+  return (
+    <HStack spacing={3} align="flex-start">
+      <Box color={labelColor}>{icon}</Box>
+      <VStack align="stretch" spacing={0}>
+        <Text fontSize="sm" color={labelColor} fontWeight="medium">
+          {label}
+        </Text>
+        <Text>{value}</Text>
+      </VStack>
+    </HStack>
+  );
+};
+
+const TechnicalQuestionCard = ({
   question,
   isExpanded,
   onToggleExpand,
-}) => {
+}: TechnicalQuestionCardProps) => {
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const expandedBg = useColorModeValue('gray.50', 'gray.700');
+  const hoverBg = useColorModeValue('gray.50', 'gray.700');
+
   return (
-    <Box className="p-4 border rounded-lg shadow-sm">
-      <HStack className="space-x-4 justify-between">
-        <HStack className="space-x-4 flex-1">
-          <Text className="font-bold">{question.title}</Text>
-          <Text>{question.topicName}</Text>
+    <Card
+      variant="outline"
+      bg={bgColor}
+      borderColor={borderColor}
+      transition="all 0.2s"
+      _hover={{ shadow: 'md' }}
+    >
+      <CardHeader>
+        <HStack justify="space-between" spacing={4}>
+          <HStack spacing={4} flex={1}>
+            <VStack align="flex-start" spacing={2}>
+              <Text fontWeight="bold" fontSize="lg">
+                {question.title}
+              </Text>
+              <Badge colorScheme="purple" px={2} py={1} borderRadius="full">
+                {question.topicName}
+              </Badge>
+            </VStack>
+          </HStack>
+          <HStack spacing={2}>
+            <Button
+              onClick={() => onToggleExpand(question.questionId)}
+              variant="ghost"
+              size="sm"
+              rightIcon={
+                isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+              }
+              _hover={{ bg: hoverBg }}
+            >
+              {isExpanded ? 'Hide Details' : 'Show Details'}
+            </Button>
+            <Link to={`/questions/technical/edit/${question.questionId}`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                leftIcon={<Edit2 size={16} />}
+                _hover={{ bg: hoverBg }}
+              >
+                Edit
+              </Button>
+            </Link>
+          </HStack>
         </HStack>
-        <Button
-          onClick={() => onToggleExpand(question.questionId)}
-          variant="outline"
-          size="sm"
-        >
-          {isExpanded ? 'Hide Details' : 'Show Details'}
-        </Button>
-        <Link to={`/questions/technical/edit/${question.questionId}`}>
-          <Button variant="outline" size="sm">
-            Edit
-          </Button>
-        </Link>
-      </HStack>
+      </CardHeader>
 
-      {isExpanded && (
-        <Box className="mt-4 p-4 border rounded-lg shadow-sm">
-          <VStack className="space-y-4">
-            <Box className="w-full">
-              <Text className="font-bold">Prompt:</Text>
-              <ReactMarkdown components={ChakraUIRenderer()} skipHtml>
-                {question.prompt}
-              </ReactMarkdown>
-            </Box>
-
-            <Box className="w-full">
-              <Text className="font-bold">Solution:</Text>
-              <ReactMarkdown components={ChakraUIRenderer()} skipHtml>
-                {question.solution}
-              </ReactMarkdown>
-            </Box>
-
-            <Box className="w-full">
-              <Text className="font-bold">Follow Ups:</Text>
-              <Text className="whitespace-pre-wrap">
-                {question.followUps || 'N/A'}
+      <Collapse in={isExpanded}>
+        <CardBody pt={0}>
+          <Divider my={4} />
+          <VStack spacing={6} align="stretch">
+            <Box>
+              <Text fontWeight="semibold" mb={2}>
+                prompt
               </Text>
+              <Box p={4} bg={expandedBg} borderRadius="md">
+                <ReactMarkdown components={ChakraUIRenderer()} skipHtml>
+                  {question.prompt}
+                </ReactMarkdown>
+              </Box>
             </Box>
 
-            <Box className="w-full">
-              <Text className="font-bold">Source:</Text>
-              <Text>
-                <a
-                  href={question.source || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {question.source || 'N/A'}
-                </a>
+            <Box>
+              <Text fontWeight="semibold" mb={2}>
+                solution
               </Text>
+              <Box p={4} bg={expandedBg} borderRadius="md">
+                <ReactMarkdown components={ChakraUIRenderer()} skipHtml>
+                  {question.solution}
+                </ReactMarkdown>
+              </Box>
             </Box>
 
-            <Box className="w-full">
-              <Text className="font-bold">Created by:</Text>
-              <Text className="whitespace-pre-wrap">{question.createdBy}</Text>
-            </Box>
+            {question.followUps && (
+              <Box>
+                <Text fontWeight="semibold" mb={2}>
+                  follow-up questions
+                </Text>
+                <Box p={4} bg={expandedBg} borderRadius="md">
+                  <Text whiteSpace="pre-wrap">{question.followUps}</Text>
+                </Box>
+              </Box>
+            )}
 
-            <Box className="w-full">
-              <Text className="font-bold">Approved by:</Text>
-              <Text className="whitespace-pre-wrap">
-                {question.approvedBy || 'Admin'}
-              </Text>
-            </Box>
+            <Divider />
 
-            <Box className="w-full">
-              <Text className="font-bold">Last assigned:</Text>
-              <Text className="whitespace-pre-wrap">
-                {question.lastAssigned || 'Never'}
-              </Text>
-            </Box>
-
-            <Box className="w-full">
-              <Text className="font-bold">Created:</Text>
-              <Text className="whitespace-pre-wrap">{question.created}</Text>
-            </Box>
+            <Grid
+              templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }}
+              gap={4}
+            >
+              <GridItem>
+                <InfoRow
+                  icon={<User size={16} />}
+                  label="created by"
+                  value={question.createdBy}
+                />
+              </GridItem>
+              <GridItem>
+                <InfoRow
+                  icon={<CheckCircle size={16} />}
+                  label="approved by"
+                  value={question.approvedBy || 'Admin'}
+                />
+              </GridItem>
+              <GridItem>
+                <InfoRow
+                  icon={<Clock size={16} />}
+                  label="last assigned"
+                  value={question.lastAssigned || 'Never'}
+                />
+              </GridItem>
+              <GridItem>
+                <InfoRow
+                  icon={<Calendar size={16} />}
+                  label="created"
+                  value={new Date(question.created).toLocaleDateString()}
+                />
+              </GridItem>
+              <GridItem colSpan={{ base: 1, md: 2 }}>
+                <InfoRow
+                  icon={<LinkIcon size={16} />}
+                  label="source"
+                  value={
+                    question.source ? (
+                      <a
+                        href={question.source}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: 'blue.500',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        {question.source}
+                      </a>
+                    ) : (
+                      'N/A'
+                    )
+                  }
+                />
+              </GridItem>
+            </Grid>
           </VStack>
-        </Box>
-      )}
-    </Box>
+        </CardBody>
+      </Collapse>
+    </Card>
   );
 };
 
