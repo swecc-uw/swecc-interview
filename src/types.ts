@@ -12,7 +12,7 @@ export interface InterviewPool {
   member: Member;
 }
 
-type Status = "pending" | "active" | "inactive";
+export type Status = "pending" | "active" | "inactive";
 
 export interface Interview {
   interviewId: string;
@@ -71,6 +71,18 @@ export interface BaseQuestion {
   prompt: string;
 }
 
+export interface RawBehavioralQuestion {
+  question_id: string;
+  created: string;
+  created_by: Member;
+  approved_by: Member;
+  last_assigned: string;
+  prompt: string;
+  solution: string;
+  follow_ups: string;
+  source: string;
+}
+
 export interface BehavioralQuestion extends BaseQuestion {
   createdBy: Member;
   approvedBy?: Member;
@@ -95,8 +107,8 @@ export interface RawInterviewData {
   interviewer: number;
   interviewee: number;
   status: Status;
-  technical_questions: TechnicalQuestion[];
-  behavioral_questions: BehavioralQuestion[];
+  technical_questions: RawTechnicalQuestion[];
+  behavioral_questions: RawBehavioralQuestion[];
 }
 export interface RawInterviewAvailabilityData {
   user_id: number;
@@ -168,7 +180,7 @@ export interface RawTechnicalQuestion {
   source: string;
 }
 
-export interface InterviewStatus {
+export interface InterViewPoolStatus {
   number_sign_up: number;
-  members: any[];
+  members: string[];
 }

@@ -19,14 +19,14 @@ import {
 } from "@chakra-ui/react";
 import { SpinnerIcon } from "@chakra-ui/icons";
 import api from "../../services/api";
-import { InterviewStatus } from "../../types";
+import { InterViewPoolStatus } from "../../types";
 
 const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
   const [response, setResponse] = useState("");
 
-  const [signupData, setSignUpData] = useState<InterviewStatus>({
+  const [signupData, setSignUpData] = useState<InterViewPoolStatus>({
     members: [],
     number_sign_up: 0,
   });

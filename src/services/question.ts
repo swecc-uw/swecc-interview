@@ -5,6 +5,7 @@ import {
   Topic,
   RawTopic,
   RawTechnicalQuestion,
+  RawBehavioralQuestion,
 } from '../types';
 import api from './api';
 
@@ -20,7 +21,25 @@ export function deserializeTopic({
   };
 }
 
-export function deserializeQuestion({
+export function deserializeBehavioralQuestion({
+  question_id: questionId,
+  created_by: createdBy,
+  approved_by: approvedBy,
+  last_assigned: lastAssigned,
+  follow_ups: followUps,
+  ...rest
+}: RawBehavioralQuestion): BehavioralQuestion {
+  return {
+    ...rest,
+    questionId,
+    createdBy,
+    approvedBy,
+    lastAssigned,
+    followUps,
+  };
+}
+
+export function deserializeTechnicalQuestion({
   question_id: questionId,
   created_by: createdBy,
   approved_by: approvedBy,
@@ -70,7 +89,7 @@ export async function getTechnicalQuestions(): Promise<TechnicalQuestion[]> {
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get questions');
 
-  return res.data.map(deserializeQuestion);
+  return res.data.map(deserializeTechnicalQuestion);
 }
 
 export async function getBehavioralQuestions(): Promise<BehavioralQuestion[]> {
@@ -96,7 +115,7 @@ export async function getTechnicalQuestion(
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get questions');
 
-  return deserializeQuestion(res.data);
+  return deserializeTechnicalQuestion(res.data);
 }
 
 export async function createTechnicalQuestion(
@@ -110,7 +129,7 @@ export async function createTechnicalQuestion(
   if (res.status !== 201 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get questions');
 
-  return deserializeQuestion(res.data);
+  return deserializeTechnicalQuestion(res.data);
 }
 
 export async function updateTechnicalQuestion(
@@ -126,7 +145,7 @@ export async function updateTechnicalQuestion(
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get questions');
 
-  return deserializeQuestion(res.data);
+  return deserializeTechnicalQuestion(res.data);
 }
 
 export async function getTopics(): Promise<Topic[]> {
