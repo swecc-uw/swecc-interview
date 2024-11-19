@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   VStack,
@@ -15,29 +14,13 @@ import {
   CardBody,
   HStack,
   useColorModeValue,
-  Button,
 } from '@chakra-ui/react';
-import {
-  Calendar,
-  Clock,
-  User,
-  Book,
-  ChevronDown,
-  ChevronUp,
-} from 'lucide-react';
-import {
-  BehavioralQuestion,
-  HydratedInterview,
-  Member,
-  TechnicalQuestion,
-} from '../types';
+import { Calendar, Clock, User, Book } from 'lucide-react';
+import { HydratedInterview, Member } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
-import { useAuth } from '../hooks/useAuth';
+import TechnicalQuestionCard from '../components/admin/TechnicalQuestionCard';
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
-  const { member } = useAuth();
-  const isInterviewer = member?.id === interview.interviewer.id;
-
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const bgColor = useColorModeValue('white', 'gray.800');
   const subtleColor = useColorModeValue('gray.600', 'gray.400');
@@ -160,27 +143,11 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
         {technicalQuestions.length > 0 && (
           <VStack align="stretch" spacing={3}>
             {technicalQuestions.map((q, i) => (
-              <QuestionCard
+              <TechnicalQuestionCard
                 key={q.questionId}
                 question={q}
-                index={i}
-                type="technical"
-                isInterviewer={isInterviewer}
-                cardBg={cardBg}
-              />
-            ))}
-          </VStack>
-        )}
-        {behavioralQuestions.length > 0 && (
-          <VStack align="stretch" spacing={3}>
-            {behavioralQuestions.map((q, i) => (
-              <QuestionCard
-                key={q.questionId}
-                question={q}
-                index={i}
-                type="behavioral"
-                isInterviewer={isInterviewer}
-                cardBg={cardBg}
+                isExpanded={true}
+                onToggleExpand={() => {}}
               />
             ))}
           </VStack>
@@ -213,138 +180,6 @@ export const ViewInterviewPage = ({
     <Box maxWidth="1000px" margin="auto" p={4}>
       <InterviewView interview={interview} />
     </Box>
-  );
-};
-
-const QuestionCard = ({
-  question,
-  index,
-  type,
-  isInterviewer,
-  cardBg,
-}: {
-  question: TechnicalQuestion | BehavioralQuestion;
-  index: number;
-  type: 'technical' | 'behavioral';
-  isInterviewer: boolean;
-  cardBg: string;
-}) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const subtleColor = useColorModeValue('gray.600', 'gray.400');
-  const solutionBg = useColorModeValue('gray.50', 'gray.600');
-  const hoverBg = useColorModeValue('gray.50', 'gray.600');
-  const borderColor = useColorModeValue('gray.100', 'gray.600');
-
-  return (
-    <Card
-      bg={cardBg}
-      transition="all 0.2s"
-      _hover={{ transform: 'translateY(-2px)', shadow: 'md' }}
-      borderWidth="1px"
-      borderColor={borderColor}
-    >
-      <CardHeader pb={0}>
-        <HStack justify="space-between" mb={3}>
-          <HStack spacing={3}>
-            <Badge
-              colorScheme={type === 'technical' ? 'purple' : 'orange'}
-              px={3}
-              py={1}
-              borderRadius="full"
-            >
-              {type === 'technical' ? 'Technical' : 'Behavioral'}
-            </Badge>
-            {'topicName' in question && (
-              <Badge variant="subtle" borderRadius="full" colorScheme="blue">
-                {question.topicName}
-              </Badge>
-            )}
-          </HStack>
-          <Text fontSize="sm" color={subtleColor} fontWeight="medium">
-            #{index + 1}
-          </Text>
-        </HStack>
-        {'title' in question && (
-          <Text fontWeight="bold" fontSize="lg" mb={2}>
-            {question.title}
-          </Text>
-        )}
-      </CardHeader>
-      <CardBody>
-        <VStack align="stretch" spacing={4}>
-          <Text fontSize="md" lineHeight="tall">
-            {question.prompt}
-          </Text>
-
-          {isInterviewer && question.solution && (
-            <Box>
-              <Button
-                onClick={() => setIsOpen(!isOpen)}
-                size="sm"
-                variant="ghost"
-                width="full"
-                justifyContent="space-between"
-                rightIcon={
-                  isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                }
-                _hover={{ bg: hoverBg }}
-                fontWeight="medium"
-                color={subtleColor}
-                height="36px"
-              >
-                {isOpen ? 'hide solution' : 'show solution'}
-              </Button>
-              {isOpen && (
-                <Box
-                  mt={3}
-                  p={4}
-                  bg={solutionBg}
-                  borderRadius="lg"
-                  borderWidth="1px"
-                  borderColor={borderColor}
-                >
-                  <VStack align="stretch" spacing={4}>
-                    <Box>
-                      <Text
-                        fontWeight="semibold"
-                        mb={2}
-                        fontSize="sm"
-                        color={subtleColor}
-                        textTransform="uppercase"
-                        letterSpacing="wide"
-                      >
-                        solution
-                      </Text>
-                      <Text whiteSpace="pre-wrap" lineHeight="tall">
-                        {question.solution}
-                      </Text>
-                    </Box>
-
-                    {question.followUps && (
-                      <Box>
-                        <Text
-                          fontWeight="semibold"
-                          mb={2}
-                          fontSize="sm"
-                          color={subtleColor}
-                          textTransform="uppercase"
-                          letterSpacing="wide"
-                        >
-                          follow-up questions
-                        </Text>
-                        <Text whiteSpace="pre-wrap" lineHeight="tall">
-                          {question.followUps}
-                        </Text>
-                      </Box>
-                    )}
-                  </VStack>
-                </Box>
-              )}
-            </Box>
-          )}
-        </VStack>
-      </CardBody>
-    </Card>
   );
 };
 
