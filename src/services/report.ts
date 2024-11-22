@@ -1,8 +1,8 @@
 import { devPrint } from "../components/utils/RandomUtils";
-import { RawReport, Report, ReportBody } from "../types";
+import { RawReport, RawReportBody, Report, ReportBody } from "../types";
 import api from "./api";
 
-function deserializedReport(report: RawReport): Report {
+function serializedReport(report: RawReport): Report {
   const ret: Report = {
     created: report.created,
     reason: report.reason,
@@ -20,7 +20,16 @@ function deserializedReport(report: RawReport): Report {
   return ret;
 }
 
-export async function getAllReport(): Promise<RawReport[]> {
+function deserializedReportBody(reportBody: ReportBody): RawReportBody {
+  return {
+    associated_id: reportBody.associatedId,
+    reporter_user_id: reportBody.reporterUserId,
+    type: reportBody.type,
+    reason: reportBody.reason,
+  };
+}
+
+export async function getAllReport(): Promise<Report[]> {
   const url = `/reports/all/`;
 
   const res = await api.get(url);
@@ -29,16 +38,20 @@ export async function getAllReport(): Promise<RawReport[]> {
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, "data"))
     throw new Error("Failed to get reports");
 
-  return res.data;
+  const reports: Report[] = res.data.map((report: RawReport) =>
+    serializedReport(report)
+  );
+
+  return reports;
 }
 
-export async function createReport(body: ReportBody): Promise<RawReport> {
+export async function createReport(body: ReportBody): Promise<Report> {
   const url = `/reports/`;
-  const res = await api.post(url, body);
+  const res = await api.post(url, deserializedReportBody(body));
   devPrint("res:", res);
   if (res.status !== 201 || !Object.prototype.hasOwnProperty.call(res, "data"))
     throw new Error("Failed to create report");
-  return res.data;
+  return serializedReport(res.data);
 }
 
 export async function getMyReport(memberId: number): Promise<Report[]> {
@@ -51,7 +64,7 @@ export async function getMyReport(memberId: number): Promise<Report[]> {
     throw new Error("Failed to get reports");
 
   const reports: Report[] = res.data.map((report: RawReport) =>
-    deserializedReport(report)
+    serializedReport(report)
   );
 
   return reports;
@@ -66,5 +79,5 @@ export async function getReportDetail(reportId: string): Promise<Report> {
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, "data"))
     throw new Error("Failed to get report");
 
-  return deserializedReport(res.data);
+  return serializedReport(res.data);
 }
