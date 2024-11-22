@@ -180,7 +180,12 @@ export interface RawTechnicalQuestion {
   source: string;
 }
 
-export interface InterViewPoolStatus {
+export interface RawInterViewPoolStatus {
   number_sign_up: number;
+  members: string[];
+}
+
+export interface InterviewPoolStatus {
+  numberSignUp: number;
   members: string[];
 }

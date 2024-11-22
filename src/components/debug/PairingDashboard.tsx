@@ -19,33 +19,34 @@ import {
 } from "@chakra-ui/react";
 import { SpinnerIcon } from "@chakra-ui/icons";
 import api from "../../services/api";
-import { InterViewPoolStatus } from "../../types";
+import { InterviewPoolStatus } from "../../types";
+import { getInterviewPoolStatus } from "../../services/interview";
+import { devPrint } from "../utils/RandomUtils";
 
 const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
   const [response, setResponse] = useState("");
 
-  const [signupData, setSignUpData] = useState<InterViewPoolStatus>({
+  const [signupData, setSignUpData] = useState<InterviewPoolStatus>({
+    numberSignUp: 0,
     members: [],
-    number_sign_up: 0,
   });
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    api
-      .get("/interview/status/")
+    getInterviewPoolStatus()
       .then((res) => {
         setLoading(true);
         setSignal(!signal);
-        console.log(res.data);
-        if (res.data) {
-          setSignUpData(res.data);
+        devPrint(res);
+        if (res) {
+          setSignUpData(res);
         }
       })
       .catch((error) => {
-        console.log(error);
+        devPrint(error);
       })
       .finally(() => {
         setLoading(false);
@@ -99,7 +100,7 @@ const PairingDashboard = () => {
               <Text fontWeight="medium">Pair Interview Pool</Text>
             </HStack>
             <Text fontWeight="medium">
-              {signupData?.number_sign_up || 0} member signup:
+              {signupData?.numberSignUp || 0} member signup:
             </Text>
             <Code>{JSON.stringify(signupData?.members, null, 2)}</Code>
 
