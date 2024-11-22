@@ -16,7 +16,7 @@ import {
   deserializeBehavioralQuestion,
 } from "./question";
 
-function deserializeInterviewPoolStatus(
+function serializeInterviewPoolStatus(
   data: RawInterViewPoolStatus
 ): InterviewPoolStatus {
   return {
@@ -132,5 +132,5 @@ export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResp
 export async function getInterviewPoolStatus(): Promise<InterviewPoolStatus> {
   return api
     .get("/interview/status")
-    .then((res) => deserializeInterviewPoolStatus(res.data));
+    .then((res) => serializeInterviewPoolStatus(res.data));
 }
