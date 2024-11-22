@@ -14,13 +14,24 @@ import {
   CardBody,
   HStack,
   useColorModeValue,
+  useDisclosure,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  Button,
 } from '@chakra-ui/react';
 import { Calendar, Clock, User, Book } from 'lucide-react';
 import { HydratedInterview, Member } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
 import TechnicalQuestionCard from '../components/admin/TechnicalQuestionCard';
+import ReportPopUp from '../components/ReportPopUp';
+import { useAuth } from '../hooks/useAuth';
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { member } = useAuth();
+
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const bgColor = useColorModeValue('white', 'gray.800');
   const subtleColor = useColorModeValue('gray.600', 'gray.400');
@@ -68,6 +79,23 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
       borderRadius="lg"
       p={6}
     >
+      <Modal
+        isCentered
+        motionPreset="slideInBottom"
+        isOpen={isOpen}
+        size={'xl'}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent maxH="800px" maxW="700px">
+          <ModalCloseButton />
+          <ReportPopUp
+            associatedId={interview.interviewId}
+            reporterUserId={member?.id}
+            onClose={onClose}
+          />
+        </ModalContent>
+      </Modal>
       {/* header */}
       <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={4}>
         <GridItem>
@@ -106,6 +134,9 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
           <Badge colorScheme={statusColors[status]} fontSize="md" px={3} py={1}>
             {status.toUpperCase()}
           </Badge>
+        </GridItem>
+        <GridItem>
+          <Button onClick={onOpen}>Report Interviewer or Interviewee</Button>
         </GridItem>
       </Grid>
 

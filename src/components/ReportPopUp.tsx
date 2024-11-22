@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ReportBody } from "../types";
+import React, { useState } from 'react';
+import { ReportBody } from '../types';
 import {
   Badge,
   Box,
@@ -16,28 +16,29 @@ import {
   Textarea,
   VStack,
   useToast,
-} from "@chakra-ui/react";
-import { createReport } from "../services/report";
+} from '@chakra-ui/react';
+import { createReport } from '../services/report';
+import { devPrint } from './utils/RandomUtils';
 
 interface ReportPopUpProps {
-  associated_id: string;
-  reporter_user_id: number;
+  associatedId: string;
+  reporterUserId: number | undefined;
   onClose: () => void;
 }
 
 const ReportPopUp: React.FC<ReportPopUpProps> = ({
-  associated_id,
-  reporter_user_id,
+  associatedId,
+  reporterUserId,
   onClose,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
   const [formData, setFormData] = useState<ReportBody>({
-    associated_id: associated_id,
-    reporter_user_id: reporter_user_id,
-    type: "interview",
-    reason: "",
+    associatedId: associatedId,
+    reporterUserId: reporterUserId || -1,
+    type: 'interview',
+    reason: '',
   });
 
   const handleChange = (
@@ -60,19 +61,19 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
       const res = await createReport(formData);
 
       toast({
-        title: "Report submitted successfully",
-        status: "success",
+        title: 'Report submitted successfully',
+        status: 'success',
         duration: 3000,
         isClosable: true,
       });
 
-      console.log(res);
+      devPrint(res);
     } catch (err) {
-      console.error(err);
+      devPrint(err);
       toast({
-        title: "Error submitting report",
-        description: "Please try again later",
-        status: "error",
+        title: 'Error submitting report',
+        description: 'Please try again later',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
@@ -82,7 +83,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
   };
 
   return (
-    <Box p={4} maxH="800px" mx="auto" boxSize={"xl"}>
+    <Box p={4} maxH="800px" mx="auto" boxSize={'xl'}>
       <Card variant="outline" boxShadow="lg" borderRadius="lg">
         <CardHeader pb={0}>
           <Heading size="md" color="blue.600">
@@ -106,7 +107,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
                     borderColor="gray.200"
                   >
                     <Text color="gray.700" fontSize="md">
-                      {associated_id}
+                      {associatedId}
                     </Text>
                   </Box>
                 </FormControl>
@@ -123,7 +124,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
                     borderColor="gray.200"
                   >
                     <Badge colorScheme="blue" fontSize="md">
-                      {reporter_user_id}
+                      {reporterUserId}
                     </Badge>
                   </Box>
                 </FormControl>
@@ -147,11 +148,11 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
                   border="1px"
                   borderColor="gray.300"
                   _hover={{
-                    borderColor: "blue.400",
+                    borderColor: 'blue.400',
                   }}
                   _focus={{
-                    borderColor: "blue.500",
-                    boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
+                    borderColor: 'blue.500',
+                    boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)',
                   }}
                 />
               </FormControl>
@@ -166,8 +167,8 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
                 isLoading={isLoading}
                 loadingText="Submitting..."
                 _hover={{
-                  transform: "translateY(-1px)",
-                  boxShadow: "lg",
+                  transform: 'translateY(-1px)',
+                  boxShadow: 'lg',
                 }}
                 transition="all 0.2s"
               >
