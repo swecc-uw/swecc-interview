@@ -38,7 +38,7 @@ export async function getAllReport(): Promise<Report[]> {
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, "data"))
     throw new Error("Failed to get reports");
 
-  const reports: Report[] = res.data.map((report: RawReport) =>
+  const reports: Report[] = res.data.reports?.map((report: RawReport) =>
     serializedReport(report)
   );
 
@@ -51,7 +51,7 @@ export async function createReport(body: ReportBody): Promise<Report> {
   devPrint("res:", res);
   if (res.status !== 201 || !Object.prototype.hasOwnProperty.call(res, "data"))
     throw new Error("Failed to create report");
-  return serializedReport(res.data);
+  return serializedReport(res.data.report);
 }
 
 export async function getMyReport(memberId: number): Promise<Report[]> {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Heading, useToast, VStack } from '@chakra-ui/react';
 import { getAllReport } from '../../services/report';
-import { RawReport } from '../../types';
+import { Report } from '../../types';
 import { devPrint } from '../../components/utils/RandomUtils';
 
 const ReportDashboard = () => {
-  const [reports, setReports] = useState<RawReport[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
   const [response, setResponse] = useState('');
