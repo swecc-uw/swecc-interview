@@ -10,8 +10,9 @@ import {
   useToast,
   Code,
 } from '@chakra-ui/react';
-import { SpinnerIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, SpinnerIcon } from '@chakra-ui/icons';
 import api from '../../services/api';
+import { Link } from 'react-router-dom';
 
 const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,16 @@ const PairingDashboard = () => {
 
   return (
     <Container maxW="container.md" py={8}>
+      <Button
+        as={Link}
+        to="/admin"
+        colorScheme="blue"
+        leftIcon={<ArrowBackIcon />}
+        w="fit-content"
+        mb="16px"
+      >
+        Go Back
+      </Button>
       <VStack spacing={6} align="stretch">
         <Box borderWidth={1} borderRadius="lg" p={6} boxShadow="md">
           <VStack spacing={4} align="stretch">

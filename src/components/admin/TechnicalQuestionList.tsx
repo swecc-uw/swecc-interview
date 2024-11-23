@@ -154,6 +154,7 @@ const TechnicalQuestionList = ({ questions }: TechnicalQuestionListProps) => {
               question={question}
               isExpanded={expandedQuestionId === question.questionId}
               onToggleExpand={toggleExpand}
+              isAdmin={true}
             />
           ))
         )}

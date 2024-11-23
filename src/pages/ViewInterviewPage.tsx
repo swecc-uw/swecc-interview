@@ -19,12 +19,14 @@ import { Calendar, Clock, User, Book } from 'lucide-react';
 import { HydratedInterview, Member } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
 import TechnicalQuestionCard from '../components/admin/TechnicalQuestionCard';
+import { useState } from 'react';
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const bgColor = useColorModeValue('white', 'gray.800');
   const subtleColor = useColorModeValue('gray.600', 'gray.400');
   const cardBg = useColorModeValue('gray.50', 'gray.700');
+  const [expandedQuestionId, setExpandedQuestionId] = useState<string>();
 
   const {
     interviewer,
@@ -142,12 +144,18 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
         </HStack>
         {technicalQuestions.length > 0 && (
           <VStack align="stretch" spacing={3}>
-            {technicalQuestions.map((q, i) => (
+            {technicalQuestions.map((q) => (
               <TechnicalQuestionCard
                 key={q.questionId}
                 question={q}
-                isExpanded={true}
-                onToggleExpand={() => {}}
+                isExpanded={expandedQuestionId === q.questionId}
+                onToggleExpand={() => {
+                  setExpandedQuestionId(
+                    expandedQuestionId === q.questionId
+                      ? undefined
+                      : q.questionId
+                  );
+                }}
               />
             ))}
           </VStack>
