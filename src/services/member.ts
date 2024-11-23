@@ -80,3 +80,14 @@ export async function updateMemberProfile(
 
   return deserializeMember(res.data);
 }
+
+// TODO: please god give me an endpoint for this
+export async function isCurrentMemberVerified(): Promise<boolean> {
+  return getCurrentUser()
+    .then(
+      (member) =>
+        member.groups?.map((group) => group.name).includes('is_verified') ??
+        false
+    )
+    .catch(() => false);
+}
