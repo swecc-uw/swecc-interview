@@ -166,7 +166,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   };
 
   const copyCommand = () => {
-    navigator.clipboard.writeText(`/verify ${username}`);
+    navigator.clipboard.writeText(`/verify`);
     setHasCopied(true);
 
     toast({
@@ -296,7 +296,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
               borderColor="gray.300"
             >
               <Code flex="1" fontSize="md" bg="transparent">
-                /verify {username}
+                /verify
               </Code>
               <IconButton
                 icon={
@@ -322,7 +322,8 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
               Step 2: Run the command in Discord
             </Text>
             <Text fontSize="sm" color="gray.600">
-              Paste and send the command in any channel
+              Paste and send the command in any channel, and then enter your
+              username
             </Text>
           </Box>
 
