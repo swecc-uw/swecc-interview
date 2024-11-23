@@ -37,8 +37,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   const [showSuccess, setShowSuccess] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
   const toast = useToast();
-  const { member, logout } = useAuth();
-  const username = member?.username;
+  const { logout } = useAuth();
 
   // refs for cleanup
   const checkIntervalRef = useRef<NodeJS.Timeout>();
