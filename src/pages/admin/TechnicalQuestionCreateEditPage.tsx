@@ -6,12 +6,14 @@ import {
   VStack,
   HStack,
   Spinner,
+  Button,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { devPrint } from '../../components/utils/RandomUtils';
 import QuestionCreateEdit from '../../components/admin/TechnicalQuestionCreateEdit';
 import { getTechnicalQuestion } from '../../services/question';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const TechnicalQuestionCreateEditPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +36,15 @@ const TechnicalQuestionCreateEditPage: React.FC = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
+      <Button
+        as={Link}
+        to="/questions/technical"
+        colorScheme="blue"
+        leftIcon={<ArrowBackIcon />}
+        w="fit-content"
+      >
+        Back to Questions
+      </Button>
       <Box p={6}>
         <VStack spacing={4} align="stretch">
           <HStack spacing={4}>

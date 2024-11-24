@@ -13,6 +13,7 @@ import { devPrint } from '../../components/utils/RandomUtils';
 import QuestionList from '../../components/admin/TechnicalQuestionList';
 import { getTechnicalQuestions } from '../../services/question';
 import { Link } from 'react-router-dom';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const TechnicalQuestionsPage: React.FC = () => {
   const [questions, setQuestions] = useState<TechnicalQuestion[]>([]);
@@ -32,6 +33,16 @@ const TechnicalQuestionsPage: React.FC = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
+      <Button
+        as={Link}
+        to="/admin"
+        colorScheme="blue"
+        leftIcon={<ArrowBackIcon />}
+        w="fit-content"
+        mb="16px"
+      >
+        Go Back
+      </Button>
       <VStack spacing={4} align="stretch">
         <HStack justify="space-between" align="center">
           <Heading as="h1" size="lg">
