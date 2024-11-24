@@ -102,20 +102,26 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     }));
   };
 
+  const isSocialFieldKey = (
+    field: keyof Member
+  ): field is 'linkedin' | 'github' | 'leetcode' => {
+    return ['linkedin', 'github', 'leetcode'].includes(field as string);
+  };
+
   const handleSocialFieldToggle = (field: keyof Member) => {
-    field = field.split('.')[0] as keyof Member;
-    if (!isSocialField(field)) return;
+    const baseField = field.split('.')[0] as keyof Member;
+
+    if (!isSocialFieldKey(baseField)) return;
 
     setProfile((prev) => ({
       ...prev,
-      [field]: {
-        ...(prev[field] as SocialField),
-        isPrivate: !!(prev[field] as SocialField)?.isPrivate === false,
+      [baseField]: {
+        ...prev[baseField],
+        isPrivate: !Boolean(prev[baseField]?.isPrivate),
       },
     }));
   };
 
-  console.log(profile);
   const githubRegex = new RegExp(
     '^(https?:\\/\\/)?(www\\.)?github\\.com\\/.+$'
   );
