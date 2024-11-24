@@ -110,10 +110,12 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
       ...prev,
       [field]: {
         ...(prev[field] as SocialField),
-        isPrivate: !(prev[field] as SocialField)?.isPrivate,
+        isPrivate: !!(prev[field] as SocialField)?.isPrivate === false,
       },
     }));
   };
+
+  console.log(profile);
   const githubRegex = new RegExp(
     '^(https?:\\/\\/)?(www\\.)?github\\.com\\/.+$'
   );
@@ -308,7 +310,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
                 >
                   <Switch
                     isDisabled={!profile.linkedin?.username}
-                    isChecked={profile.linkedin?.isPrivate}
+                    isChecked={!profile.linkedin?.isPrivate}
                     onChange={() => handleSocialFieldToggle('linkedin')}
                   />
                 </Tooltip>
@@ -338,7 +340,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
                 >
                   <Switch
                     isDisabled={!profile.github?.username}
-                    isChecked={profile.github?.isPrivate}
+                    isChecked={!profile.github?.isPrivate}
                     onChange={() => handleSocialFieldToggle('github')}
                   />
                 </Tooltip>
@@ -374,7 +376,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
                 >
                   <Switch
                     isDisabled={!profile.leetcode?.username}
-                    isChecked={profile.leetcode?.isPrivate}
+                    isChecked={!profile.leetcode?.isPrivate}
                     onChange={() => handleSocialFieldToggle('leetcode')}
                   />
                 </Tooltip>
