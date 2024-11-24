@@ -53,6 +53,15 @@ export async function getCurrentUser(): Promise<Member> {
   return deserializeMember(res.data);
 }
 
+export async function resetPassword(uid: string, token: string, newPassword: string): Promise<void> {
+  const url = `/auth/password-reset-confirm/${uid}/${token}/`;
+  const res = await api.post(url, {new_password: newPassword});
+
+  devPrint('res:', res);
+
+  if (res.status !== 200) throw new Error('Failed to get current user');
+}
+
 export async function getMemberProfile(userId: number): Promise<Member> {
   const url = `/members/${userId}/`;
   const res = await api.get(url);

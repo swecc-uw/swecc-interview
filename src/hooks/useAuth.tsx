@@ -12,11 +12,11 @@ import { getCurrentUser } from '../services/member';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  error: string;
   loading: boolean;
-  member?: Member;
   isAdmin: boolean;
   isVerified: boolean;
+  member?: Member;
+  error?: string;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (
@@ -26,7 +26,7 @@ interface AuthContextType {
     email: string,
     password: string,
     discordUsername: string
-  ) => Promise<number | null>;
+  ) => Promise<number | undefined>;
   clearError: () => void;
 }
 
@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isVerified, setIsVerified] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>();
   const [member, setMember] = useState<Member>();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -64,8 +64,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         .then((mem) => {
           setMember(mem);
           const groups = mem.groups?.map((value) => value.name);
-          setIsAdmin(groups?.includes('is_admin') || false);
-          setIsVerified(groups?.includes('is_verified') || false);
+          setIsAdmin(groups?.includes('is_admin') ?? false);
+          setIsVerified(groups?.includes('is_verified') ?? false);
         })
         .catch((err) => {
           devPrint('Failed to get current user:', err);
@@ -140,7 +140,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: string,
     password: string,
     discordUsername: string
-  ): Promise<number | null> => {
+  ): Promise<number | undefined> => {
     try {
       const res = await api.post('/auth/register/', {
         first_name: firstName,
@@ -154,7 +154,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (res.status !== 201) throw new Error('Registration failed.');
 
       const data = res.data;
-      setError('');
       setError(
         `Registration successful. Please type /auth ${username} in the swecc server`
       );
@@ -165,12 +164,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setError(
         err.response?.data?.detail || 'Registration failed. Please try again.'
       );
-      return null;
+      return;
     }
   };
 
   const clearError = (): void => {
-    setError('');
+    setError(undefined);
   };
 
   return (
