@@ -63,7 +63,10 @@ const App: React.FC = () => {
               }
             />
             <Route path="/join-swecc" element={<JoinPage />} />
-            <Route path="/password-reset-confirm/:uid/:token" element={<ResetPasswordForm />} />
+            <Route
+              path="/password-reset-confirm/:uid/:token"
+              element={<ResetPasswordForm />}
+            />
             <Route path="/auth" element={<AuthPage />} />
             <Route
               path="/directory"

@@ -1,41 +1,41 @@
-import React, { useState } from "react";
-import {  useParams } from "react-router-dom";
-import { resetPassword } from "../services/member";
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { resetPassword } from '../services/member';
 
 const ResetPasswordForm: React.FC = () => {
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { uid, token } = useParams<{ uid: string; token: string }>();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     if (!newPassword || !confirmPassword) {
-      setError("Both password fields are required.");
+      setError('Both password fields are required.');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError('Passwords do not match.');
       return;
     }
 
     if (!uid || !token) {
-      setError("Invalid or missing reset link.");
+      setError('Invalid or missing reset link.');
       return;
     }
 
     try {
       await resetPassword(uid, token, newPassword);
-      setSuccessMessage("Password has been successfully reset!");
-      setNewPassword("");
-      setConfirmPassword("");
+      setSuccessMessage('Password has been successfully reset!');
+      setNewPassword('');
+      setConfirmPassword('');
     } catch (err) {
-      setError("An error occurred while resetting the password.");
+      setError('An error occurred while resetting the password.');
     }
   };
 

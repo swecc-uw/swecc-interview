@@ -53,9 +53,13 @@ export async function getCurrentUser(): Promise<Member> {
   return deserializeMember(res.data);
 }
 
-export async function resetPassword(uid: string, token: string, newPassword: string): Promise<void> {
+export async function resetPassword(
+  uid: string,
+  token: string,
+  newPassword: string
+): Promise<void> {
   const url = `/auth/password-reset-confirm/${uid}/${token}/`;
-  const res = await api.post(url, {new_password: newPassword});
+  const res = await api.post(url, { new_password: newPassword });
 
   devPrint('res:', res);
 
