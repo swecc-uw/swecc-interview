@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       'Your account does not have a Discord ID associated with it.'
     ) {
       setError(
-        `Your discord is not verified. Please type /auth ${errorData.username} in the swecc server`
+        `Your discord is not verified. Please type /verify in the swecc server and enter ${errorData.username}`
       );
     } else {
       setError('Invalid credentials. Please try again.');
