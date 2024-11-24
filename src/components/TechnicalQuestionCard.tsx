@@ -15,25 +15,25 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ChevronDown, ChevronUp, Edit2 } from 'lucide-react';
-import type { TechnicalQuestion } from '../../types';
+import type { TechnicalQuestion } from '../types';
+import { useAuth } from '../hooks/useAuth';
 
 interface TechnicalQuestionCardProps {
   question: TechnicalQuestion;
   isExpanded: boolean;
   onToggleExpand: (questionId: string) => void;
-  isAdmin?: boolean;
 }
 
 const TechnicalQuestionCard = ({
   question,
   isExpanded,
   onToggleExpand,
-  isAdmin = false,
 }: TechnicalQuestionCardProps) => {
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const bgColor = useColorModeValue('white', 'gray.800');
   const expandedBg = useColorModeValue('gray.50', 'gray.700');
   const hoverBg = useColorModeValue('gray.50', 'gray.700');
+  const { isAdmin } = useAuth();
 
   return (
     <Card

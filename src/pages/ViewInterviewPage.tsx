@@ -18,7 +18,7 @@ import {
 import { Calendar, Clock, User, Book } from 'lucide-react';
 import { HydratedInterview, Member } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
-import TechnicalQuestionCard from '../components/admin/TechnicalQuestionCard';
+import TechnicalQuestionCard from '../components/TechnicalQuestionCard';
 import { useState } from 'react';
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {

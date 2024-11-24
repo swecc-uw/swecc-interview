@@ -366,7 +366,7 @@ function QuestionQueueDashboard({ questionType }: QuestionQueueDashboardProps) {
       <VStack spacing={6} align="stretch">
         <Button
           as={Link}
-          to={'/admin'}
+          to="/admin"
           colorScheme="blue"
           leftIcon={<ArrowBackIcon />}
           w="fit-content"

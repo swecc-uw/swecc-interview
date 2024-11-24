@@ -35,7 +35,7 @@ const TechnicalQuestionsPage: React.FC = () => {
     <Container maxW="container.lg" py={8}>
       <Button
         as={Link}
-        to={'/admin'}
+        to="/admin"
         colorScheme="blue"
         leftIcon={<ArrowBackIcon />}
         w="fit-content"
