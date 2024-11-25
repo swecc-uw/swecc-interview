@@ -180,6 +180,50 @@ export interface RawTechnicalQuestion {
   source: string;
 }
 
+export type ReportType = 'interview' | 'question';
+
+export type ReportStatus = 'pending' | 'resolving' | 'completed';
+
+export interface RawReportBody {
+  associated_id: string;
+  reporter_user_id?: number; // can be anonymous
+  type: ReportType;
+  reason: string;
+}
+
+export interface ReportBody {
+  associatedId: string;
+  reporterUserId?: number;
+  type: ReportType;
+  reason: string;
+}
+
+export interface RawReport {
+  admin_id: null | string;
+  admin_notes: null | string;
+  associated_id: null | string;
+  created: string;
+  reason: string;
+  report_id: string;
+  reporter_user_id: number;
+  status: ReportStatus;
+  type: ReportType;
+  updated: string;
+}
+
+export interface Report {
+  adminId?: string;
+  adminNotes?: string;
+  associatedId?: string;
+  created: string;
+  reason: string;
+  reportId: string;
+  reporterUserId: number;
+  status: ReportStatus;
+  type: ReportType;
+  updated: string;
+}
+
 export interface RawInterViewPoolStatus {
   number_sign_up: number;
   members: string[];
