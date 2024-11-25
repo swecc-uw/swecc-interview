@@ -137,7 +137,7 @@ export default function AdminDashboard() {
         label: 'Open Console',
         to: '/admin/console',
       },
-    }
+    },
   ];
 
   return (

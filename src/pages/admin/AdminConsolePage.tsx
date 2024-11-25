@@ -11,199 +11,160 @@ import {
   CardHeader,
   Heading,
   useColorModeValue,
+  IconButton,
 } from '@chakra-ui/react';
-import { Terminal, Trash } from 'lucide-react';
+import { Terminal, Trash, Copy, Check } from 'lucide-react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
-
-type CommandResponse = {
-  success?: boolean;
-  output?: string;
-  error?: string;
-};
-
-type HistoryEntry = {
-  type: 'input' | 'output' | 'error';
-  content: string;
-  timestamp: string;
-};
-
-type ParsedCommand = {
-  command: string;
-  args: string[];
-  kwargs: Record<string, string | boolean>;
-};
+import adminCommandRpcClient, {
+  CommandEvent,
+  ConsoleStream,
+} from '../../services/admin/AdminCommandRpc';
 
 export default function AdminTerminalPage() {
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [inputHistory, setInputHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const events = useRef<CommandEvent[]>([]);
   const [currentInput, setCurrentInput] = useState<string>('');
-  const [historyPosition, setHistoryPosition] = useState<number>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [eventsKey, setEventsKey] = useState(0);
+  const [copiedMap, setCopiedMap] = useState<Record<string, boolean>>({});
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const [eventCount, setEventCount] = useState(0);
 
   const promptColor = useColorModeValue('blue.500', 'blue.300');
   const outputBg = useColorModeValue('gray.50', 'gray.800');
   const errorColor = useColorModeValue('red.500', 'red.300');
 
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    if (!loading) {
       inputRef.current?.focus();
     }
-  }, [history]);
+  }, [loading]);
 
-  const parseCommand = (input: string): ParsedCommand => {
-    const parts = input.trim().split(/\s+/); // split on all whitespace not just single
-    const command = parts[0];
-    const args: string[] = [];
-    const kwargs: Record<string, string | boolean> = {};
+  useEffect(() => {
+    events.current = adminCommandRpcClient.getEventHistory?.() || [];
+    setEventCount(events.current.length);
+    setEventsKey((k) => k + 1);
+    scrollToBottom();
+  }, []);
 
-    for (let i = 1; i < parts.length; i++) {
-      const part = parts[i];
-      if (part.startsWith('--')) {
-        const [key, value] = part.slice(2).split('=');
-        if (value !== undefined) {
-          kwargs[key] = value;
-        } else if (i + 1 < parts.length && !parts[i + 1].startsWith('-')) {
-          kwargs[key] = parts[i + 1];
-          i++;
-        } else {
-          kwargs[key] = true;
-        }
-      } else if (part.startsWith('-')) {
-        kwargs[part.slice(1)] = true;
-      } else {
-        args.push(part);
+  useEffect(() => {
+    scrollToBottom();
+  }, [eventsKey]);
+
+  const scrollToBottom = () => {
+    requestAnimationFrame(() => {
+      if (terminalRef.current) {
+        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
       }
-    }
-
-    return { command, args, kwargs };
+    });
   };
 
-  const executeCommand = async (input: string): Promise<void> => {
+  const copyToClipboard = async (content: string, eventId: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedMap((prev) => ({ ...prev, [eventId]: true }));
+      setTimeout(() => {
+        setCopiedMap((prev) => ({ ...prev, [eventId]: false }));
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
+  };
+
+  const process = async (input: string): Promise<void> => {
+    if (!input.trim()) return;
+
     setLoading(true);
     try {
-      const { command, args, kwargs } = parseCommand(input);
-
-      setHistory((prev) => [
-        ...prev,
-        {
-          type: 'input',
-          content: input,
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-
-      if (command === 'clear') {
-        setHistory([]);
-        setLoading(false);
-        return;
-      } else if (command === 'help') {
-        const helpRes = await api.get<{
-          available_commands: { name: string; description: string }[];
-        }>('/admin/command/');
-
-        if (helpRes.data['available_commands']) {
-          setHistory((prev) => [
-            ...prev,
-            {
-              type: 'output',
-              content: helpRes.data.available_commands
-                .map((c) => `${c.name}: ${c.description}`)
-                .join('\n'),
-              timestamp: new Date().toISOString(),
-            },
-          ]);
-        }
-        setLoading(false);
-        return;
-      }
-
-      const response = await api.post<CommandResponse>('/admin/command/', {
-        command,
-        args,
-        kwargs,
-      });
-
-      if (response.data.error)
-        setHistory((prev) => [
-          ...prev,
-          {
-            type: 'error',
-            content: response.data.error || 'An unknown error occurred',
-            timestamp: new Date().toISOString(),
-          },
-        ]);
-
-      if (response.data.output)
-        setHistory((prev) => [
-          ...prev,
-          {
-            type: 'output',
-            content: response.data.output || '',
-            timestamp: new Date().toISOString(),
-          },
-        ]);
+      await adminCommandRpcClient.executeCommand(input);
+      events.current = adminCommandRpcClient.getEventHistory();
+      setInputHistory((prev) => [...prev, input]);
+      setHistoryIndex(-1);
+      setCurrentInput('');
+      setEventsKey((k) => k + 1);
     } catch (error) {
-      setHistory((prev) => [
-        ...prev,
-        {
-          type: 'error',
-          content:
-            error instanceof Error
-              ? error.message
-              : 'An unknown error occurred',
-          timestamp: new Date().toISOString(),
-        },
-      ]);
+      events.current = adminCommandRpcClient.getEventHistory();
+      setEventsKey((k) => k + 1);
     } finally {
       setLoading(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    const inputHistory = history.filter((h) => h.type === 'input');
-
-    if (e.key === 'Enter' && currentInput.trim() && !loading) {
-      e.preventDefault();
-      executeCommand(currentInput);
-      setCurrentInput('');
-      setHistoryPosition(undefined);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (inputHistory.length === 0) return;
-
-      const newPosition =
-        historyPosition === undefined
-          ? 0
-          : Math.min(historyPosition + 1, inputHistory.length - 1);
-
-      setHistoryPosition(newPosition);
-      setCurrentInput(
-        inputHistory[inputHistory.length - 1 - newPosition].content
-      );
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (historyPosition === undefined) return;
-
-      if (historyPosition === 0) {
-        setHistoryPosition(undefined);
-        setCurrentInput('');
-      } else {
-        const newPosition = historyPosition - 1;
-        setHistoryPosition(newPosition);
-        setCurrentInput(
-          inputHistory[inputHistory.length - 1 - newPosition].content
-        );
-      }
+    switch (e.key) {
+      case 'Enter':
+        e.preventDefault();
+        if (currentInput.trim()) {
+          process(currentInput);
+        }
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        if (inputHistory.length > 0) {
+          const newIndex = historyIndex + 1;
+          if (newIndex < inputHistory.length) {
+            setHistoryIndex(newIndex);
+            setCurrentInput(inputHistory[inputHistory.length - 1 - newIndex]);
+          }
+        }
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        if (historyIndex > 0) {
+          const newIndex = historyIndex - 1;
+          setHistoryIndex(newIndex);
+          setCurrentInput(inputHistory[inputHistory.length - 1 - newIndex]);
+        } else if (historyIndex === 0) {
+          setHistoryIndex(-1);
+          setCurrentInput('');
+        }
+        break;
     }
+    setEventCount(events.current.length);
   };
 
-  const clearHistory = () => {
-    setHistory([]);
-    setHistoryPosition(undefined);
+  const clearInputHistory = async () => {
+    await process('clear');
+    events.current = [];
+    setInputHistory([]);
+    setHistoryIndex(-1);
+    setCurrentInput('');
+    setEventCount(0);
+    setEventsKey((k) => k + 1);
+  };
+
+  const EventView = ({ stream, content, timestamp }: CommandEvent) => {
+    const eventId = `${timestamp}-${content}`;
+    const isCopied = copiedMap[eventId];
+
+    return (
+      <HStack align="flex-start" className="group" spacing={2}>
+        <Box flex="1">
+          {stream === ConsoleStream.Input ? (
+            <Text color={promptColor}>$ {content}</Text>
+          ) : stream === ConsoleStream.Error ? (
+            <Text color={errorColor}>{content}</Text>
+          ) : (
+            <Text color="gray.700" whiteSpace="pre-wrap">
+              {content}
+            </Text>
+          )}
+        </Box>
+        <IconButton
+          icon={isCopied ? <Check size={20} /> : <Copy size={20} />}
+          aria-label="Copy content"
+          size="xs"
+          variant="ghost"
+          opacity={isCopied ? 1 : 0}
+          _groupHover={{ opacity: 1 }}
+          onClick={() => copyToClipboard(content, eventId)}
+          color={isCopied ? 'green.500' : 'gray.500'}
+        />
+      </HStack>
+    );
   };
 
   return (
@@ -222,13 +183,13 @@ export default function AdminTerminalPage() {
 
         <HStack justify="space-between">
           <Heading size="lg">Management Console</Heading>
-          {history.length > 0 && (
+          {eventCount > 0 && (
             <Button
               leftIcon={<Trash size={16} />}
               variant="ghost"
               colorScheme="red"
               size="sm"
-              onClick={clearHistory}
+              onClick={clearInputHistory}
             >
               Clear History
             </Button>
@@ -239,6 +200,7 @@ export default function AdminTerminalPage() {
           <CardHeader>
             <HStack>
               <Terminal size={20} />
+              <Text>Terminal</Text>
             </HStack>
           </CardHeader>
           <CardBody>
@@ -253,19 +215,11 @@ export default function AdminTerminalPage() {
               borderRadius="md"
             >
               <VStack align="stretch" spacing={2}>
-                {history.map((entry, i) => (
-                  <Box key={i}>
-                    {entry.type === 'input' ? (
-                      <Text color={promptColor}>$ {entry.content}</Text>
-                    ) : entry.type === 'error' ? (
-                      <Text color={errorColor}>{entry.content}</Text>
-                    ) : (
-                      <Text color="gray.700" whiteSpace="pre-wrap">
-                        {entry.content}
-                      </Text>
-                    )}
-                  </Box>
-                ))}
+                <div key={eventsKey}>
+                  {events.current.map((event, i) => (
+                    <EventView key={`${event.timestamp}-${i}`} {...event} />
+                  ))}
+                </div>
               </VStack>
 
               <HStack mt={2}>

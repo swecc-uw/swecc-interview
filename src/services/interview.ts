@@ -6,6 +6,8 @@ import {
   RawInterviewAvailabilityData,
   HydratedInterview,
   RawMemberData,
+  RawInterViewPoolStatus,
+  InterviewPoolStatus,
 } from '../types';
 import api from './api';
 import { deserializeMember } from './member';
@@ -13,6 +15,16 @@ import {
   deserializeTechnicalQuestion,
   deserializeBehavioralQuestion,
 } from './question';
+
+function serializeInterviewPoolStatus({
+  number_sign_up: numberSignUp,
+  ...rest
+}: RawInterViewPoolStatus): InterviewPoolStatus {
+  return {
+    ...rest,
+    numberSignUp,
+  };
+}
 
 function deserializeInterview({
   interview_id: interviewId,
@@ -34,12 +46,13 @@ function deserializeInterview({
   };
 }
 
-function deserializeInterviewAvailability(
-  data: RawInterviewAvailabilityData
-): InterviewAvailability {
+function deserializeInterviewAvailability({
+  user_id: userId,
+  ...rest
+}: RawInterviewAvailabilityData): InterviewAvailability {
   return {
-    userId: data.user_id,
-    availability: data.availability,
+    ...rest,
+    userId,
   };
 }
 
@@ -116,4 +129,10 @@ export async function signupCurrentUserForInterviewPool(
 
 export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResponse> {
   return api.delete('/interview/pool/').then((res) => res.data);
+}
+
+export async function getInterviewPoolStatus(): Promise<InterviewPoolStatus> {
+  return api
+    .get('/interview/status')
+    .then((res) => serializeInterviewPoolStatus(res.data));
 }
