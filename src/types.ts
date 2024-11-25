@@ -85,9 +85,9 @@ export interface RawBehavioralQuestion {
 
 export interface BehavioralQuestion extends BaseQuestion {
   createdBy: Member;
+  solution: string;
   approvedBy?: Member;
   lastAssigned?: string; // ISO 8601 date string or null
-  solution: string;
   followUps?: string;
   source?: string;
 }
@@ -199,9 +199,6 @@ export interface ReportBody {
 }
 
 export interface RawReport {
-  admin_id?: string;
-  admin_notes?: string;
-  associated_id?: string;
   created: string;
   reason: string;
   report_id: string;
@@ -209,12 +206,12 @@ export interface RawReport {
   status: ReportStatus;
   type: ReportType;
   updated: string;
+  admin_id?: string;
+  admin_notes?: string;
+  associated_id?: string;
 }
 
 export interface Report {
-  adminId?: string;
-  adminNotes?: string;
-  associatedId?: string;
   created: string;
   reason: string;
   reportId: string;
@@ -222,6 +219,9 @@ export interface Report {
   status: ReportStatus;
   type: ReportType;
   updated: string;
+  adminId?: string;
+  adminNotes?: string;
+  associatedId?: string;
 }
 
 export interface RawInterViewPoolStatus {
