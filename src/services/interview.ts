@@ -17,12 +17,12 @@ import {
 } from "./question";
 
 function serializeInterviewPoolStatus({
-  number_sign_up: number_sign_up,
-  members: members,
+  number_sign_up: numberSignUp,
+  ...rest
 }: RawInterViewPoolStatus): InterviewPoolStatus {
   return {
-    numberSignUp: number_sign_up,
-    members: members,
+    numberSignUp,
+    ...rest,
   };
 }
 
@@ -46,12 +46,13 @@ function deserializeInterview({
   };
 }
 
-function deserializeInterviewAvailability(
-  data: RawInterviewAvailabilityData
-): InterviewAvailability {
+function deserializeInterviewAvailability({
+  user_id: userId,
+  ...rest
+}: RawInterviewAvailabilityData): InterviewAvailability {
   return {
-    userId: data.user_id,
-    availability: data.availability,
+    userId,
+    ...rest,
   };
 }
 
