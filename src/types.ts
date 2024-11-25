@@ -222,4 +222,12 @@ export interface Report {
   status: ReportStatus;
   type: ReportType;
   updated: string;
+export interface RawInterViewPoolStatus {
+  number_sign_up: number;
+  members: string[];
+}
+
+export interface InterviewPoolStatus {
+  numberSignUp: number;
+  members: string[];
 }
