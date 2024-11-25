@@ -22,7 +22,7 @@ const ReportDashboard = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filterType, setFilterType] = useState<ReportType | ''>('');
   const [filterUserId, setFilterUserId] = useState<number | ''>('');
-  const [expandedReportId, setExpandedReportId] = useState<string | null>(null);
+  const [expandedReportId, setExpandedReportId] = useState<string>('');
   const toast = useToast();
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const ReportDashboard = () => {
                     onClick={() =>
                       setExpandedReportId(
                         expandedReportId === report.reportId
-                          ? null
+                          ? ''
                           : report.reportId
                       )
                     }
