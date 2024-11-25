@@ -8,21 +8,21 @@ import {
   RawMemberData,
   RawInterViewPoolStatus,
   InterviewPoolStatus,
-} from "../types";
-import api from "./api";
-import { deserializeMember } from "./member";
+} from '../types';
+import api from './api';
+import { deserializeMember } from './member';
 import {
   deserializeTechnicalQuestion,
   deserializeBehavioralQuestion,
-} from "./question";
+} from './question';
 
 function serializeInterviewPoolStatus({
-  number_sign_up: number_sign_up,
-  members: members,
+  number_sign_up: numberSignUp,
+  ...rest
 }: RawInterViewPoolStatus): InterviewPoolStatus {
   return {
-    numberSignUp: number_sign_up,
-    members: members,
+    ...rest,
+    numberSignUp,
   };
 }
 
@@ -46,17 +46,18 @@ function deserializeInterview({
   };
 }
 
-function deserializeInterviewAvailability(
-  data: RawInterviewAvailabilityData
-): InterviewAvailability {
+function deserializeInterviewAvailability({
+  user_id: userId,
+  ...rest
+}: RawInterviewAvailabilityData): InterviewAvailability {
   return {
-    userId: data.user_id,
-    availability: data.availability,
+    ...rest,
+    userId,
   };
 }
 
 export async function getInterviewsForUser(): Promise<Interview[]> {
-  const res = await api.get("/interview/interviews/");
+  const res = await api.get('/interview/interviews/');
 
   return res.data.map(deserializeInterview);
 }
@@ -73,7 +74,7 @@ interface InterviewsResponse {
 export async function getInterviewsHydratedForUser(): Promise<
   Array<HydratedInterview>
 > {
-  return api.get<InterviewsResponse>("/interview/all/details").then((res) =>
+  return api.get<InterviewsResponse>('/interview/all/details').then((res) =>
     res.data.interviews.map((interview) => ({
       ...deserializeInterview(interview),
       interviewer: deserializeMember(interview.interviewer),
@@ -93,7 +94,7 @@ export async function getInterviewById(
 
 export async function getInterviewAvailabilityForCurrentUser(): Promise<InterviewAvailability> {
   return api
-    .get("/interview/availability/")
+    .get('/interview/availability/')
     .then((res) => res.data)
     .then(deserializeInterviewAvailability);
 }
@@ -111,27 +112,27 @@ export async function updateInterviewAvailabilityForCurrentUser(
   availability: InterviewAvailability
 ): Promise<InterviewAvailability> {
   return api
-    .put("/interview/availability/", availability)
+    .put('/interview/availability/', availability)
     .then((res) => res.data)
     .then(deserializeInterviewAvailability);
 }
 
 export async function isCurrentUserSignedUpForInterviewPool(): Promise<boolean> {
-  return api.get("/interview/pool/").then((res) => res.data.sign_up);
+  return api.get('/interview/pool/').then((res) => res.data.sign_up);
 }
 
 export async function signupCurrentUserForInterviewPool(
   availability: InterviewAvailability
 ): Promise<DetailedResponse> {
-  return api.post("/interview/pool/", availability).then((res) => res.data);
+  return api.post('/interview/pool/', availability).then((res) => res.data);
 }
 
 export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResponse> {
-  return api.delete("/interview/pool/").then((res) => res.data);
+  return api.delete('/interview/pool/').then((res) => res.data);
 }
 
 export async function getInterviewPoolStatus(): Promise<InterviewPoolStatus> {
   return api
-    .get("/interview/status")
+    .get('/interview/status')
     .then((res) => serializeInterviewPoolStatus(res.data));
 }
