@@ -23,6 +23,8 @@ import {
 } from '@chakra-ui/react';
 import { Copy, Clock, Trash } from 'lucide-react';
 import api from '../../services/api';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -155,6 +157,16 @@ export default function APIClient() {
   return (
     <Box p={4}>
       <VStack spacing={6} align="stretch">
+        <Button
+          as={Link}
+          to="/admin"
+          colorScheme="blue"
+          leftIcon={<ArrowBackIcon />}
+          w="fit-content"
+          mb="16px"
+        >
+          Go Back
+        </Button>
         <HStack justify="space-between">
           <Heading size="lg">API Client</Heading>
           {history.length > 0 && (
