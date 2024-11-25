@@ -102,18 +102,26 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     }));
   };
 
+  const isSocialFieldKey = (
+    field: keyof Member
+  ): field is 'linkedin' | 'github' | 'leetcode' => {
+    return ['linkedin', 'github', 'leetcode'].includes(field as string);
+  };
+
   const handleSocialFieldToggle = (field: keyof Member) => {
-    field = field.split('.')[0] as keyof Member;
-    if (!isSocialField(field)) return;
+    const baseField = field.split('.')[0] as keyof Member;
+
+    if (!isSocialFieldKey(baseField)) return;
 
     setProfile((prev) => ({
       ...prev,
-      [field]: {
-        ...(prev[field] as SocialField),
-        isPrivate: !(prev[field] as SocialField)?.isPrivate,
+      [baseField]: {
+        ...prev[baseField],
+        isPrivate: !Boolean(prev[baseField]?.isPrivate),
       },
     }));
   };
+
   const githubRegex = new RegExp(
     '^(https?:\\/\\/)?(www\\.)?github\\.com\\/.+$'
   );
@@ -308,7 +316,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
                 >
                   <Switch
                     isDisabled={!profile.linkedin?.username}
-                    isChecked={profile.linkedin?.isPrivate}
+                    isChecked={!profile.linkedin?.isPrivate}
                     onChange={() => handleSocialFieldToggle('linkedin')}
                   />
                 </Tooltip>
@@ -338,7 +346,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
                 >
                   <Switch
                     isDisabled={!profile.github?.username}
-                    isChecked={profile.github?.isPrivate}
+                    isChecked={!profile.github?.isPrivate}
                     onChange={() => handleSocialFieldToggle('github')}
                   />
                 </Tooltip>
@@ -374,7 +382,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
                 >
                   <Switch
                     isDisabled={!profile.leetcode?.username}
-                    isChecked={profile.leetcode?.isPrivate}
+                    isChecked={!profile.leetcode?.isPrivate}
                     onChange={() => handleSocialFieldToggle('leetcode')}
                   />
                 </Tooltip>
