@@ -3,47 +3,34 @@ import { RawReport, RawReportBody, Report, ReportBody } from '../types';
 import api from './api';
 
 function deserializedReport({
-  created: created,
-  reason: reason,
-  report_id: report_id,
-  reporter_user_id: reporter_user_id,
-  status: status,
-  type: type,
-  updated: updated,
-  admin_id: admin_id,
-  admin_notes: admin_notes,
-  associated_id: associated_id,
+  report_id: reportId,
+  reporter_user_id: reporterUserId,
+  admin_id: adminId,
+  admin_notes: adminNotes,
+  associated_id: associatedId,
   ...rest
 }: RawReport): Report {
   const ret: Report = {
-    created: created,
-    reason: reason,
-    reportId: report_id,
-    reporterUserId: reporter_user_id,
-    status: status,
-    type: type,
-    updated: updated,
+    reportId: reportId,
+    reporterUserId: reporterUserId,
+    ...rest,
   };
 
-  if (admin_id) ret.adminId = admin_id;
-  if (admin_notes) ret.adminNotes = admin_notes;
-  if (associated_id) ret.associatedId = associated_id;
+  if (adminId) ret.adminId = adminId;
+  if (adminNotes) ret.adminNotes = adminNotes;
+  if (associatedId) ret.associatedId = associatedId;
 
-  return { ...ret, ...rest };
+  return ret;
 }
 
 function serializedReportBody({
-  associatedId: associatedId,
-  reporterUserId: reporterUserId,
-  type: type,
-  reason: reason,
+  associatedId: associated_id,
+  reporterUserId: reporter_user_id,
   ...rest
 }: ReportBody): RawReportBody {
   return {
-    associated_id: associatedId,
-    reporter_user_id: reporterUserId,
-    type: type,
-    reason: reason,
+    associated_id: associated_id,
+    reporter_user_id: reporter_user_id,
     ...rest,
   };
 }
