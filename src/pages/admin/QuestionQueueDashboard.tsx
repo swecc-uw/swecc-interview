@@ -36,6 +36,7 @@ import {
   QuestionType,
   TechnicalQuestion,
 } from '../../types';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 interface UseQuestionQueueProps {
   questionType: QuestionType;
@@ -363,6 +364,16 @@ function QuestionQueueDashboard({ questionType }: QuestionQueueDashboardProps) {
   return (
     <Box p={6}>
       <VStack spacing={6} align="stretch">
+        <Button
+          as={Link}
+          to="/admin"
+          colorScheme="blue"
+          leftIcon={<ArrowBackIcon />}
+          w="fit-content"
+          mb="16px"
+        >
+          Go Back
+        </Button>
         <HStack justify="space-between">
           <Heading size="lg">
             {questionType === QuestionType.Technical

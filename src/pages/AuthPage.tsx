@@ -15,7 +15,9 @@ import {
   Container,
   Spinner,
   Flex,
+  Text,
 } from '@chakra-ui/react';
+import { isCurrentMemberVerified } from '../services/member';
 
 const AuthPage: React.FC = () => {
   const [firstName, setFirstName] = useState('');
@@ -25,8 +27,6 @@ const AuthPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [discordUsername, setDiscordUsername] = useState('');
-  const [shouldBeVerifyingDiscord, setShouldBeVerifyingDiscord] =
-    useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -34,28 +34,23 @@ const AuthPage: React.FC = () => {
   const navigate = useNavigate();
   const {
     isAuthenticated,
+    isVerified,
+    member,
     login,
     register,
     error: authError,
-    clearError,
   } = useAuth();
 
+  // handle navigation on initial auth
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isVerified) {
       navigate('/');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isVerified, navigate]);
 
   useEffect(() => {
     if (authError) {
-      if (
-        authError ===
-        'Your account does not have a Discord ID associated with it.'
-      ) {
-        setShouldBeVerifyingDiscord(true);
-      } else {
-        setError(authError);
-      }
+      setError(authError);
     }
   }, [authError]);
 
@@ -76,7 +71,6 @@ const AuthPage: React.FC = () => {
       return;
     }
 
-    // Prettier is garbage
     if (
       !(
         discordUsername &&
@@ -102,20 +96,57 @@ const AuthPage: React.FC = () => {
     );
     if (!userId) {
       setError(authError || 'An error occurred.');
-    } else {
-      setShouldBeVerifyingDiscord(true);
     }
     setLoading(false);
   };
 
-  const handleGoBack = () => {
-    setShouldBeVerifyingDiscord(false);
-    clearError();
-    setError('');
+  const checkVerified = async () => {
+    try {
+      const verified = await isCurrentMemberVerified();
+      return verified;
+    } catch (error) {
+      setError('An error occurred while checking verification status.');
+      return false;
+    }
   };
 
+  // show verification if auth but not verified
+  if (
+    isAuthenticated &&
+    !isVerified &&
+    member &&
+    member.username &&
+    member.username !== ''
+  ) {
+    return (
+      <Box py={12}>
+        <Container maxW="md">
+          <VStack>
+            <Box
+              borderRadius="lg"
+              boxShadow="md"
+              p={6}
+              width="full"
+              position="relative"
+            >
+              <DiscordVerification
+                checkVerified={checkVerified}
+                onVerificationSuccess={() => navigate('/')}
+              />
+              {error && (
+                <Text color="red.500" mt={2}>
+                  {error}
+                </Text>
+              )}
+            </Box>
+          </VStack>
+        </Container>
+      </Box>
+    );
+  }
+
   return (
-    <Box minHeight="100vh" py={12}>
+    <Box py={12}>
       <Container maxW="md">
         <VStack spacing={8}>
           <Heading as="h1" size="xl">
@@ -128,85 +159,76 @@ const AuthPage: React.FC = () => {
             width="full"
             position="relative"
           >
-            {shouldBeVerifyingDiscord ? (
-              <DiscordVerification
-                username={username}
-                password={password}
-                tryLogin={login}
-                onGoBack={handleGoBack}
-              />
-            ) : (
-              <Tabs
-                isFitted
-                variant="enclosed"
-                index={activeTab}
-                onChange={(index) => setActiveTab(index)}
-              >
-                <TabList mb="1em">
-                  <Tab>Login</Tab>
-                  <Tab>Register</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <AuthForm
-                      isLogin={true}
-                      username={username}
-                      email={email}
-                      password={password}
-                      error={error || authError || ''}
-                      onFirstNameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setFirstName(e.target.value)}
-                      onLastNameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setLastName(e.target.value)}
-                      onUsernameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setUsername(e.target.value)}
-                      onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setEmail(e.target.value)
-                      }
-                      onPasswordChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setPassword(e.target.value)}
-                      onSubmit={handleLogin}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <AuthForm
-                      isLogin={false}
-                      username={username}
-                      password={password}
-                      confirmPassword={confirmPassword}
-                      discordUsername={discordUsername}
-                      error={error || authError || ''}
-                      onUsernameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setUsername(e.target.value)}
-                      onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setEmail(e.target.value)
-                      }
-                      onFirstNameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setFirstName(e.target.value)}
-                      onLastNameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setLastName(e.target.value)}
-                      onPasswordChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setPassword(e.target.value)}
-                      onConfirmPasswordChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setConfirmPassword(e.target.value)}
-                      onDiscordUsernameChange={(
-                        e: React.ChangeEvent<HTMLInputElement>
-                      ) => setDiscordUsername(e.target.value)}
-                      onSubmit={handleRegister}
-                    />
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            )}
+            <Tabs
+              isFitted
+              variant="enclosed"
+              index={activeTab}
+              onChange={(index) => setActiveTab(index)}
+            >
+              <TabList mb="1em">
+                <Tab>Login</Tab>
+                <Tab>Register</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <AuthForm
+                    isLogin={true}
+                    username={username}
+                    email={email}
+                    password={password}
+                    error={error || authError || ''}
+                    onFirstNameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setFirstName(e.target.value)}
+                    onLastNameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setLastName(e.target.value)}
+                    onUsernameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setUsername(e.target.value)}
+                    onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setEmail(e.target.value)
+                    }
+                    onPasswordChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setPassword(e.target.value)}
+                    onSubmit={handleLogin}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <AuthForm
+                    isLogin={false}
+                    username={username}
+                    password={password}
+                    confirmPassword={confirmPassword}
+                    discordUsername={discordUsername}
+                    error={error || authError || ''}
+                    onUsernameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setUsername(e.target.value)}
+                    onEmailChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setEmail(e.target.value)
+                    }
+                    onFirstNameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setFirstName(e.target.value)}
+                    onLastNameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setLastName(e.target.value)}
+                    onPasswordChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setPassword(e.target.value)}
+                    onConfirmPasswordChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setConfirmPassword(e.target.value)}
+                    onDiscordUsernameChange={(
+                      e: React.ChangeEvent<HTMLInputElement>
+                    ) => setDiscordUsername(e.target.value)}
+                    onSubmit={handleRegister}
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
             {loading && (
               <Flex justify="center" mt={4}>
                 <Spinner size="sm" />

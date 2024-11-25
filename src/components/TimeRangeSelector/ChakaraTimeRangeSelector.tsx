@@ -25,11 +25,13 @@ interface TimeRangeSelectorProps {
 
 const getDefaultDayLabels = () => {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const today = new Date().getDate();
-  const nextSunday = new Date();
-  nextSunday.setDate(today + (7 - nextSunday.getDay()));
+  const today = new Date();
+  const nextSunday = new Date(today);
+  const daysUntilSunday = 7 - today.getDay();
+  nextSunday.setDate(today.getDate() + daysUntilSunday);
+
   return days.map((day, i) => {
-    const date = new Date();
+    const date = new Date(nextSunday);
     date.setDate(nextSunday.getDate() + i);
     return `${day} ${date.getMonth() + 1}/${date.getDate()}`;
   });
