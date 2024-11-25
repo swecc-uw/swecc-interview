@@ -155,7 +155,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const data = res.data;
       setError(
-        `Registration successful. Please type /auth ${username} in the swecc server`
+        `Registration successful. Please type /verify in the swecc server and enter ${username}`
       );
       getCSRF();
       return data.id;
