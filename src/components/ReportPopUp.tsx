@@ -22,7 +22,7 @@ import { devPrint } from './utils/RandomUtils';
 
 interface ReportPopUpProps {
   associatedId: string;
-  reporterUserId: number | undefined;
+  reporterUserId?: number;
   onClose: () => void;
 }
 
