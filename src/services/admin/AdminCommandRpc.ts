@@ -158,16 +158,6 @@ class AdminCommandRpcClient {
       })
     ).data;
   }
-
-  private async discover(): Promise<{
-    available_commands: { name: string; description: string }[];
-  }> {
-    return (
-      await this.apiClient.get<{
-        available_commands: { name: string; description: string }[];
-      }>(ENDPOINT)
-    ).data;
-  }
 }
 
 const adminCommandRpcClient = new AdminCommandRpcClient(api);
