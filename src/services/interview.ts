@@ -21,8 +21,8 @@ function serializeInterviewPoolStatus({
   ...rest
 }: RawInterViewPoolStatus): InterviewPoolStatus {
   return {
-    numberSignUp,
     ...rest,
+    numberSignUp,
   };
 }
 
@@ -51,8 +51,8 @@ function deserializeInterviewAvailability({
   ...rest
 }: RawInterviewAvailabilityData): InterviewAvailability {
   return {
-    userId,
     ...rest,
+    userId,
   };
 }
 
