@@ -9,7 +9,8 @@
         "Chakara",
         "elimelt",
         "Glassdoor",
-        "Formik"
+        "Formik",
+        "kwargs"
     ],
     "ignorePaths": [
         "node_modules/**",
