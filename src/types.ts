@@ -199,9 +199,9 @@ export interface ReportBody {
 }
 
 export interface RawReport {
-  admin_id: null | string;
-  admin_notes: null | string;
-  associated_id: null | string;
+  admin_id?: string;
+  admin_notes?: string;
+  associated_id?: string;
   created: string;
   reason: string;
   report_id: string;

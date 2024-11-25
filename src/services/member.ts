@@ -24,18 +24,25 @@ export function deserializeMember({
   };
 }
 
-export function serializeMember(
-  member: Partial<Member>
-): Partial<RawMemberData> {
+export function serializeMember({
+  firstName: first_name,
+  lastName: last_name,
+  gradDate: grad_date,
+  discordUsername: discord_username,
+  resumeUrl: resume_url,
+  discordId: discord_id,
+  profilePictureUrl: profile_picture_url,
+  ...member
+}: Partial<Member>): Partial<RawMemberData> {
   return {
     ...member,
-    first_name: member.firstName,
-    last_name: member.lastName,
-    grad_date: member.gradDate,
-    discord_username: member.discordUsername,
-    resume_url: member.resumeUrl,
-    discord_id: member.discordId,
-    profile_picture_url: member.profilePictureUrl,
+    first_name,
+    last_name,
+    grad_date,
+    discord_username,
+    resume_url,
+    discord_id,
+    profile_picture_url,
   };
 }
 
