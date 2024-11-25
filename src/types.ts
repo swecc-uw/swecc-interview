@@ -186,14 +186,14 @@ export type ReportStatus = 'pending' | 'resolving' | 'completed';
 
 export interface RawReportBody {
   associated_id: string;
-  reporter_user_id: number;
+  reporter_user_id?: number; // can be anonymous
   type: ReportType;
   reason: string;
 }
 
 export interface ReportBody {
   associatedId: string;
-  reporterUserId: number;
+  reporterUserId?: number;
   type: ReportType;
   reason: string;
 }
