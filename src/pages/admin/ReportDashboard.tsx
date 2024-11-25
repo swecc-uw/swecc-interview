@@ -20,8 +20,8 @@ const ReportDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [filterType, setFilterType] = useState<ReportType | ''>('');
-  const [filterUserId, setFilterUserId] = useState<number | ''>('');
+  const [filterType, setFilterType] = useState<ReportType>();
+  const [filterUserId, setFilterUserId] = useState<number>();
   const [expandedReportId, setExpandedReportId] = useState<string>();
   const toast = useToast();
 
@@ -47,8 +47,8 @@ const ReportDashboard = () => {
 
   const filteredReports = reports.filter((report) => {
     return (
-      (filterType === '' || report.type === filterType) &&
-      (filterUserId === '' || report.reporterUserId === filterUserId) &&
+      (filterType || report.type === filterType) &&
+      (filterUserId || report.reporterUserId === filterUserId) &&
       report.reason.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   });
@@ -75,7 +75,9 @@ const ReportDashboard = () => {
             placeholder="Filter by user ID"
             value={filterUserId}
             onChange={(e) =>
-              setFilterUserId(e.target.value ? parseInt(e.target.value) : '')
+              setFilterUserId(
+                e.target.value ? parseInt(e.target.value) : undefined
+              )
             }
           />
           {loading ? (
