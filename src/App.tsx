@@ -17,11 +17,12 @@ import { theme } from './theme';
 import TechnicalQuestionsPage from './pages/admin/TechnicalQuestionsPage';
 import AdminRoute from './components/admin/AdminRoute';
 import TechnicalQuestionCreateEditPage from './pages/admin/TechnicalQuestionCreateEditPage';
-import PairInterviewDashboard from './components/debug/PairingDashboard';
+import PairInterviewDashboard from './pages/admin/PairingDashboard';
 import QuestionQueueDashboard from './pages/admin/QuestionQueueDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import APIClient from './pages/admin/APIClient';
 import { QuestionType } from './types';
+import ResetPasswordForm from './pages/ResetPassword';
 
 const App: React.FC = () => {
   return (
@@ -62,6 +63,10 @@ const App: React.FC = () => {
               }
             />
             <Route path="/join-swecc" element={<JoinPage />} />
+            <Route
+              path="/password-reset-confirm/:uid/:token"
+              element={<ResetPasswordForm />}
+            />
             <Route path="/auth" element={<AuthPage />} />
             <Route
               path="/directory"

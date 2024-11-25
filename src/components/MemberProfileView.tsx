@@ -16,6 +16,7 @@ import {
   Button,
   useClipboard,
   useToast,
+  As,
 } from '@chakra-ui/react';
 import {
   FaGithub,
@@ -94,7 +95,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
     href,
     username,
   }: {
-    icon: any;
+    icon: unknown;
     label: string;
     href: string;
     username: string;
@@ -108,7 +109,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
         alignItems="center"
         gap={2}
       >
-        <Icon as={icon} boxSize={5} />
+        <Icon as={icon as As} boxSize={5} />
         <Box as="span" fontSize="sm">
           {username}
         </Box>
@@ -121,12 +122,12 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
     label,
     value,
   }: {
-    icon: any;
+    icon: unknown;
     label: string;
     value: string | React.ReactNode;
   }) => (
     <Flex align="start" gap={2}>
-      <Icon as={icon} color={iconColor} mt={1} />
+      <Icon as={icon as As} color={iconColor} mt={1} />
       <Box>
         <Box
           as="span"

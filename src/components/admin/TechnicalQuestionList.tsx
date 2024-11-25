@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Search, Filter, XCircle } from 'lucide-react';
 import { TechnicalQuestion } from '../../types';
-import TechnicalQuestionCard from './TechnicalQuestionCard';
+import TechnicalQuestionCard from '../TechnicalQuestionCard';
 
 interface TechnicalQuestionListProps {
   questions: TechnicalQuestion[];

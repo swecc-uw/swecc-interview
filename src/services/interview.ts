@@ -16,13 +16,14 @@ import {
   deserializeBehavioralQuestion,
 } from "./question";
 
-function serializeInterviewPoolStatus(
-  data: RawInterViewPoolStatus
-): InterviewPoolStatus {
+function serializeInterviewPoolStatus({
+  number_sign_up: number_sign_up,
+  members: members,
+}: RawInterViewPoolStatus): InterviewPoolStatus {
   return {
-    numberSignUp: data.number_sign_up,
-    members: data.members,
-  } as InterviewPoolStatus;
+    numberSignUp: number_sign_up,
+    members: members,
+  };
 }
 
 function deserializeInterview({

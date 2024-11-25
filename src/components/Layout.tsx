@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -38,10 +38,21 @@ interface NavBarProps {
   member?: Member;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isVerified: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isAuthenticated, isAdmin, loading, member } = useAuth();
+  const { isAuthenticated, isAdmin, loading, member, isVerified } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    if (!isVerified) {
+      navigate('/auth');
+    }
+  }, [isAuthenticated, isVerified, navigate]);
 
   if (loading) {
     return (
@@ -57,6 +68,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         member={member}
         isAuthenticated={isAuthenticated}
         isAdmin={isAdmin}
+        isVerified={isVerified}
       />
       <Box as="main" flexGrow={1}>
         <Container maxW="container.xl" py={8}>
@@ -72,13 +84,14 @@ const Navbar: React.FC<NavBarProps> = ({
   member,
   isAuthenticated,
   isAdmin,
+  isVerified,
 }) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const NavLinks = () => (
     <>
-      {isAuthenticated && (
+      {isAuthenticated && isVerified && (
         <>
           <NavLink to="/interview-signup">Sign up for an interview</NavLink>
           <NavLink to="/interviews">View your interviews</NavLink>

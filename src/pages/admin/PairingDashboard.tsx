@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -16,22 +16,20 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@chakra-ui/react";
-import { SpinnerIcon } from "@chakra-ui/icons";
-import api from "../../services/api";
-import { InterviewPoolStatus } from "../../types";
-import { getInterviewPoolStatus } from "../../services/interview";
-import { devPrint } from "../utils/RandomUtils";
+} from '@chakra-ui/react';
+import api from '../../services/api';
+import { InterviewPoolStatus } from '../../types';
+import { getInterviewPoolStatus } from '../../services/interview';
+import { ArrowBackIcon, SpinnerIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
+import { devPrint } from '../../components/utils/RandomUtils';
 
 const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState('');
 
-  const [signupData, setSignUpData] = useState<InterviewPoolStatus>({
-    numberSignUp: 0,
-    members: [],
-  });
+  const [signupData, setSignUpData] = useState<InterviewPoolStatus>();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,13 +55,13 @@ const PairingDashboard = () => {
     setLoading(true);
     setSignal(!signal);
     api
-      .post("/interview/pair/", { signal: !signal })
+      .post('/interview/pair/', { signal: !signal })
       .then((res) => {
         setResponse(res.data);
         toast({
-          title: "Success",
-          description: "Pair interview pool status updated",
-          status: "success",
+          title: 'Success',
+          description: 'Pair interview pool status updated',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
@@ -71,9 +69,9 @@ const PairingDashboard = () => {
       .catch((error) => {
         setResponse(JSON.stringify(error));
         toast({
-          title: "Error",
-          description: "Failed to update pair interview pool status",
-          status: "error",
+          title: 'Error',
+          description: 'Failed to update pair interview pool status',
+          status: 'error',
           duration: 3000,
           isClosable: true,
         });
@@ -90,6 +88,16 @@ const PairingDashboard = () => {
 
   return (
     <Container maxW="container.md" py={8}>
+      <Button
+        as={Link}
+        to="/admin"
+        colorScheme="blue"
+        leftIcon={<ArrowBackIcon />}
+        w="fit-content"
+        mb="16px"
+      >
+        Go Back
+      </Button>
       <VStack spacing={6} align="stretch">
         <Box borderWidth={1} borderRadius="lg" p={6} boxShadow="md">
           <VStack spacing={4} align="stretch">
@@ -109,7 +117,7 @@ const PairingDashboard = () => {
               isLoading={loading}
               loadingText="Processing"
               spinnerPlacement="start"
-              colorScheme={signal ? "red" : "green"}
+              colorScheme={signal ? 'red' : 'green'}
             >
               {loading ? <SpinnerIcon mr={2} /> : null}
               Pair Interview Pool
