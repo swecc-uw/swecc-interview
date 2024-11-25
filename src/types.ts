@@ -193,7 +193,7 @@ export interface RawReportBody {
 
 export interface ReportBody {
   associatedId: string;
-  reporterUserId: number;
+  reporterUserId?: number;
   type: ReportType;
   reason: string;
 }

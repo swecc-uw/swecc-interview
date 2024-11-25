@@ -36,7 +36,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
 
   const [formData, setFormData] = useState<ReportBody>({
     associatedId: associatedId,
-    reporterUserId: reporterUserId || -1,
+    reporterUserId: reporterUserId,
     type: 'interview',
     reason: '',
   });
