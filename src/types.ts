@@ -12,7 +12,7 @@ export interface InterviewPool {
   member: Member;
 }
 
-export type Status = "pending" | "active" | "inactive";
+export type Status = 'pending' | 'active' | 'inactive';
 
 export interface Interview {
   interviewId: string;
@@ -93,8 +93,8 @@ export interface BehavioralQuestion extends BaseQuestion {
 }
 
 export enum QuestionType {
-  Technical = "technical",
-  Behavioral = "behavioral",
+  Technical = 'technical',
+  Behavioral = 'behavioral',
 }
 export interface DetailedResponse {
   detail: string;
@@ -180,9 +180,9 @@ export interface RawTechnicalQuestion {
   source: string;
 }
 
-export type ReportType = "interview" | "question";
+export type ReportType = 'interview' | 'question';
 
-export type ReportStatus = "pending" | "resolving" | "completed";
+export type ReportStatus = 'pending' | 'resolving' | 'completed';
 
 export interface RawReportBody {
   associated_id: string;
@@ -222,6 +222,8 @@ export interface Report {
   status: ReportStatus;
   type: ReportType;
   updated: string;
+}
+
 export interface RawInterViewPoolStatus {
   number_sign_up: number;
   members: string[];
