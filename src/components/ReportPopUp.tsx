@@ -83,7 +83,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
   };
 
   return (
-    <Box p={4} maxH="800px" mx="auto" boxSize={'xl'}>
+    <Box p={4} maxH="800px" mx="auto" boxSize="xl">
       <Card variant="outline" boxShadow="lg" borderRadius="lg">
         <CardHeader pb={0}>
           <Heading size="md" color="blue.600">
