@@ -138,6 +138,15 @@ export default function AdminDashboard() {
         to: '/admin/api-client',
       },
     },
+    {
+      title: 'Admin Console',
+      description: 'Access the admin console',
+      icon: List,
+      primaryAction: {
+        label: 'Open Console',
+        to: '/admin/console',
+      },
+    },
   ];
 
   return (

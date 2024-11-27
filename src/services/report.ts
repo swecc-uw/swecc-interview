@@ -10,17 +10,14 @@ function deserializedReport({
   associated_id: associatedId,
   ...rest
 }: RawReport): Report {
-  const ret: Report = {
-    reportId: reportId,
-    reporterUserId: reporterUserId,
+  return {
     ...rest,
+    reportId,
+    reporterUserId,
+    adminId,
+    adminNotes,
+    associatedId,
   };
-
-  if (adminId) ret.adminId = adminId;
-  if (adminNotes) ret.adminNotes = adminNotes;
-  if (associatedId) ret.associatedId = associatedId;
-
-  return ret;
 }
 
 function serializedReportBody({
@@ -29,9 +26,9 @@ function serializedReportBody({
   ...rest
 }: ReportBody): RawReportBody {
   return {
-    associated_id: associated_id,
-    reporter_user_id: reporter_user_id,
     ...rest,
+    associated_id,
+    reporter_user_id,
   };
 }
 
@@ -44,7 +41,7 @@ export async function getAllReport(): Promise<Report[]> {
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to get reports');
 
-  const reports: Report[] = res.data.reports?.map(deserializedReport) || [];
+  const reports: Report[] = res.data.reports?.map(deserializedReport);
   return reports;
 }
 

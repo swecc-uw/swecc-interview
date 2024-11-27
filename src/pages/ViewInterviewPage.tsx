@@ -85,7 +85,7 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
         isCentered
         motionPreset="slideInBottom"
         isOpen={isOpen}
-        size={'xl'}
+        size="xl"
         onClose={onClose}
       >
         <ModalOverlay />
@@ -98,7 +98,6 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
           />
         </ModalContent>
       </Modal>
-      {/* header */}
       <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={4}>
         <GridItem>
           <HStack>
@@ -144,7 +143,6 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
 
       <Divider />
 
-      {/* participants */}
       <VStack align="stretch" spacing={4}>
         <HStack>
           <User size={16} />
