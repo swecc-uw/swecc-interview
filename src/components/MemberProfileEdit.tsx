@@ -96,7 +96,9 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     setProfile((prev) => ({
       ...prev,
       [field]: {
-        ...((prev[field as keyof Member] as SocialField) || {}),
+        ...((prev[field as keyof Member] as SocialField) || {
+          isPrivate: false,
+        }),
         [key]: val,
       },
     }));

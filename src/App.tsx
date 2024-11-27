@@ -23,6 +23,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import APIClient from './pages/admin/APIClient';
 import { QuestionType } from './types';
 import ResetPasswordForm from './pages/ResetPassword';
+import AdminConsolePage from './pages/admin/AdminConsolePage';
 
 const App: React.FC = () => {
   return (
@@ -181,6 +182,7 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/admin/console" element={<AdminConsolePage />} />
           </Routes>
         </Layout>
       </HashRouter>
