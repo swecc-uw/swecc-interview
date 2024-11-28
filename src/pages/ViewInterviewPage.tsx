@@ -20,6 +20,7 @@ import {
   ModalContent,
   ModalOverlay,
   Button,
+  Flex,
 } from '@chakra-ui/react';
 import { Calendar, Clock, User, Book } from 'lucide-react';
 import { HydratedInterview, Member } from '../types';
@@ -28,6 +29,7 @@ import ReportPopUp from '../components/ReportPopUp';
 import { useAuth } from '../hooks/useAuth';
 import TechnicalQuestionCard from '../components/TechnicalQuestionCard';
 import { useState } from 'react';
+import { DISABLE_INTERVIEW_STATUS_FLAG } from '../feature-flag';
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -95,51 +97,63 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
             associatedId={interview.interviewId}
             reporterUserId={member?.id}
             onClose={onClose}
+            type="interview"
           />
         </ModalContent>
       </Modal>
-      <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={4}>
-        <GridItem>
-          <HStack>
-            <Calendar size={16} />
-            <Text fontSize="sm" color={subtleColor}>
-              scheduled for
-            </Text>
-          </HStack>
-          <Text fontSize="lg" fontWeight="medium">
-            {startDateStr} to
-          </Text>
-          <Text fontSize="lg" fontWeight="medium">
-            {endDateStr}
-          </Text>
-        </GridItem>
-        {dateCompleted && (
-          <GridItem>
-            <HStack>
-              <Clock size={16} />
-              <Text fontSize="sm" color={subtleColor}>
-                completed on
+
+      <Flex width="100%" align="flex-start" justify="space-between">
+        <Box flex="1">
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={4}>
+            <GridItem>
+              <HStack>
+                <Calendar size={16} />
+                <Text fontSize="sm" color={subtleColor}>
+                  scheduled for
+                </Text>
+              </HStack>
+              <Text fontSize="lg" fontWeight="medium">
+                {startDateStr} to
               </Text>
-            </HStack>
-            <Text fontSize="lg" fontWeight="medium">
-              {new Date(dateCompleted).toLocaleDateString(undefined, {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </Text>
-          </GridItem>
-        )}
-        <GridItem justifySelf={{ base: 'start', md: 'end' }}>
-          <Badge colorScheme={statusColors[status]} fontSize="md" px={3} py={1}>
-            {status.toUpperCase()}
-          </Badge>
-        </GridItem>
-        <GridItem>
+              <Text fontSize="lg" fontWeight="medium">
+                {endDateStr}
+              </Text>
+            </GridItem>
+            {dateCompleted && (
+              <GridItem>
+                <HStack>
+                  <Clock size={16} />
+                  <Text fontSize="sm" color={subtleColor}>
+                    completed on
+                  </Text>
+                </HStack>
+                <Text fontSize="lg" fontWeight="medium">
+                  {new Date(dateCompleted).toLocaleDateString(undefined, {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </Text>
+              </GridItem>
+            )}
+          </Grid>
+        </Box>
+
+        <Flex gap={4} align="flex-start">
+          {!DISABLE_INTERVIEW_STATUS_FLAG && (
+            <Badge
+              colorScheme={statusColors[status]}
+              fontSize="md"
+              px={3}
+              py={1}
+            >
+              {status.toUpperCase()}
+            </Badge>
+          )}
           <Button onClick={onOpen}>Report Interviewer or Interviewee</Button>
-        </GridItem>
-      </Grid>
+        </Flex>
+      </Flex>
 
       <Divider />
 
