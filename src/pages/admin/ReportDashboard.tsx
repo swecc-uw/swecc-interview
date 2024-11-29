@@ -30,7 +30,6 @@ const ReportDashboard = () => {
     getAllReport()
       .then((res) => {
         setReports(res);
-        setLoading(false);
       })
       .catch((error) => {
         devPrint(error);
@@ -41,14 +40,15 @@ const ReportDashboard = () => {
           duration: 3000,
           isClosable: true,
         });
+      }).finally(() => {
         setLoading(false);
       });
   }, [toast]);
 
   const filteredReports = reports.filter((report) => {
     return (
-      (filterType || report.type === filterType) &&
-      (filterUserId || report.reporterUserId === filterUserId) &&
+      (!filterType || report.type === filterType) &&
+      (!filterUserId || report.reporterUserId === filterUserId) &&
       report.reason.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   });
@@ -91,12 +91,12 @@ const ReportDashboard = () => {
                 p={4}
                 boxShadow="md"
               >
-                <HStack justify={'space-between'}>
+                <HStack justify='space-between'>
                   <Text fontWeight="bold">{report.reason}</Text>
                   <Button
                     onClick={() =>
-                      setExpandedReportId(
-                        expandedReportId === report.reportId
+                      setExpandedReportId((prev) =>
+                        prev === report.reportId
                           ? undefined
                           : report.reportId
                       )
@@ -109,11 +109,11 @@ const ReportDashboard = () => {
                 </HStack>
                 <Collapse
                   unmountOnExit
-                  in={expandedReportId === report.reportId ? true : false}
+                  in={expandedReportId === report.reportId}
                 >
                   <Box mt={4} bg="gray.50" p={4} borderRadius="md">
                     <VStack align="stretch" spacing={2}>
-                      <HStack justify={'space-between'}>
+                      <HStack justify='space-between'>
                         <Text>
                           <a href={`/directory/${report.reporterUserId}`}>
                             <strong>From user: </strong>
