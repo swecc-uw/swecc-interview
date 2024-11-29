@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { ReportBody } from '../types';
+import { ReportBody, ReportType } from '../types';
 import {
   Badge,
-  Box,
   Button,
   Card,
   CardBody,
@@ -12,22 +11,24 @@ import {
   FormLabel,
   Heading,
   Stack,
-  Text,
   Textarea,
   VStack,
   useToast,
 } from '@chakra-ui/react';
 import { createReport } from '../services/report';
 import { devPrint } from './utils/RandomUtils';
+import { CloseIcon } from '@chakra-ui/icons';
 
 interface ReportPopUpProps {
   associatedId: string;
   reporterUserId?: number;
+  type: ReportType;
   onClose: () => void;
 }
 
 const ReportPopUp: React.FC<ReportPopUpProps> = ({
   associatedId,
+  type,
   reporterUserId,
   onClose,
 }) => {
@@ -37,7 +38,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
   const [formData, setFormData] = useState<ReportBody>({
     associatedId: associatedId,
     reporterUserId: reporterUserId,
-    type: 'interview',
+    type: type,
     reason: '',
   });
 
@@ -58,7 +59,11 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
     setIsLoading(true);
 
     try {
-      const res = await createReport(formData);
+      const res = await createReport({
+        ...formData,
+        associatedId,
+        reporterUserId,
+      });
 
       toast({
         title: 'Report submitted successfully',
@@ -83,105 +88,99 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
   };
 
   return (
-    <Box p={4} maxH="800px" mx="auto" boxSize="xl">
-      <Card variant="outline" boxShadow="lg" borderRadius="lg">
-        <CardHeader pb={0}>
-          <Heading size="md" color="blue.600">
-            Submit Report
-          </Heading>
-        </CardHeader>
+    <Card variant="outline" boxShadow="lg" borderRadius="lg">
+      <Button
+        position="absolute"
+        top={2}
+        right={2}
+        onClick={onClose}
+        variant="ghost"
+      >
+        <CloseIcon />
+      </Button>
+      <CardHeader pb={0}>
+        <Heading size="md" color="blue.600">
+          Submit Report
+        </Heading>
+      </CardHeader>
 
-        <CardBody maxH="500px">
-          <form onSubmit={handleSubmit}>
-            <VStack spacing={2} align="stretch">
-              <Stack spacing={4}>
-                <FormControl>
-                  <FormLabel color="gray.700" fontWeight="medium">
-                    Associated ID
-                  </FormLabel>
-                  <Box
-                    p={3}
-                    bg="gray.50"
-                    borderRadius="md"
-                    border="1px"
-                    borderColor="gray.200"
-                  >
-                    <Text color="gray.700" fontSize="md">
-                      {associatedId}
-                    </Text>
-                  </Box>
-                </FormControl>
-
-                <FormControl>
-                  <FormLabel color="gray.700" fontWeight="medium">
-                    Reporter User ID
-                  </FormLabel>
-                  <Box
-                    p={3}
-                    bg="gray.50"
-                    borderRadius="md"
-                    border="1px"
-                    borderColor="gray.200"
-                  >
-                    <Badge colorScheme="blue" fontSize="md">
-                      {reporterUserId}
-                    </Badge>
-                  </Box>
-                </FormControl>
+      <CardBody maxH="500px">
+        <form onSubmit={handleSubmit}>
+          <VStack spacing={2} align="stretch">
+            <FormControl isRequired isDisabled={isLoading}>
+              <FormLabel color="gray.700" fontWeight="medium">
+                Report Type
+              </FormLabel>
+              <Stack direction="row" spacing={4}>
+                <Badge
+                  colorScheme="red"
+                  variant={formData.type === 'interview' ? 'solid' : 'outline'}
+                  cursor="pointer"
+                  onClick={() =>
+                    setFormData({ ...formData, type: 'interview' })
+                  }
+                >
+                  Interview
+                </Badge>
+                <Badge
+                  colorScheme="red"
+                  variant={formData.type === 'question' ? 'solid' : 'outline'}
+                  cursor="pointer"
+                  onClick={() => setFormData({ ...formData, type: 'question' })}
+                >
+                  Question
+                </Badge>
               </Stack>
+              <Divider my={4} />
 
-              <Divider />
-
-              <FormControl isRequired isDisabled={isLoading}>
-                <FormLabel color="gray.700" fontWeight="medium">
-                  Reason for Report
-                </FormLabel>
-                <Textarea
-                  value={formData.reason}
-                  onChange={handleChange}
-                  placeholder="Please provide detailed information about your report..."
-                  size="lg"
-                  minH="150px"
-                  name="reason"
-                  id="reason"
-                  bg="white"
-                  border="1px"
-                  borderColor="gray.300"
-                  _hover={{
-                    borderColor: 'blue.400',
-                  }}
-                  _focus={{
-                    borderColor: 'blue.500',
-                    boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)',
-                  }}
-                />
-              </FormControl>
-
-              <Button
-                type="submit"
-                colorScheme="blue"
+              <FormLabel color="gray.700" fontWeight="medium">
+                Reason for Report
+              </FormLabel>
+              <Textarea
+                value={formData.reason}
+                onChange={handleChange}
+                placeholder="Please provide detailed information about your report..."
                 size="lg"
-                width="full"
-                mt={4}
-                fontWeight="medium"
-                isLoading={isLoading}
-                loadingText="Submitting..."
+                minH="150px"
+                name="reason"
+                id="reason"
+                bg="white"
+                border="1px"
+                borderColor="gray.300"
                 _hover={{
-                  transform: 'translateY(-1px)',
-                  boxShadow: 'lg',
+                  borderColor: 'blue.400',
                 }}
-                transition="all 0.2s"
-              >
-                Submit Report
-              </Button>
-              <Button variant="ghost" onClick={onClose}>
-                Cancel
-              </Button>
-            </VStack>
-          </form>
-        </CardBody>
-      </Card>
-    </Box>
+                _focus={{
+                  borderColor: 'blue.500',
+                  boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)',
+                }}
+              />
+            </FormControl>
+
+            <Button
+              type="submit"
+              colorScheme="blue"
+              size="lg"
+              width="full"
+              mt={4}
+              fontWeight="medium"
+              isLoading={isLoading}
+              loadingText="Submitting..."
+              _hover={{
+                transform: 'translateY(-1px)',
+                boxShadow: 'lg',
+              }}
+              transition="all 0.2s"
+            >
+              Submit Report
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </VStack>
+        </form>
+      </CardBody>
+    </Card>
   );
 };
 

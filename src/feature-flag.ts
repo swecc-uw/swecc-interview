@@ -1,0 +1,1 @@
+export const DISABLE_INTERVIEW_STATUS_FLAG = true;
