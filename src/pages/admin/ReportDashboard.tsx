@@ -40,7 +40,8 @@ const ReportDashboard = () => {
           duration: 3000,
           isClosable: true,
         });
-      }).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [toast]);
@@ -91,14 +92,12 @@ const ReportDashboard = () => {
                 p={4}
                 boxShadow="md"
               >
-                <HStack justify='space-between'>
+                <HStack justify="space-between">
                   <Text fontWeight="bold">{report.reason}</Text>
                   <Button
                     onClick={() =>
                       setExpandedReportId((prev) =>
-                        prev === report.reportId
-                          ? undefined
-                          : report.reportId
+                        prev === report.reportId ? undefined : report.reportId
                       )
                     }
                   >
@@ -113,7 +112,7 @@ const ReportDashboard = () => {
                 >
                   <Box mt={4} bg="gray.50" p={4} borderRadius="md">
                     <VStack align="stretch" spacing={2}>
-                      <HStack justify='space-between'>
+                      <HStack justify="space-between">
                         <Text>
                           <a href={`/directory/${report.reporterUserId}`}>
                             <strong>From user: </strong>
