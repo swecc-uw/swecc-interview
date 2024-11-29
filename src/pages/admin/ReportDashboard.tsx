@@ -17,7 +17,6 @@ import { Report, ReportType } from '../../types';
 import { devPrint } from '../../components/utils/RandomUtils';
 import { Link } from 'react-router-dom';
 
-
 const ReportDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(false);
@@ -126,7 +125,8 @@ const ReportDashboard = () => {
                           to={`/directory/${report.reporterUserId}`}
                           colorScheme="blue"
                         >
-                          Go to User</Button>
+                          Go to User
+                        </Button>
                       </HStack>
                       <Text>
                         <strong>Type:</strong> {report.type}
