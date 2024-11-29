@@ -115,6 +115,15 @@ export default function AdminDashboard() {
       },
     },
     {
+      title: 'Reports',
+      description: 'View and Manage User Reports',
+      icon: Users,
+      primaryAction: {
+        label: 'View Reports',
+        to: '/reports',
+      },
+    },
+    {
       title: 'Utils',
       description: 'Miscellaneous utilities',
       icon: Terminal,

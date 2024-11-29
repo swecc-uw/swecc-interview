@@ -22,6 +22,7 @@ import QuestionQueueDashboard from './pages/admin/QuestionQueueDashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import APIClient from './pages/admin/APIClient';
 import { QuestionType } from './types';
+import ReportDashboard from './pages/admin/ReportDashboard';
 import ResetPasswordForm from './pages/ResetPassword';
 import AdminConsolePage from './pages/admin/AdminConsolePage';
 
@@ -168,6 +169,16 @@ const App: React.FC = () => {
                 <ProtectedRoute>
                   <AdminRoute>
                     <PairInterviewDashboard />
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reports"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <ReportDashboard />
                   </AdminRoute>
                 </ProtectedRoute>
               }
