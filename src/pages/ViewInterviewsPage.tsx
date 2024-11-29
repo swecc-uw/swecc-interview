@@ -22,6 +22,7 @@ import { getInterviewsHydratedForUser } from '../services/interview';
 import { useAuth } from '../hooks/useAuth';
 import { devPrint, resolveName } from '../components/utils/RandomUtils';
 import { ViewInterviewPage } from './ViewInterviewPage';
+import { DISABLE_INTERVIEW_STATUS_FLAG } from '../feature-flag';
 
 interface DateRange {
   start: string;
@@ -87,7 +88,9 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({ interview }) => {
               })}
             </Text>
           </HStack>
-          <InterviewStatusBadge status={interview.status} />
+          {!DISABLE_INTERVIEW_STATUS_FLAG && (
+            <InterviewStatusBadge status={interview.status} />
+          )}
         </Flex>
 
         {/* participants */}
@@ -251,22 +254,24 @@ export const ViewInterviewsPage: React.FC = () => {
               }
             />
           </Box>
-          <Box flex="1" minW="200px">
-            <Text mb={2} fontSize="sm">
-              Status
-            </Text>
-            <Select
-              value={statusFilter}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setStatusFilter(e.target.value as 'all' | Status)
-              }
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="pending">Pending</option>
-              <option value="inactive">Inactive</option>
-            </Select>
-          </Box>
+          {!DISABLE_INTERVIEW_STATUS_FLAG && (
+            <Box flex="1" minW="200px">
+              <Text mb={2} fontSize="sm">
+                Status
+              </Text>
+              <Select
+                value={statusFilter}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  setStatusFilter(e.target.value as 'all' | Status)
+                }
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="inactive">Inactive</option>
+              </Select>
+            </Box>
+          )}
         </HStack>
 
         {/* results */}
