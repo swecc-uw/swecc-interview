@@ -15,6 +15,7 @@ import {
 import { getAllReport } from '../../services/report';
 import { Report, ReportType } from '../../types';
 import { devPrint } from '../../components/utils/RandomUtils';
+import { Link } from 'react-router-dom';
 
 const ReportDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -114,14 +115,14 @@ const ReportDashboard = () => {
                     <VStack align="stretch" spacing={2}>
                       <HStack justify="space-between">
                         <Text>
-                          <a href={`/directory/${report.reporterUserId}`}>
+                          <Link to={`/directory/${report.reporterUserId}`}>
                             <strong>From user: </strong>
                             {report.reporterUserId}
-                          </a>
+                          </Link>
                         </Text>
                         <Button
-                          as="a"
-                          href={`/directory/${report.reporterUserId}`}
+                          as={Link}
+                          to={`/directory/${report.reporterUserId}`}
                           colorScheme="blue"
                         >
                           Go to User
