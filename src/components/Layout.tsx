@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -43,6 +43,23 @@ interface NavBarProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, isAdmin, loading, member, isVerified } = useAuth();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    let redirectTimeout: NodeJS.Timeout;
+
+    if (!loading && isAuthenticated && !isVerified) {
+      redirectTimeout = setTimeout(() => {
+        navigate('/auth');
+      }, 1000);
+    }
+
+    return () => {
+      if (redirectTimeout) {
+        clearTimeout(redirectTimeout);
+      }
+    };
+  }, [isAuthenticated, isVerified, loading, navigate]);
 
   if (loading) {
     return (
