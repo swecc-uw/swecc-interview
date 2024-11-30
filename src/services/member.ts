@@ -47,7 +47,7 @@ export function serializeMember({
     discord_id,
     profile_picture_url,
     created: created ? toAPIFormat(created) : undefined,
-    grad_date: grad_date ? toAPIFormat(grad_date) : undefined,
+    grad_date: grad_date ? toAPIFormat(grad_date, false) : undefined,
   };
 }
 

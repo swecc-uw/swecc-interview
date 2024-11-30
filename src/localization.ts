@@ -83,8 +83,13 @@ export function isSameUTCDay(
  * Convert date to ISO UTC string for API
  * Prefer this over using toISOString() directly for future refactoring
  */
-export function toAPIFormat(date: string | Date): string {
-  return parseAnyDate(date).toISOString();
+export function toAPIFormat(
+  date: string | Date,
+  includeTime: boolean = false
+): string {
+  date = parseAnyDate(date);
+  if (includeTime) return date.toISOString();
+  return date.toISOString().split('T')[0];
 }
 
 /**
