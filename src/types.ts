@@ -4,7 +4,7 @@ export interface SocialField {
 }
 
 export interface InterviewAvailability {
-  userId: number; // user id
+  userId: number;
   availability: boolean[][];
 }
 
@@ -21,8 +21,8 @@ export interface Interview {
   behavioralQuestions?: BehavioralQuestion[];
   interviewee: number;
   status: Status;
-  dateEffective: Date; // UTC date
-  dateCompleted?: Date; // UTC date
+  dateEffective: Date;
+  dateCompleted?: Date;
 }
 
 export interface HydratedInterview {
@@ -32,14 +32,14 @@ export interface HydratedInterview {
   behavioralQuestions?: BehavioralQuestion[];
   interviewee: Member;
   status: Status;
-  dateEffective: Date; // UTC date
-  dateCompleted?: Date; // UTC date
+  dateEffective: Date;
+  dateCompleted?: Date;
 }
 
 export interface Member {
-  id: number; // user id
+  id: number;
   username: string;
-  created: Date; // ISO 8601 date string
+  created: Date;
   email: string;
   role: string;
   firstName: string;
@@ -61,13 +61,13 @@ export interface Member {
 
 export interface QuestionTopic {
   topicId: string;
-  created: string; // ISO 8601 date string
+  created: string;
   name: string;
 }
 
 export interface BaseQuestion {
   questionId: string;
-  created: Date; // UTC date
+  created: Date;
   prompt: string;
 }
 
@@ -87,7 +87,7 @@ export interface BehavioralQuestion extends BaseQuestion {
   createdBy: Member;
   solution: string;
   approvedBy?: Member;
-  lastAssigned?: Date; // UTC date
+  lastAssigned?: Date;
   followUps?: string;
   source?: string;
 }
@@ -147,7 +147,7 @@ export interface Topic {
 
 export interface RawTopic {
   topic_id: string;
-  created: string; // ISO 8601 date string
+  created: string;
   created_by: Member;
   name: string;
 }
@@ -186,7 +186,7 @@ export type ReportStatus = 'pending' | 'resolving' | 'completed';
 
 export interface RawReportBody {
   associated_id: string;
-  reporter_user_id?: number; // can be anonymous
+  reporter_user_id?: number;
   type: ReportType;
   reason: string;
 }

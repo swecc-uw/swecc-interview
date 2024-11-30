@@ -1,12 +1,12 @@
 /**
- * Guidelines:
- * - Parse dates immediately when receiving from API
+ * guidelines:
+ *
+ * - parse dates immediately when receiving from API
  *     ex: const date = parseAnyDate(storedDate);
- * - Only convert to local time when displaying to users
+ * - only convert to local time when displaying to users
  *     ex: formatDate(date, true);
- * - Use toISOString() when sending to API
+ * - use tpAPIFormat to convert dates to ISO UTC for API
  *     ex: const storedDate = toAPIFormat(new Date());
- * - Try to use these functions when manipulating dates
  */
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
@@ -22,7 +22,7 @@ const TIME_FORMAT: Intl.DateTimeFormatOptions = {
 };
 
 /**
- * Parse a Date object from either ISO UTC or YYYY-MM-DD string
+ * parse a Date object from either ISO UTC or YYYY-MM-DD string
  */
 export function parseAnyDate(input: string | Date): Date {
   if (input instanceof Date) return input;
@@ -38,7 +38,7 @@ export function parseAnyDate(input: string | Date): Date {
 }
 
 /**
- * Format date for display to users
+ * format date for display to users
  */
 export function formatDate(date: string | Date, includeTime = false): string {
   const d = parseAnyDate(date);
@@ -112,3 +112,4 @@ export const getThisUpcomingSunday = () => {
   return addDays(today, 7 - today.getUTCDay());
 };
 export const getLastSunday = () => addDays(getThisUpcomingSunday(), -7);
+export const timestampNow = () => new Date().toISOString();

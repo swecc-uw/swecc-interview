@@ -182,16 +182,14 @@ export const ViewInterviewsPage: React.FC = () => {
 
     // date filter
     if (dateRange.start) {
+      const start = parseAnyDate(dateRange.start);
       filtered = filtered.filter(
-        (interview) =>
-          parseAnyDate(interview.dateEffective) >= parseAnyDate(dateRange.start)
+        (interview) => interview.dateEffective >= start
       );
     }
     if (dateRange.end) {
-      filtered = filtered.filter(
-        (interview) =>
-          parseAnyDate(interview.dateEffective) <= parseAnyDate(dateRange.end)
-      );
+      const end = parseAnyDate(dateRange.end);
+      filtered = filtered.filter((interview) => interview.dateEffective <= end);
     }
 
     // status filter
@@ -202,9 +200,7 @@ export const ViewInterviewsPage: React.FC = () => {
     }
 
     filtered.sort(
-      (a, b) =>
-        new Date(b.dateEffective).getTime() -
-        new Date(a.dateEffective).getTime()
+      (a, b) => b.dateEffective.getTime() - a.dateEffective.getTime()
     );
 
     setFilteredInterviews(filtered);

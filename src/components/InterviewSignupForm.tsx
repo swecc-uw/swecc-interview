@@ -8,13 +8,7 @@ import { signupCurrentUserForInterviewPool } from '../services/interview';
 import { InterviewAvailability } from '../types';
 import { devPrint } from './utils/RandomUtils';
 import { useAuth } from '../hooks/useAuth';
-import { getToday } from '../localization';
-
-const getNextSunday = () => {
-  const today = new Date();
-  const day = today.getDay();
-  return new Date(today.setDate(today.getDate() + 7 - day));
-};
+import { formatDate, getThisUpcomingSunday } from '../localization';
 
 interface InterviewSignupFormProps {
   title: string;
@@ -101,7 +95,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
       case 1:
         return (
           <ConfirmInterviewSignupStep
-            weekOf={getNextSunday().toLocaleDateString()}
+            weekOf={formatDate(getThisUpcomingSunday())}
             _handleConfirm={handleConfirm}
           />
         );

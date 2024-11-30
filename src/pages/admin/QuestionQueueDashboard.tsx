@@ -37,6 +37,7 @@ import {
   TechnicalQuestion,
 } from '../../types';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { formatDate } from '../../localization';
 
 interface UseQuestionQueueProps {
   questionType: QuestionType;
@@ -307,9 +308,7 @@ function QuestionCard<T extends BaseQuestion>({
               {(question as unknown as TechnicalQuestion).topicName}
             </Badge>
           )}
-          <Badge colorScheme="gray">
-            {new Date(question.created).toLocaleDateString()}
-          </Badge>
+          <Badge colorScheme="gray">{formatDate(question.created)}</Badge>
           {typeof queueIndex === 'number' && (
             <Badge colorScheme="green">#{queueIndex + 1} in queue</Badge>
           )}
