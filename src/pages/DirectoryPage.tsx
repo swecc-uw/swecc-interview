@@ -21,13 +21,12 @@ import { searchMembers, getRecommendedMembers } from '../services/directory';
 import { Member } from '../types';
 import MemberList from '../components/MemberList';
 import { devPrint } from '../components/utils/RandomUtils';
-import { FaCcDiscover } from 'react-icons/fa';
 
-const MINIMUM_LOADING_TIME = 1000; // 1 second in milliseconds
+const MINIMUM_LOADING_TIME = 1000;
 
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [debouncedQuery] = useDebounce(query, 300); // Keep shorter debounce for responsiveness
+  const [debouncedQuery] = useDebounce(query, 300);
   const [members, setMembers] = useState<Member[]>([]);
   const [recommended, setRecommended] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
@@ -63,11 +62,8 @@ const DirectoryPage: React.FC = () => {
           true
         );
 
-        // Calculate how long the request took
         const elapsedTime = Date.now() - startTime;
 
-        // If the request was faster than our minimum loading time,
-        // wait the remaining time
         if (elapsedTime < MINIMUM_LOADING_TIME) {
           await new Promise((resolve) =>
             setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime)
@@ -81,7 +77,6 @@ const DirectoryPage: React.FC = () => {
         setMembers([]);
         setTotalCount(0);
 
-        // Ensure error states also maintain minimum loading time
         const elapsedTime = Date.now() - startTime;
         if (elapsedTime < MINIMUM_LOADING_TIME) {
           await new Promise((resolve) =>

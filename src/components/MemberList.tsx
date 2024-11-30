@@ -163,7 +163,7 @@ const MemberList: React.FC<MemberListProps> = ({
   showPagination = true,
   onPageChange,
 }) => {
-  // Show loading state with same number of cards as current results
+  // show loading state with same number of cards as current results
   // or at least 3 if there are no results yet
   const skeletonCount = loading ? Math.max(members.length, 3) : 0;
 
