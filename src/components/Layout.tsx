@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Box,
   Flex,
@@ -43,16 +43,6 @@ interface NavBarProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, isAdmin, loading, member, isVerified } = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-
-    if (!isVerified) {
-      navigate('/auth');
-    }
-  }, [isAuthenticated, isVerified, navigate]);
 
   if (loading) {
     return (
