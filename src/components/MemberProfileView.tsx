@@ -148,7 +148,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           <Avatar
             size="2xl"
             name={resolveName(member)}
-            src={member.preview}
+            src={member.profilePictureUrl}
             bg="blue.500"
           />
           <VStack align={{ base: 'center', md: 'start' }} spacing={3} flex="1">

@@ -21,10 +21,7 @@ const MemberList: React.FC<MemberListProps> = ({ members }) => {
           boxShadow="sm"
         >
           <HStack spacing={4}>
-            <Avatar
-              name={resolveName(member)}
-              src={member.profilePictureUrl || member.username}
-            />
+            <Avatar name={resolveName(member)} src={member.profilePictureUrl} />
             <VStack align="start">
               <Text fontWeight="bold">{member.username}</Text>
               <Text>{resolveName(member)}</Text>
