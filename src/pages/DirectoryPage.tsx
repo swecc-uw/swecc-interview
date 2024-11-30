@@ -1,64 +1,156 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 import {
   Container,
   Input,
   VStack,
-  Button,
   Heading,
   Stack,
   FormControl,
-  Spinner,
-  Center,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  InputGroup,
+  InputLeftElement,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import { searchMembers } from '../services/directory';
+import { Eye, SearchIcon } from 'lucide-react';
+import { searchMembers, getRecommendedMembers } from '../services/directory';
 import { Member } from '../types';
 import MemberList from '../components/MemberList';
 import { devPrint } from '../components/utils/RandomUtils';
+import { FaCcDiscover } from 'react-icons/fa';
+
+const MINIMUM_LOADING_TIME = 1000; // 1 second in milliseconds
 
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
+  const [debouncedQuery] = useDebounce(query, 300); // Keep shorter debounce for responsiveness
   const [members, setMembers] = useState<Member[]>([]);
+  const [recommended, setRecommended] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
-  const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    setLoading(true);
-    try {
-      const results = await searchMembers(query);
-      setMembers(results);
-    } catch (error) {
-      devPrint('Error searching for members:', error);
-      setMembers([]);
-    }
-    setLoading(false);
-  };
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
 
-  const qChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setQuery(e.target.value);
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const results = await getRecommendedMembers(true);
+        setRecommended(results);
+      } catch (error) {
+        devPrint('Error fetching recommendations:', error);
+      }
+    };
+
+    fetchRecommended();
+  }, []);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      setLoading(true);
+      const startTime = Date.now();
+
+      try {
+        const response = await searchMembers(
+          debouncedQuery,
+          currentPage,
+          20,
+          true
+        );
+
+        // Calculate how long the request took
+        const elapsedTime = Date.now() - startTime;
+
+        // If the request was faster than our minimum loading time,
+        // wait the remaining time
+        if (elapsedTime < MINIMUM_LOADING_TIME) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime)
+          );
+        }
+
+        setMembers(response.results);
+        setTotalCount(response.count);
+      } catch (error) {
+        devPrint('Error searching members:', error);
+        setMembers([]);
+        setTotalCount(0);
+
+        // Ensure error states also maintain minimum loading time
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime < MINIMUM_LOADING_TIME) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime)
+          );
+        }
+      }
+
+      setLoading(false);
+    };
+
+    fetchMembers();
+  }, [debouncedQuery, currentPage]);
+
+  const totalPages = Math.ceil(totalCount / 20);
 
   return (
     <Container maxW="container.lg" py={8}>
-      <VStack spacing={4} align="stretch">
-        <Heading as="h1" size="lg">
-          Member Directory
-        </Heading>
-        <form onSubmit={handleSearch}>
-          <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-            <FormControl>
-              <Input colorScheme="brand" value={query} onChange={qChange} />
-            </FormControl>
-            <Button colorScheme="brand" type="submit">
-              Search
-            </Button>
-          </Stack>
-        </form>
-        {loading ? (
-          <Center mt={10}>
-            <Spinner />
-          </Center>
-        ) : (
-          <MemberList members={members} />
-        )}
+      <VStack spacing={8} align="stretch">
+        <Stack spacing={4}>
+          <Heading as="h1" size="lg">
+            Member Directory
+          </Heading>
+          <FormControl>
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <SearchIcon size={20} />
+              </InputLeftElement>
+              <Input
+                placeholder="Search members..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                bg={bgColor}
+                borderColor={borderColor}
+              />
+            </InputGroup>
+          </FormControl>
+        </Stack>
+
+        <Tabs variant="enclosed">
+          <TabList>
+            <Tab>{query === '' ? 'All Members' : 'Results'}</Tab>
+            <Tab>
+              <Stack direction="row" align="center" spacing={2}>
+                <Eye />
+                <span>Discover</span>
+              </Stack>
+            </Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel px={0}>
+              <MemberList
+                members={members}
+                loading={loading}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </TabPanel>
+            <TabPanel px={0}>
+              <MemberList
+                members={recommended}
+                loading={false}
+                showPagination={false}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </VStack>
     </Container>
   );

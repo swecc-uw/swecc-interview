@@ -4,14 +4,22 @@ import { devPrint } from '../components/utils/RandomUtils';
 import { AxiosResponse } from 'axios';
 import { deserializeMember } from './member';
 
+interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
 interface Cache<T> {
   data: T;
   timestamp: number;
 }
 
 interface CacheStore {
-  members: { [key: string]: Cache<Member[]> };
+  members: { [key: string]: Cache<PaginatedResponse<Member>> };
   memberProfiles: { [key: number]: Cache<Member> };
+  recommended: Cache<Member[]> | null;
 }
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5 min
@@ -19,6 +27,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 min
 const cache: CacheStore = {
   members: {},
   memberProfiles: {},
+  recommended: null,
 };
 
 function isCacheValid<T>(cache: Cache<T>): boolean {
@@ -34,18 +43,22 @@ function setCache<T>(store: { [key: string]: Cache<T> }, key: string, data: T) {
 
 export async function searchMembers(
   nameQuery: string,
+  page = 1,
+  pageSize = 20,
   useCache = false
-): Promise<Member[]> {
+): Promise<PaginatedResponse<Member>> {
+  const cacheKey = `${nameQuery}-${page}-${pageSize}`;
+
   if (
     useCache &&
-    cache.members[nameQuery] &&
-    isCacheValid(cache.members[nameQuery])
+    cache.members[cacheKey] &&
+    isCacheValid(cache.members[cacheKey])
   ) {
-    devPrint('Using cached search results for:', nameQuery);
-    return cache.members[nameQuery].data;
+    devPrint('Using cached search results for:', cacheKey);
+    return cache.members[cacheKey].data;
   }
 
-  const url = `/directory/search/?q=${nameQuery}`;
+  const url = `/directory/search/?q=${nameQuery}&page=${page}&page_size=${pageSize}`;
   const res: AxiosResponse = await api.get(url);
   devPrint('res:', res);
 
@@ -53,14 +66,41 @@ export async function searchMembers(
     throw new Error('Failed to search for members');
   }
 
-  if (!Object.prototype.hasOwnProperty.call(res, 'data')) {
-    throw new Error('Failed to search for members');
+  const response: PaginatedResponse<Member> = {
+    ...res.data,
+    results: res.data.results.map(deserializeMember),
+  };
+
+  if (useCache) {
+    setCache(cache.members, cacheKey, response);
+  }
+
+  return response;
+}
+
+export async function getRecommendedMembers(
+  useCache = false
+): Promise<Member[]> {
+  if (useCache && cache.recommended && isCacheValid(cache.recommended)) {
+    devPrint('Using cached recommended members');
+    return cache.recommended.data;
+  }
+
+  const url = '/directory/recommended/';
+  const res: AxiosResponse = await api.get(url);
+  devPrint('res:', res);
+
+  if (res.status !== 200) {
+    throw new Error('Failed to get recommended members');
   }
 
   const members = res.data.map(deserializeMember);
 
   if (useCache) {
-    setCache(cache.members, nameQuery, members);
+    cache.recommended = {
+      data: members,
+      timestamp: Date.now(),
+    };
   }
 
   return members;
