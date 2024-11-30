@@ -58,7 +58,7 @@ const MemberProfile: React.FC = () => {
         <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
           <Avatar
             name={resolveName(member)}
-            src={member.profilePictureUrl || member.username}
+            src={member.profilePictureUrl}
             size="2xl"
           />
           <VStack align="start">
