@@ -35,6 +35,7 @@ import {
 } from 'react-icons/fa';
 import { Member } from '../types';
 import { resolveName } from './utils/RandomUtils';
+import { formatDate } from '../localization';
 
 const stripEmptySocials = (member: Member) => {
   if (member.leetcode?.username?.length == 0) {
@@ -71,23 +72,6 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
   }
 
   member = stripEmptySocials(member);
-
-  const formatDate = (dateString: string, includeTime: boolean = false) => {
-    const date = new Date(dateString);
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    };
-    if (includeTime) {
-      return date.toLocaleString('en-US', {
-        ...dateOptions,
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    }
-    return date.toLocaleDateString('en-US', dateOptions);
-  };
 
   const SocialLink = ({
     icon,
@@ -286,8 +270,8 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
                 label="Groups"
                 value={
                   <HStack spacing={2} flexWrap="wrap">
-                    {member.groups.map((group) => (
-                      <Badge key={group.name} colorScheme="green">
+                    {member.groups.map((group, i) => (
+                      <Badge key={i} colorScheme="green">
                         {group.name}
                       </Badge>
                     ))}

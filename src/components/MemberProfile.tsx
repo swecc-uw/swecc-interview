@@ -14,6 +14,7 @@ import {
 import { Member } from '../types';
 import { getMemberById } from '../services/directory';
 import { devPrint, resolveName } from './utils/RandomUtils';
+import { formatDate } from '../localization';
 
 const MemberProfile: React.FC = () => {
   const { userId } = useParams();
@@ -68,7 +69,9 @@ const MemberProfile: React.FC = () => {
             <Text>Username: {member.username}</Text>
             <Text>Email: {member.email}</Text>
             <Text>Major: {member.major}</Text>
-            <Text>Graduation Date: {member.gradDate}</Text>
+            {member.gradDate && (
+              <Text>Graduation Date: {formatDate(member.gradDate)}</Text>
+            )}
             <Text>Bio: {member.bio}</Text>
             <Text>Location: {member.local}</Text>
             {member.linkedin && (

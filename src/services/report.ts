@@ -1,4 +1,5 @@
 import { devPrint } from '../components/utils/RandomUtils';
+import { parseAnyDate } from '../localization';
 import { RawReport, RawReportBody, Report, ReportBody } from '../types';
 import api from './api';
 
@@ -8,6 +9,8 @@ function deserializedReport({
   admin_id: adminId,
   admin_notes: adminNotes,
   associated_id: associatedId,
+  created,
+  updated,
   ...rest
 }: RawReport): Report {
   return {
@@ -17,6 +20,8 @@ function deserializedReport({
     adminId,
     adminNotes,
     associatedId,
+    created: parseAnyDate(created),
+    updated: parseAnyDate(updated),
   };
 }
 

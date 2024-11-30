@@ -30,6 +30,7 @@ import {
 } from 'react-icons/fa';
 import { Member, SocialField } from '../types';
 import ProfilePictureUpload from './ProfilePictureUpload';
+import { toDateInputFormat } from '../localization';
 
 const GITHUB_BASE = 'https://github.com/';
 const LINKEDIN_BASE = 'https://linkedin.com/in/';
@@ -249,7 +250,7 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
               <Input
                 name="gradDate"
                 type="date"
-                value={profile.gradDate || ''}
+                value={toDateInputFormat(profile.gradDate)}
                 onChange={handleChange}
               />
             </FormControl>

@@ -23,6 +23,12 @@ import { useAuth } from '../hooks/useAuth';
 import { devPrint, resolveName } from '../components/utils/RandomUtils';
 import { ViewInterviewPage } from './ViewInterviewPage';
 import { DISABLE_INTERVIEW_STATUS_FLAG } from '../feature-flag';
+import {
+  formatDate,
+  parseAnyDate,
+  toDateInputFormat,
+  getLastSunday,
+} from '../localization';
 
 interface DateRange {
   start: string;
@@ -80,12 +86,7 @@ const InterviewPreview: React.FC<InterviewPreviewProps> = ({ interview }) => {
           <HStack spacing={2}>
             <Calendar size={16} />
             <Text fontSize="sm" color={subtleColor}>
-              {new Date(interview.dateEffective).toLocaleDateString(undefined, {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
+              {formatDate(interview.dateEffective)}
             </Text>
           </HStack>
           {!DISABLE_INTERVIEW_STATUS_FLAG && (
@@ -144,7 +145,10 @@ export const ViewInterviewsPage: React.FC = () => {
     HydratedInterview[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [dateRange, setDateRange] = useState<DateRange>({ start: '', end: '' });
+  const [dateRange, setDateRange] = useState<DateRange>({
+    start: toDateInputFormat(getLastSunday()),
+    end: '',
+  });
   const [statusFilter, setStatusFilter] = useState<'all' | Status>('all');
   const { member } = useAuth();
   const toast = useToast();
@@ -180,13 +184,13 @@ export const ViewInterviewsPage: React.FC = () => {
     if (dateRange.start) {
       filtered = filtered.filter(
         (interview) =>
-          new Date(interview.dateEffective) >= new Date(dateRange.start)
+          parseAnyDate(interview.dateEffective) >= parseAnyDate(dateRange.start)
       );
     }
     if (dateRange.end) {
       filtered = filtered.filter(
         (interview) =>
-          new Date(interview.dateEffective) <= new Date(dateRange.end)
+          parseAnyDate(interview.dateEffective) <= parseAnyDate(dateRange.end)
       );
     }
 
@@ -236,7 +240,7 @@ export const ViewInterviewsPage: React.FC = () => {
             </Text>
             <Input
               type="date"
-              value={dateRange.start}
+              value={toDateInputFormat(dateRange.start)}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDateRange((prev) => ({ ...prev, start: e.target.value }))
               }
@@ -248,7 +252,7 @@ export const ViewInterviewsPage: React.FC = () => {
             </Text>
             <Input
               type="date"
-              value={dateRange.end}
+              value={toDateInputFormat(dateRange.end)}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDateRange((prev) => ({ ...prev, end: e.target.value }))
               }

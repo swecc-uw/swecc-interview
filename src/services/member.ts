@@ -1,4 +1,5 @@
 import { devPrint } from '../components/utils/RandomUtils';
+import { parseAnyDate, toAPIFormat } from '../localization';
 import { Member, RawMemberData } from '../types';
 import api from './api';
 
@@ -10,17 +11,19 @@ export function deserializeMember({
   resume_url: resumeUrl,
   discord_id: discordId,
   profile_picture_url: profilePictureUrl,
+  created,
   ...rest
 }: RawMemberData): Member {
   return {
     ...rest,
     firstName,
     lastName,
-    gradDate,
     discordUsername,
     resumeUrl,
     discordId,
     profilePictureUrl,
+    created: parseAnyDate(created),
+    gradDate: gradDate ? parseAnyDate(gradDate) : undefined,
   };
 }
 
@@ -32,17 +35,19 @@ export function serializeMember({
   resumeUrl: resume_url,
   discordId: discord_id,
   profilePictureUrl: profile_picture_url,
+  created,
   ...member
 }: Partial<Member>): Partial<RawMemberData> {
   return {
     ...member,
     first_name,
     last_name,
-    grad_date,
     discord_username,
     resume_url,
     discord_id,
     profile_picture_url,
+    created: created ? toAPIFormat(created) : undefined,
+    grad_date: grad_date ? toAPIFormat(grad_date) : undefined,
   };
 }
 

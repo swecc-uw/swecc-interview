@@ -1,4 +1,5 @@
 import { devPrint } from '../components/utils/RandomUtils';
+import { parseAnyDate, toAPIFormat } from '../localization';
 import {
   TechnicalQuestion,
   BehavioralQuestion,
@@ -12,11 +13,13 @@ import api from './api';
 export function deserializeTopic({
   topic_id: topicId,
   created_by: createdBy,
+  created,
   ...rest
 }: RawTopic): Topic {
   return {
     topicId,
     createdBy,
+    created: parseAnyDate(created),
     ...rest,
   };
 }
@@ -27,6 +30,7 @@ export function deserializeBehavioralQuestion({
   approved_by: approvedBy,
   last_assigned: lastAssigned,
   follow_ups: followUps,
+  created,
   ...rest
 }: RawBehavioralQuestion): BehavioralQuestion {
   return {
@@ -34,8 +38,9 @@ export function deserializeBehavioralQuestion({
     questionId,
     createdBy,
     approvedBy,
-    lastAssigned,
     followUps,
+    created: parseAnyDate(created),
+    lastAssigned: lastAssigned ? parseAnyDate(lastAssigned) : undefined,
   };
 }
 
@@ -46,6 +51,7 @@ export function deserializeTechnicalQuestion({
   last_assigned: lastAssigned,
   follow_ups: followUps,
   topic,
+  created,
   ...rest
 }: RawTechnicalQuestion): TechnicalQuestion {
   return {
@@ -53,10 +59,62 @@ export function deserializeTechnicalQuestion({
     questionId,
     createdBy,
     approvedBy,
-    lastAssigned,
     followUps,
     topicName: topic.name,
     topic: topic.topic_id,
+    lastAssigned: lastAssigned ? parseAnyDate(lastAssigned) : undefined,
+    created: parseAnyDate(created),
+  };
+}
+
+export function serializeTopic({
+  topicId: topic_id,
+  createdBy: created_by,
+  created,
+  ...topic
+}: Partial<Topic>): Partial<RawTopic> {
+  return {
+    ...topic,
+    topic_id,
+    created_by,
+    created: created ? toAPIFormat(created) : undefined,
+  };
+}
+
+export function serializeTechnicalQuestion({
+  questionId: question_id,
+  createdBy: created_by,
+  approvedBy: approved_by,
+  lastAssigned: last_assigned,
+  topic: _topic,
+  created,
+  ...question
+}: Partial<TechnicalQuestion>): Partial<RawTechnicalQuestion> {
+  return {
+    ...question,
+    question_id,
+    created_by,
+    approved_by,
+    last_assigned: last_assigned ? toAPIFormat(last_assigned) : undefined,
+    created: created ? toAPIFormat(created) : undefined,
+  };
+}
+
+export function serializeBehavioralQuestion({
+  questionId: question_id,
+  createdBy: created_by,
+  approvedBy: approved_by,
+  lastAssigned: last_assigned,
+  created,
+  ...question
+}: Partial<BehavioralQuestion>): Partial<RawBehavioralQuestion> {
+  return {
+    ...question,
+    question_id,
+    created_by,
+    approved_by,
+    last_assigned: last_assigned ? toAPIFormat(last_assigned) : undefined,
+    created: created ? toAPIFormat(created) : undefined,
   };
 }
 
@@ -123,7 +181,7 @@ export async function createTechnicalQuestion(
 ): Promise<TechnicalQuestion> {
   const url = `/questions/technical/`;
 
-  const res = await api.post(url, question);
+  const res = await api.post(url, serializeTechnicalQuestion(question));
   devPrint('res:', res);
 
   if (res.status !== 201 || !Object.prototype.hasOwnProperty.call(res, 'data'))
@@ -137,9 +195,9 @@ export async function updateTechnicalQuestion(
 ): Promise<TechnicalQuestion> {
   const url = `/questions/technical/${question.questionId}/`;
 
-  const { followUps: follow_ups, ...rest } = question;
+  const { ...rest } = serializeTechnicalQuestion(question);
 
-  const res = await api.put(url, { ...rest, follow_ups });
+  const res = await api.put(url, { ...rest });
   devPrint('res:', res);
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
