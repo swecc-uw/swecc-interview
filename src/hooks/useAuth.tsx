@@ -66,6 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const groups = mem.groups?.map((value) => value.name);
           setIsAdmin(groups?.includes('is_admin') ?? false);
           setIsVerified(groups?.includes('is_verified') ?? false);
+          setLoading(false);
         })
         .catch((err) => {
           devPrint('Failed to get current user:', err);
@@ -80,7 +81,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await api.get('/auth/session/');
       setIsAuthenticated(true);
-      setLoading(false);
     } catch (err) {
       setIsAuthenticated(false);
       setLoading(false);

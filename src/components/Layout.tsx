@@ -43,16 +43,13 @@ interface NavBarProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, isAdmin, loading, member, isVerified } = useAuth();
+
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-
-    if (!isVerified) {
+    if (!loading && (!isAuthenticated || !isVerified)) {
       navigate('/auth');
     }
-  }, [isAuthenticated, isVerified, navigate]);
+  }, [isAuthenticated, isVerified, loading, navigate]);
 
   if (loading) {
     return (
