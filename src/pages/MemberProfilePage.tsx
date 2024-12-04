@@ -39,16 +39,16 @@ import { getToday } from '../localization';
 
 const selectLastHalfYear = (contributions: Activity[]) => {
   const today = getToday();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
+  const currentYear = today.getUTCFullYear();
+  const currentMonth = today.getUTCMonth();
   const shownMonths = 6;
 
   return contributions.filter((activity) => {
     const date = new Date(activity.date);
-    const monthOfDay = date.getMonth();
+    const monthOfDay = date.getUTCMonth();
 
     return (
-      date.getFullYear() === currentYear &&
+      date.getUTCFullYear() === currentYear &&
       monthOfDay > currentMonth - shownMonths &&
       monthOfDay <= currentMonth
     );

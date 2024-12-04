@@ -18,6 +18,7 @@ interface InterviewSignupFormProps {
   timeLabels?: string[];
 }
 
+// TODO: Add register to server to save current signup period
 const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   title,
   availability,

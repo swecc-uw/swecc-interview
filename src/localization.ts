@@ -114,7 +114,7 @@ export const getOneWeekAgo = () => addDays(getToday(), -7);
 export const getOneWeekLater = () => addDays(getToday(), 7);
 export const getThisUpcomingSunday = () => {
   const today = getToday();
-  return addDays(today, 7 - today.getUTCDay());
+  return addDays(today, (7 - today.getUTCDay()) % 7);
 };
 export const getLastSunday = () => addDays(getThisUpcomingSunday(), -7);
 export const timestampNow = () => new Date().toISOString();
