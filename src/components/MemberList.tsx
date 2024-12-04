@@ -19,6 +19,7 @@ import {
 import { Github, Linkedin, Code2 } from 'lucide-react';
 import { Member } from '../types';
 import { resolveName } from './utils/RandomUtils';
+import { START_PAGE } from '../pages/DirectoryPage';
 
 interface MemberListProps {
   members: Member[];
@@ -68,7 +69,7 @@ const MemberCard = ({ member }: { member: Member }) => {
             </Box>
 
             <HStack spacing={2}>
-              {member.github?.username && !member.github?.isPrivate && (
+              {member.github?.username && (
                 <Tooltip label="GitHub Profile">
                   <IconButton
                     as="a"
@@ -84,7 +85,7 @@ const MemberCard = ({ member }: { member: Member }) => {
                 </Tooltip>
               )}
 
-              {member.linkedin?.username && !member.linkedin?.isPrivate && (
+              {member.linkedin?.username && (
                 <Tooltip label="LinkedIn Profile">
                   <IconButton
                     as="a"
@@ -100,7 +101,7 @@ const MemberCard = ({ member }: { member: Member }) => {
                 </Tooltip>
               )}
 
-              {member.leetcode?.username && !member.leetcode?.isPrivate && (
+              {member.leetcode?.username && (
                 <Tooltip label="LeetCode Profile">
                   <IconButton
                     as="a"
@@ -158,7 +159,7 @@ const LoadingCard = () => {
 const MemberList: React.FC<MemberListProps> = ({
   members,
   loading = false,
-  currentPage = 1,
+  currentPage = START_PAGE,
   totalPages = 1,
   showPagination = true,
   onPageChange,
@@ -192,7 +193,7 @@ const MemberList: React.FC<MemberListProps> = ({
           <ButtonGroup spacing={4} alignItems="center">
             <Button
               onClick={() => onPageChange?.(currentPage - 1)}
-              isDisabled={currentPage === 1}
+              isDisabled={currentPage === START_PAGE}
               colorScheme="brand"
               variant="outline"
             >

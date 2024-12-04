@@ -23,12 +23,14 @@ import MemberList from '../components/MemberList';
 import { devPrint } from '../components/utils/RandomUtils';
 import useDelay from '../hooks/useDelay';
 
+export const START_PAGE = 1;
+
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounce(query, 300);
   const [members, setMembers] = useState<Member[]>([]);
   const [recommended, setRecommended] = useState<Member[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(START_PAGE);
   const [totalCount, setTotalCount] = useState(0);
   const { loading, withDelay } = useDelay();
 
