@@ -1,3 +1,4 @@
+import { timestampNow } from '../../localization';
 import api from '../api';
 
 const ENDPOINT = '/admin/command/';
@@ -78,7 +79,7 @@ class AdminCommandRpcClient {
     const makeEvent = (stream: ConsoleStream, content: string) => ({
       stream,
       content,
-      timestamp: new Date().toISOString(),
+      timestamp: timestampNow(),
     });
 
     this.eventLog.push(makeEvent(ConsoleStream.Input, input));

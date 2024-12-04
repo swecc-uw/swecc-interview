@@ -1,3 +1,4 @@
+import { parseAnyDate } from '../localization';
 import {
   DetailedResponse,
   Interview,
@@ -37,8 +38,8 @@ function deserializeInterview({
   return {
     ...rest,
     interviewId,
-    dateEffective,
-    dateCompleted,
+    dateEffective: parseAnyDate(dateEffective),
+    dateCompleted: dateCompleted ? parseAnyDate(dateCompleted) : undefined,
     technicalQuestions:
       technicalQuestions?.map(deserializeTechnicalQuestion) || [],
     behavioralQuestions:

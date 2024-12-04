@@ -20,6 +20,7 @@ import {
   Skeleton,
   Flex,
   Divider,
+  As,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import LeetcodeProfile from '../components/LeetcodeProfile';
@@ -34,18 +35,20 @@ import {
   FaChartBar,
   FaUser,
 } from 'react-icons/fa';
+import { getToday } from '../localization';
 
 const selectLastHalfYear = (contributions: Activity[]) => {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
+  const today = getToday();
+  const currentYear = today.getUTCFullYear();
+  const currentMonth = today.getUTCMonth();
   const shownMonths = 6;
 
   return contributions.filter((activity) => {
     const date = new Date(activity.date);
-    const monthOfDay = date.getMonth();
+    const monthOfDay = date.getUTCMonth();
 
     return (
-      date.getFullYear() === currentYear &&
+      date.getUTCFullYear() === currentYear &&
       monthOfDay > currentMonth - shownMonths &&
       monthOfDay <= currentMonth
     );
@@ -53,7 +56,7 @@ const selectLastHalfYear = (contributions: Activity[]) => {
 };
 
 interface WidgetCardProps {
-  icon: any;
+  icon: As;
   title: string;
   children: React.ReactNode;
 }

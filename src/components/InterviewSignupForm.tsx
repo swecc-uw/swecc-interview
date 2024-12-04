@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, VStack } from '@chakra-ui/react';
+import { Box, Button, VStack, useToast } from '@chakra-ui/react';
 import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector';
 import MobileTimeRangeSelector from './TimeRangeSelector/MobileTimeRangeSelector';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,12 +8,7 @@ import { signupCurrentUserForInterviewPool } from '../services/interview';
 import { InterviewAvailability } from '../types';
 import { devPrint } from './utils/RandomUtils';
 import { useAuth } from '../hooks/useAuth';
-
-const getNextSunday = () => {
-  const today = new Date();
-  const day = today.getDay();
-  return new Date(today.setDate(today.getDate() + 7 - day));
-};
+import { formatDate, getThisUpcomingSunday } from '../localization';
 
 interface InterviewSignupFormProps {
   title: string;
@@ -23,6 +18,7 @@ interface InterviewSignupFormProps {
   timeLabels?: string[];
 }
 
+// TODO: Add register to server to save current signup period
 const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   title,
   availability,
@@ -31,6 +27,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
   timeLabels,
 }) => {
   const { member } = useAuth();
+  const toast = useToast();
   const [currentStep, setCurrentStep] = useState(0);
   const steps = ['Availability', 'Confirmation'];
 
@@ -58,9 +55,21 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
 
     try {
       await signupCurrentUserForInterviewPool(interviewAvailability);
-      alert('Availability updated successfully!');
+      toast({
+        title: 'Successfully signed up for an interview',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
-      alert('Failed to update availability');
+      devPrint('Error signing up for interview:', error);
+      toast({
+        title: 'Error signing up for interview',
+        description: 'Please try again later',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -87,7 +96,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
       case 1:
         return (
           <ConfirmInterviewSignupStep
-            weekOf={getNextSunday().toLocaleDateString()}
+            weekOf={formatDate(getThisUpcomingSunday())}
             _handleConfirm={handleConfirm}
           />
         );

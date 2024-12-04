@@ -7,6 +7,7 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { defaultTimeLabels } from './cursed-time';
 
 interface MobileTimeRangeSelectorProps {
   availability: boolean[][];
@@ -17,11 +18,6 @@ interface MobileTimeRangeSelectorProps {
 }
 
 const defaultDayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const defaultTimeLabels = Array.from({ length: 48 }, (_, i) => {
-  const hour = Math.floor(i / 2);
-  const minutes = i % 2 === 0 ? '00' : '30';
-  return `${hour.toString().padStart(2, '0')}:${minutes}`;
-});
 
 const MobileTimeRangeSelector: React.FC<MobileTimeRangeSelectorProps> = ({
   availability,

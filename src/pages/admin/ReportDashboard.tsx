@@ -16,6 +16,7 @@ import { getAllReport } from '../../services/report';
 import { Report, ReportType } from '../../types';
 import { devPrint } from '../../components/utils/RandomUtils';
 import { Link } from 'react-router-dom';
+import { formatDate } from '../../localization';
 
 const ReportDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -135,10 +136,10 @@ const ReportDashboard = () => {
                         <strong>Status:</strong> {report.status}
                       </Text>
                       <Text>
-                        <strong>Created:</strong> {report.created}
+                        <strong>Created:</strong> {formatDate(report.created)}
                       </Text>
                       <Text>
-                        <strong>Updated:</strong> {report.updated}
+                        <strong>Updated:</strong> {formatDate(report.updated)}
                       </Text>
                       <Text>
                         <strong>Admin Notes:</strong> {report.adminNotes}

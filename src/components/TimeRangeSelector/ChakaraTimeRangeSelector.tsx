@@ -7,6 +7,7 @@ import {
   Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { defaultDayLabels, defaultTimeLabels } from './cursed-time';
 
 interface TimeSlot {
   day: number;
@@ -22,29 +23,6 @@ interface TimeRangeSelectorProps {
   selectedColor?: string; // Custom color for selected slots
   unselectedColor?: string; // Custom color for unselected slots
 }
-
-const getDefaultDayLabels = () => {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const today = new Date();
-  const nextSunday = new Date(today);
-  const daysUntilSunday = 7 - today.getDay();
-  nextSunday.setDate(today.getDate() + daysUntilSunday);
-
-  return days.map((day, i) => {
-    const date = new Date(nextSunday);
-    date.setDate(nextSunday.getDate() + i);
-    return `${day} ${date.getMonth() + 1}/${date.getDate()}`;
-  });
-};
-
-const defaultDayLabels = getDefaultDayLabels();
-const defaultTimeLabels = Array.from({ length: 48 }, (_, i) => {
-  const hour = (Math.floor(i / 2) + 7) % 24;
-  const minutes = i % 2 === 0 ? '00' : '30';
-  const adjustedHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  const amPm = hour >= 12 && hour < 24 ? 'PM' : 'AM';
-  return `${adjustedHour}:${minutes} ${amPm}`;
-});
 
 const TimeRangeSelector: React.FC<TimeRangeSelectorProps> = ({
   availability,

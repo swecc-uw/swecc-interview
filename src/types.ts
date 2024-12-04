@@ -4,7 +4,7 @@ export interface SocialField {
 }
 
 export interface InterviewAvailability {
-  userId: number; // user id
+  userId: number;
   availability: boolean[][];
 }
 
@@ -21,8 +21,8 @@ export interface Interview {
   behavioralQuestions?: BehavioralQuestion[];
   interviewee: number;
   status: Status;
-  dateEffective: string; // ISO 8601 date string
-  dateCompleted?: string; // ISO 8601 date string or null
+  dateEffective: Date;
+  dateCompleted?: Date;
 }
 
 export interface HydratedInterview {
@@ -32,14 +32,14 @@ export interface HydratedInterview {
   behavioralQuestions?: BehavioralQuestion[];
   interviewee: Member;
   status: Status;
-  dateEffective: string; // ISO 8601 date string
-  dateCompleted?: string; // ISO 8601 date string or null
+  dateEffective: Date;
+  dateCompleted?: Date;
 }
 
 export interface Member {
-  id: number; // user id
+  id: number;
   username: string;
-  created: string; // ISO 8601 date string
+  created: Date;
   email: string;
   role: string;
   firstName: string;
@@ -48,7 +48,7 @@ export interface Member {
   discordId: number;
   preview?: string;
   major?: string;
-  gradDate?: string; // ISO 8601 date string or null
+  gradDate?: Date;
   linkedin?: SocialField;
   github?: SocialField;
   leetcode?: SocialField;
@@ -61,13 +61,13 @@ export interface Member {
 
 export interface QuestionTopic {
   topicId: string;
-  created: string; // ISO 8601 date string
+  created: string;
   name: string;
 }
 
 export interface BaseQuestion {
   questionId: string;
-  created: string;
+  created: Date;
   prompt: string;
 }
 
@@ -87,7 +87,7 @@ export interface BehavioralQuestion extends BaseQuestion {
   createdBy: Member;
   solution: string;
   approvedBy?: Member;
-  lastAssigned?: string; // ISO 8601 date string or null
+  lastAssigned?: Date;
   followUps?: string;
   source?: string;
 }
@@ -140,14 +140,14 @@ export interface RawMemberData {
 
 export interface Topic {
   topicId: string;
-  created: string; // ISO 8601 date string
+  created: Date;
   createdBy: Member;
   name: string;
 }
 
 export interface RawTopic {
   topic_id: string;
-  created: string; // ISO 8601 date string
+  created: string;
   created_by: Member;
   name: string;
 }
@@ -156,7 +156,7 @@ export interface TechnicalQuestion extends BaseQuestion {
   title: string;
   createdBy: string;
   approvedBy: string;
-  lastAssigned: string;
+  lastAssigned: Date | undefined;
   topic: string;
   topicName: string;
   solution: string;
@@ -186,7 +186,7 @@ export type ReportStatus = 'pending' | 'resolving' | 'completed';
 
 export interface RawReportBody {
   associated_id: string;
-  reporter_user_id?: number; // can be anonymous
+  reporter_user_id?: number;
   type: ReportType;
   reason: string;
 }
@@ -212,13 +212,13 @@ export interface RawReport {
 }
 
 export interface Report {
-  created: string;
+  created: Date;
   reason: string;
   reportId: string;
   reporterUserId: number;
   status: ReportStatus;
   type: ReportType;
-  updated: string;
+  updated: Date;
   adminId?: string;
   adminNotes?: string;
   associatedId?: string;
