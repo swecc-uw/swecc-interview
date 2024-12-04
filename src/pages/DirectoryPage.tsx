@@ -21,17 +21,16 @@ import { searchMembers, getRecommendedMembers } from '../services/directory';
 import { Member } from '../types';
 import MemberList from '../components/MemberList';
 import { devPrint } from '../components/utils/RandomUtils';
-
-const MINIMUM_LOADING_TIME = 1000;
+import useDelay from '../hooks/useDelay';
 
 const DirectoryPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [debouncedQuery] = useDebounce(query, 300);
   const [members, setMembers] = useState<Member[]>([]);
   const [recommended, setRecommended] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const { loading, withDelay } = useDelay();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
@@ -51,24 +50,10 @@ const DirectoryPage: React.FC = () => {
 
   useEffect(() => {
     const fetchMembers = async () => {
-      setLoading(true);
-      const startTime = Date.now();
-
       try {
-        const response = await searchMembers(
-          debouncedQuery,
-          currentPage,
-          20,
-          true
+        const response = await withDelay(
+          searchMembers(debouncedQuery, currentPage, 20, true)
         );
-
-        const elapsedTime = Date.now() - startTime;
-
-        if (elapsedTime < MINIMUM_LOADING_TIME) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime)
-          );
-        }
 
         setMembers(response.results);
         setTotalCount(response.count);
@@ -76,20 +61,11 @@ const DirectoryPage: React.FC = () => {
         devPrint('Error searching members:', error);
         setMembers([]);
         setTotalCount(0);
-
-        const elapsedTime = Date.now() - startTime;
-        if (elapsedTime < MINIMUM_LOADING_TIME) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime)
-          );
-        }
       }
-
-      setLoading(false);
     };
 
     fetchMembers();
-  }, [debouncedQuery, currentPage]);
+  }, [debouncedQuery, currentPage, withDelay]);
 
   const totalPages = Math.ceil(totalCount / 20);
 
