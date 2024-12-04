@@ -46,19 +46,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    let redirectTimeout: NodeJS.Timeout;
-
-    if (!loading && isAuthenticated && !isVerified) {
-      redirectTimeout = setTimeout(() => {
-        navigate('/auth');
-      }, 1000);
+    if (!loading && (!isAuthenticated || !isVerified)) {
+      navigate('/auth');
     }
-
-    return () => {
-      if (redirectTimeout) {
-        clearTimeout(redirectTimeout);
-      }
-    };
   }, [isAuthenticated, isVerified, loading, navigate]);
 
   if (loading) {
