@@ -20,7 +20,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from '@chakra-ui/react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Member } from '../types';
 import { useAuth } from '../hooks/useAuth';
@@ -41,15 +41,23 @@ interface NavBarProps {
   isVerified: boolean;
 }
 
+const NO_REDIRECT_PATHS = ['/auth', '/join'];
+
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, isAdmin, loading, member, isVerified } = useAuth();
 
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  console.log('pathname', pathname);
   useEffect(() => {
-    if (!loading && (!isAuthenticated || !isVerified)) {
+    if (
+      !loading &&
+      (!isAuthenticated || !isVerified) &&
+      !NO_REDIRECT_PATHS.includes(pathname)
+    ) {
       navigate('/auth');
     }
-  }, [isAuthenticated, isVerified, loading, navigate]);
+  }, [isAuthenticated, isVerified, loading, navigate, pathname]);
 
   if (loading) {
     return (
@@ -96,7 +104,7 @@ const Navbar: React.FC<NavBarProps> = ({
         </>
       )}
       {isAdmin && <NavLink to="/admin">Admin Dashboard</NavLink>}
-      {!isAuthenticated && <NavLink to="/join-swecc">Join SWECC</NavLink>}
+      {!isAuthenticated && <NavLink to="/join">Join SWECC</NavLink>}
     </>
   );
 
