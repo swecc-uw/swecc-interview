@@ -40,6 +40,12 @@ import {
   LINKEDIN_REGEX,
 } from '../constants';
 
+const BASE_URLS = {
+  github: GITHUB_PROFILE_BASE_URL,
+  leetcode: LEETCODE_PROFILE_BASE_URL,
+  linkedin: LINKEDIN_PROFILE_BASE_URL,
+};
+
 interface MemberProfileEditProps {
   member: Member;
   onSave: (profile: Partial<Member>) => void;
