@@ -38,7 +38,7 @@ import {
   FaUsers,
   FaCopy,
 } from 'react-icons/fa';
-import { Member } from '../types';
+import { Member, ReportType } from '../types';
 import { resolveName } from './utils/RandomUtils';
 import { formatDate } from '../localization';
 import { useAuth } from '../hooks/useAuth';
@@ -158,7 +158,7 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
             associatedId={member.id.toString()}
             reporterUserId={currentUser?.id}
             onClose={onClose}
-            type="member"
+            type={ReportType.Member}
           />
         </ModalContent>
       </Modal>

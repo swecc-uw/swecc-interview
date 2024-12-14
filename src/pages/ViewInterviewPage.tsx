@@ -23,7 +23,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { Calendar, Clock, User, Book, Flag } from 'lucide-react';
-import { HydratedInterview, Member } from '../types';
+import { HydratedInterview, Member, ReportType } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
 import ReportPopUp from '../components/ReportPopUp';
 import { useAuth } from '../hooks/useAuth';
@@ -95,12 +95,10 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
           <ModalCloseButton />
           <ReportPopUp
             title="Report Interview"
-            badgeColorScheme="red"
-            reasonPlaceholder="Enter reason for reporting this interview"
             associatedId={interview.interviewId}
             reporterUserId={member?.id}
             onClose={onClose}
-            type="interview"
+            type={ReportType.Interview}
           />
         </ModalContent>
       </Modal>

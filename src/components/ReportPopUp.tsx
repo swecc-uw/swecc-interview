@@ -35,7 +35,7 @@ const ReportPopUp: React.FC<ReportPopUpProps> = ({
   reporterUserId,
   type,
   badgeColorScheme = 'red',
-  reasonPlaceholder = 'Please provide detailed information about your report...',
+  reasonPlaceholder = `Enter reason for reporting this ${type.toLowerCase()}`,
   onSubmit = createReport,
   onClose,
 }) => {

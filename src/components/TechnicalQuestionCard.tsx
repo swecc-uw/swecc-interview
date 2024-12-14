@@ -20,7 +20,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { ChevronDown, ChevronUp, Edit2, Flag } from 'lucide-react';
-import type { TechnicalQuestion } from '../types';
+import { ReportType, TechnicalQuestion } from '../types';
 import { useAuth } from '../hooks/useAuth';
 import ReportPopUp from './ReportPopUp';
 
@@ -56,12 +56,10 @@ const TechnicalQuestionCard = ({
           <ModalCloseButton />
           <ReportPopUp
             title="Report Question"
-            badgeColorScheme="red"
-            reasonPlaceholder="Enter reason for reporting this question"
             associatedId={question.questionId}
             reporterUserId={member?.id}
             onClose={onClose}
-            type="question"
+            type={ReportType.Question}
           />
         </ModalContent>
       </Modal>

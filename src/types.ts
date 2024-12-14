@@ -180,9 +180,17 @@ export interface RawTechnicalQuestion {
   source: string;
 }
 
-export type ReportType = 'interview' | 'question' | 'member';
+export enum ReportType {
+  Interview = 'interview',
+  Question = 'question',
+  Member = 'member',
+}
 
-export type ReportStatus = 'pending' | 'resolving' | 'completed';
+export enum ReportStatus {
+  Pending = 'pending',
+  Resolving = 'resolving',
+  Completed = 'completed',
+}
 
 export interface RawReportBody {
   associated_id: string;
