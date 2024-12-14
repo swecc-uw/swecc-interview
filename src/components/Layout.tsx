@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log('pathname', pathname);
+
   useEffect(() => {
     if (
       !loading &&
