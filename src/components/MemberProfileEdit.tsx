@@ -97,7 +97,13 @@ const MemberProfileEdit: React.FC<MemberProfileEditProps> = ({
     const [field, key] = e.target.name.split('.');
     if (!isSocialField(field as keyof Member)) return;
 
-    const val = e.target.value?.split('/').pop();
+    const baseUrl = BASE_URLS[field as keyof typeof BASE_URLS];
+
+    if (e.target.value.length < baseUrl.length) {
+      e.target.value = baseUrl;
+    }
+
+    const val = e.target.value.substring(baseUrl.length);
 
     setProfile((prev) => ({
       ...prev,
