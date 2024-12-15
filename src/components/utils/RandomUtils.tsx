@@ -2,6 +2,7 @@ import { Member } from '../../types';
 
 export const devPrint = (...data: any[]): void => {
   if (import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
     console.log(...data);
   }
 };
