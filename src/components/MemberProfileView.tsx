@@ -44,6 +44,10 @@ import { formatDate } from '../localization';
 import { useAuth } from '../hooks/useAuth';
 import { Flag } from 'lucide-react';
 import ReportPopup from '../components/ReportPopUp';
+import {
+  GITHUB_PROFILE_BASE_URL,
+  LEETCODE_PROFILE_BASE_URL,
+} from '../constants';
 
 const stripEmptySocials = (member: Member) => {
   if (member.leetcode?.username?.length == 0) {
@@ -368,45 +372,44 @@ const MemberProfileView: React.FC<MemberProfileViewProps> = ({ member }) => {
           <Box fontSize="lg" fontWeight="bold" mb={4}>
             External Profiles & Links
           </Box>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-            {member.github?.username && (
-              <SocialLink
-                icon={FaGithub}
-                label="GitHub Profile"
-                href={`https://github.com/${member.github.username}`}
-                username={member.github.username}
-              />
-            )}
-            {member.linkedin?.username && (
-              <SocialLink
-                icon={FaLinkedin}
-                label="LinkedIn Profile"
-                href={member.linkedin.username}
-                username={member.linkedin.username}
-              />
-            )}
-            {member.leetcode?.username && (
-              <SocialLink
-                icon={FaCode}
-                label="LeetCode Profile"
-                href={`https://leetcode.com/u/${member.leetcode.username}`}
-                username={member.leetcode.username}
-              />
-            )}
-            {member.resumeUrl && (
-              <SocialLink
-                icon={FaExternalLinkAlt}
-                label="Resume"
-                href={
-                  member.resumeUrl.startsWith('http')
-                    ? member.resumeUrl
-                    : `https://${member.resumeUrl}`
-                }
-                username="View Resume"
-              />
-            )}
-          </SimpleGrid>
-        </Box>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+          {member.github?.username && (
+            <SocialLink
+              icon={FaGithub}
+              label="GitHub Profile"
+              href={`${GITHUB_PROFILE_BASE_URL}${member.github.username}`}
+              username={member.github.username}
+            />
+          )}
+          {member.linkedin?.username && (
+            <SocialLink
+              icon={FaLinkedin}
+              label="LinkedIn Profile"
+              href={member.linkedin.username}
+              username={member.linkedin.username}
+            />
+          )}
+          {member.leetcode?.username && (
+            <SocialLink
+              icon={FaCode}
+              label="LeetCode Profile"
+              href={`${LEETCODE_PROFILE_BASE_URL}${member.leetcode.username}`}
+              username={member.leetcode.username}
+            />
+          )}
+          {member.resumeUrl && (
+            <SocialLink
+              icon={FaExternalLinkAlt}
+              label="Resume"
+              href={
+                member.resumeUrl.startsWith('http')
+                  ? member.resumeUrl
+                  : `https://${member.resumeUrl}`
+              }
+              username="View Resume"
+            />
+          )}
+        </SimpleGrid>
       </Box>
     </>
   );

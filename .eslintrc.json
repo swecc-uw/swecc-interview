@@ -12,6 +12,7 @@
     "react-hooks"
   ],
   "rules": {
+    "no-console": "error",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": [
