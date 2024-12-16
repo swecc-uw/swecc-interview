@@ -71,7 +71,7 @@ export default function AdminTerminalPage() {
         setCopiedMap((prev) => ({ ...prev, [eventId]: false }));
       }, 2000);
     } catch (error) {
-      devPrint('Failed to copy:', error);
+      devPrint('Failed to copy to clipboard', error);
     }
   };
 

@@ -22,8 +22,8 @@ import {
   Button,
   Flex,
 } from '@chakra-ui/react';
-import { Calendar, Clock, User, Book } from 'lucide-react';
-import { HydratedInterview, Member } from '../types';
+import { Calendar, Clock, User, Book, Flag } from 'lucide-react';
+import { HydratedInterview, Member, ReportType } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
 import ReportPopUp from '../components/ReportPopUp';
 import { useAuth } from '../hooks/useAuth';
@@ -94,10 +94,11 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
         <ModalContent maxH="800px" maxW="700px">
           <ModalCloseButton />
           <ReportPopUp
+            title="Report Interview"
             associatedId={interview.interviewId}
             reporterUserId={member?.id}
             onClose={onClose}
-            type="interview"
+            type={ReportType.Interview}
           />
         </ModalContent>
       </Modal>
@@ -151,7 +152,16 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
               {status.toUpperCase()}
             </Badge>
           )}
-          <Button onClick={onOpen}>Report Interviewer or Interviewee</Button>
+          <Flag size={20} />
+          <Button
+            leftIcon={<Flag size={16} />}
+            colorScheme="red"
+            variant="ghost"
+            size="sm"
+            onClick={onOpen}
+          >
+            Report Interview
+          </Button>
         </Flex>
       </Flex>
 
