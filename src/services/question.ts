@@ -86,6 +86,7 @@ export function serializeTechnicalQuestion({
   createdBy: created_by,
   approvedBy: approved_by,
   lastAssigned: last_assigned,
+  followUps: follow_ups,
   topic: topic_id,
   created,
   ...question
@@ -93,6 +94,7 @@ export function serializeTechnicalQuestion({
   return {
     ...question,
     question_id,
+    follow_ups,
     created_by,
     topic: { topic_id },
     approved_by,
