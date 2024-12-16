@@ -64,7 +64,7 @@ const TechnicalQuestionCreateEdit: React.FC<
       .catch((error) => {
         toast({
           title: `Error ${isUpdate ? 'updating' : 'creating'} question`,
-          description: error,
+          description: JSON.stringify(error),
           status: 'error',
           duration: 2000,
         });

@@ -173,7 +173,7 @@ export interface RawTechnicalQuestion {
   created_by: string;
   approved_by: string;
   last_assigned: string;
-  topic: RawTopic;
+  topic: Partial<RawTopic>;
   prompt: string;
   solution: string;
   follow_ups: string;

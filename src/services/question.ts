@@ -60,8 +60,8 @@ export function deserializeTechnicalQuestion({
     createdBy,
     approvedBy,
     followUps,
-    topicName: topic.name,
-    topic: topic.topic_id,
+    topicName: topic.name || '',
+    topic: topic.topic_id || '',
     lastAssigned: lastAssigned ? parseAnyDate(lastAssigned) : undefined,
     created: parseAnyDate(created),
   };
@@ -86,14 +86,17 @@ export function serializeTechnicalQuestion({
   createdBy: created_by,
   approvedBy: approved_by,
   lastAssigned: last_assigned,
-  topic: _topic,
+  followUps: follow_ups,
+  topic: topic_id,
   created,
   ...question
 }: Partial<TechnicalQuestion>): Partial<RawTechnicalQuestion> {
   return {
     ...question,
     question_id,
+    follow_ups,
     created_by,
+    topic: { topic_id },
     approved_by,
     last_assigned: last_assigned ? toAPIFormat(last_assigned) : undefined,
     created: created ? toAPIFormat(created) : undefined,
@@ -180,8 +183,9 @@ export async function createTechnicalQuestion(
   question: Partial<TechnicalQuestion>
 ): Promise<TechnicalQuestion> {
   const url = `/questions/technical/`;
+  const { ...rest } = serializeTechnicalQuestion(question);
 
-  const res = await api.post(url, serializeTechnicalQuestion(question));
+  const res = await api.post(url, { ...rest, topic: rest.topic?.topic_id });
   devPrint('res:', res);
 
   if (res.status !== 201 || !Object.prototype.hasOwnProperty.call(res, 'data'))
@@ -197,7 +201,7 @@ export async function updateTechnicalQuestion(
 
   const { ...rest } = serializeTechnicalQuestion(question);
 
-  const res = await api.put(url, { ...rest });
+  const res = await api.put(url, { ...rest, topic: rest.topic?.topic_id });
   devPrint('res:', res);
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
