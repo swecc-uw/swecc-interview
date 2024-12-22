@@ -10,7 +10,8 @@
         "elimelt",
         "Glassdoor",
         "Formik",
-        "kwargs"
+        "kwargs",
+        "leaderboard"
     ],
     "ignorePaths": [
         "node_modules/**",
