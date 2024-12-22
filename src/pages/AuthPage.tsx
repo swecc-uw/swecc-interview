@@ -98,6 +98,7 @@ const AuthPage: React.FC = () => {
       setError(authError || 'An error occurred.');
     }
     setLoading(false);
+    login(username, password);
   };
 
   const checkVerified = async () => {
@@ -132,6 +133,7 @@ const AuthPage: React.FC = () => {
               <DiscordVerification
                 checkVerified={checkVerified}
                 onVerificationSuccess={() => navigate('/')}
+                username={member.username}
               />
               {error && (
                 <Text color="red.500" mt={2}>

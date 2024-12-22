@@ -154,9 +154,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (res.status !== 201) throw new Error('Registration failed.');
 
       const data = res.data;
-      setError(
-        `Registration successful. Please type /verify in the swecc server and enter ${username}`
-      );
       getCSRF();
       return data.id;
     } catch (err: any) {
