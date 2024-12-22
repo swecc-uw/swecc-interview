@@ -117,6 +117,7 @@ const Navbar: React.FC<NavBarProps> = ({
           <NavLink to="/interview-signup">Sign up for an interview</NavLink>
           <NavLink to="/interviews">View your interviews</NavLink>
           <NavLink to="/directory">Directory</NavLink>
+          <NavLink to="/leaderboard">Leaderboard</NavLink>
         </>
       )}
       {isAdmin && <NavLink to="/admin">Admin Dashboard</NavLink>}
