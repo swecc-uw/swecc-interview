@@ -23,7 +23,7 @@ import { AxiosError } from 'axios';
 
 const INCREMENTS_PER_DAY = 144;
 
-const TSFTB = (bucket: number) => bucket * TEN_MINUTES;
+const tsForBucket = (bucket: number) => bucket * TEN_MINUTES;
 
 interface DayTimelineProps {
   signups: RawSignup[];
@@ -36,8 +36,8 @@ const SignupsDetails: React.FC<{
   bucketIdx: number;
   startTime: number;
 }> = ({ signups, bucketIdx, startTime }) => {
-  const bucketStart = TSFTB(bucketIdx) + startTime;
-  const bucketEnd = TSFTB(bucketIdx + 1) + startTime;
+  const bucketStart = tsForBucket(bucketIdx) + startTime;
+  const bucketEnd = tsForBucket(bucketIdx + 1) + startTime;
 
   const signupsInBucket = signups.filter(
     ({ timestamp }) => timestamp >= bucketStart && timestamp < bucketEnd
@@ -96,7 +96,7 @@ const DayTimeline: React.FC<DayTimelineProps> = ({
             <Tooltip
               key={i}
               label={`${Math.round(count)} signups at ${formatDate(
-                TSFTB(i) + selectedDay,
+                tsForBucket(i) + selectedDay,
                 true,
                 true
               )}`}
