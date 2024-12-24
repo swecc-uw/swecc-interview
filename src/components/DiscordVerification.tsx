@@ -124,7 +124,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
               </AlertTitle>
               <AlertDescription color="whiteAlpha.900">
                 Please try running the command again, and ensure you are using
-                the correct username
+                your SWECC username ({username})
               </AlertDescription>
             </Box>
           </Alert>
@@ -316,7 +316,7 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
             </Text>
             <Text fontSize="sm" color="gray.600">
               Paste and send the command in any channel, and then enter your
-              username in the popup
+              SWECC username ({username}) when prompted
             </Text>
             <Alert status="info" variant="subtle" mt={4}>
               <AlertIcon />
