@@ -48,6 +48,7 @@ interface LayoutProps {
 interface NavLinkProps {
   to: string;
   children: React.ReactNode;
+  onClose?: () => void;
 }
 
 interface NavBarProps {
@@ -114,13 +115,27 @@ const Navbar: React.FC<NavBarProps> = ({
     <>
       {isAuthenticated && isVerified && (
         <>
-          <NavLink to="/interview-signup">Sign up for an interview</NavLink>
-          <NavLink to="/interviews">View your interviews</NavLink>
-          <NavLink to="/directory">Directory</NavLink>
+          <NavLink onClose={onClose} to="/interview-signup">
+            Sign up for an interview
+          </NavLink>
+          <NavLink onClose={onClose} to="/interviews">
+            View your interviews
+          </NavLink>
+          <NavLink onClose={onClose} to="/directory">
+            Directory
+          </NavLink>
         </>
       )}
-      {isAdmin && <NavLink to="/admin">Admin Dashboard</NavLink>}
-      {!isAuthenticated && <NavLink to="/join">Join SWECC</NavLink>}
+      {isAdmin && (
+        <NavLink onClose={onClose} to="/admin">
+          Admin Dashboard
+        </NavLink>
+      )}
+      {!isAuthenticated && (
+        <NavLink onClose={onClose} to="/join">
+          Join SWECC
+        </NavLink>
+      )}
     </>
   );
 
@@ -184,12 +199,13 @@ const Navbar: React.FC<NavBarProps> = ({
   );
 };
 
-const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
+const NavLink: React.FC<NavLinkProps> = ({ to, children, onClose }) => {
   return (
     <Link to={to}>
       <ChakraLink
         as="span"
         fontWeight="medium"
+        onClick={onClose}
         _hover={{ textDecoration: 'none', color: 'blue.500' }}
       >
         {children}
