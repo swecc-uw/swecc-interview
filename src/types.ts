@@ -210,7 +210,7 @@ export interface RawReport {
   created: string;
   reason: string;
   report_id: string;
-  reporter_user_id: number;
+  reporter: RawMemberData;
   status: ReportStatus;
   type: ReportType;
   updated: string;
