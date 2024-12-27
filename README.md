@@ -1,4 +1,4 @@
-# SWECC Client
+# SWECC Interview
 
 ## Setup
 
