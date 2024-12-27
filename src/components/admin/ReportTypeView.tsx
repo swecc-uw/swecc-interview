@@ -14,7 +14,7 @@ export const ReportTypeView: React.FC<Props> = ({ type }) => {
       case ReportType.Member:
         return 'yellow';
       case ReportType.Question:
-        return 'Cyan';
+        return 'cyan';
     }
   };
 
