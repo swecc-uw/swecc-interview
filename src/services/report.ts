@@ -22,7 +22,7 @@ function deserializedReport({
     adminId,
     adminNotes,
     associatedId,
-    associatedObject: JSON.stringify(associatedObject),
+    associatedObject,
     created: parseAnyDate(created),
     updated: parseAnyDate(updated),
   };

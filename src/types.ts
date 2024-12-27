@@ -206,6 +206,8 @@ export interface ReportBody {
   reason: string;
 }
 
+export type ReportObject = TechnicalQuestion | Member | Interview;
+
 export interface RawReport {
   created: string;
   reason: string;
@@ -217,7 +219,7 @@ export interface RawReport {
   admin_id?: string;
   admin_notes?: string;
   associated_id?: string;
-  associated_object?: string;
+  associated_object?: ReportObject;
 }
 
 export interface Report {
@@ -231,7 +233,7 @@ export interface Report {
   adminId?: string;
   adminNotes?: string;
   associatedId?: string;
-  associatedObject?: string;
+  associatedObject?: ReportObject;
 }
 
 export interface RawInterViewPoolStatus {
