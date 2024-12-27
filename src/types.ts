@@ -224,7 +224,7 @@ export interface Report {
   created: Date;
   reason: string;
   reportId: string;
-  reporterUserId: number;
+  reporter: Member;
   status: ReportStatus;
   type: ReportType;
   updated: Date;
