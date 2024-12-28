@@ -206,7 +206,7 @@ export interface ReportBody {
   reason: string;
 }
 
-export type ReportObject = TechnicalQuestion | Member | Interview;
+export type ReportObject = TechnicalQuestion | Member | HydratedInterview;
 
 export interface RawReport {
   created: string;
