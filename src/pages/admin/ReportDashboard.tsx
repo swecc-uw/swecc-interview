@@ -14,7 +14,6 @@ import { devPrint } from '../../components/utils/RandomUtils';
 import { ReportView } from '../../components/admin/ReportView';
 import { useAdmins } from '../../hooks/admin/useAdmins';
 
-
 const ReportDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +29,6 @@ const ReportDashboard = () => {
     getAllReport()
       .then((res) => {
         setReports(res);
-        devPrint(res);
       })
       .catch((error) => {
         devPrint(error);
