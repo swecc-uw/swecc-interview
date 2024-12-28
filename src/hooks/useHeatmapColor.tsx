@@ -9,6 +9,6 @@ export const useHeatmapColor = (maxCount: number) => {
       const intensity = Math.min(0.9, 0.1 + (count / maxCount) * 0.8);
       return `rgba(52, 199, 89, ${intensity})`;
     },
-    [maxCount, bgColor]
+    [maxCount]
   );
 };
