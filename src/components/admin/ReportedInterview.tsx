@@ -2,6 +2,7 @@ import React from 'react';
 import { HydratedInterview } from '../../types';
 import { Text, Link as ChakraLink } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 interface Props {
   interview: HydratedInterview;
@@ -30,8 +31,14 @@ export const ReportedInterview: React.FC<Props> = ({ interview }) => {
           Technical Questions:
           <br />
           {technicalQuestions.map((question, idx) => (
-            <ChakraLink href={question.source} fontWeight={'normal'} key={idx}>
-              {question.title}
+            <ChakraLink
+              href={question.source}
+              fontWeight="normal"
+              color={'blue.400'}
+              textAlign={'center'}
+              key={idx}
+            >
+              {question.title} <ExternalLinkIcon fontSize={'small'} />
             </ChakraLink>
           ))}
         </Text>
