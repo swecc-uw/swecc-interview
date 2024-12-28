@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Member, Report } from '../../types';
+import { Report } from '../../types';
 import {
   HStack,
   Box,
@@ -23,6 +25,7 @@ import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
 
+
 type Props = Report & {
   key: React.Key | null | undefined;
   adminList: Member[];
@@ -36,6 +39,9 @@ export const ReportView: React.FC<Props> = ({
   associatedObject,
   key,
 }) => {
+
+export const ReportView: React.FC<Props> = ({ reason, reporter, status, type, associatedObject, key }) => {
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
