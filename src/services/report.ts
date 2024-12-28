@@ -2,10 +2,11 @@ import { devPrint } from '../components/utils/RandomUtils';
 import { parseAnyDate } from '../localization';
 import { RawReport, RawReportBody, Report, ReportBody } from '../types';
 import api from './api';
+import { deserializeMember } from './member';
 
 function deserializedReport({
   report_id: reportId,
-  reporter_user_id: reporterUserId,
+  reporter,
   admin_id: adminId,
   admin_notes: adminNotes,
   associated_id: associatedId,
@@ -17,7 +18,7 @@ function deserializedReport({
   return {
     ...rest,
     reportId,
-    reporterUserId,
+    reporter: deserializeMember(reporter),
     adminId,
     adminNotes,
     associatedId,

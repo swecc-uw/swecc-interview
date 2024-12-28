@@ -52,6 +52,7 @@ const ReportDashboard = () => {
     getAllReport()
       .then((res) => {
         setReports(res);
+        devPrint(res);
       })
       .catch((error) => {
         devPrint(error);
@@ -71,7 +72,7 @@ const ReportDashboard = () => {
   const filteredReports = reports.filter((report) => {
     return (
       (!filterType || report.type === filterType) &&
-      (!filterUserId || report.reporterUserId === filterUserId) &&
+      (!filterUserId || report.reporter.id === filterUserId) &&
       report.reason.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   });
@@ -142,14 +143,14 @@ const ReportDashboard = () => {
                     <VStack align="stretch" spacing={2}>
                       <HStack justify="space-between">
                         <Text>
-                          <Link to={`/directory/${report.reporterUserId}`}>
+                          <Link to={`/directory/${report.reporter.id}`}>
                             <strong>From user: </strong>
-                            {report.reporterUserId}
+                            {report.reporter.id}
                           </Link>
                         </Text>
                         <Button
                           as={Link}
-                          to={`/directory/${report.reporterUserId}`}
+                          to={`/directory/${report.reporter.id}`}
                           colorScheme="blue"
                           size="sm"
                         >
