@@ -1,5 +1,5 @@
 import React from 'react';
-import { Report } from '../../types';
+import { Member, Report } from '../../types';
 import {
   HStack,
   Box,
@@ -17,15 +17,27 @@ import {
   Link as ChakraLink,
   Divider,
 } from '@chakra-ui/react';
-import { resolveName } from '../utils/RandomUtils';
+import { devPrint, resolveName } from '../utils/RandomUtils';
 import { ReportStatusView } from './ReportStatusView';
 import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
+import { useAdmins } from '../../hooks/admin/useAdmins';
 
-export const ReportView: React.FC<
-  Report & { key: React.Key | null | undefined }
-> = ({ reason, reporter, status, type, associatedObject, key }) => {
+type Props = Report & {
+  key: React.Key | null | undefined;
+  adminList: Member[];
+};
+
+export const ReportView: React.FC<Props> = ({
+  reason,
+  reporter,
+  status,
+  type,
+  associatedObject,
+  key,
+  adminList,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

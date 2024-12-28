@@ -12,6 +12,7 @@ import { getAllReport } from '../../services/report';
 import { Report, ReportType } from '../../types';
 import { devPrint } from '../../components/utils/RandomUtils';
 import { ReportView } from '../../components/admin/ReportView';
+import { useAdmins } from '../../hooks/admin/useAdmins';
 
 const ReportDashboard = () => {
   const [reports, setReports] = useState<Report[]>([]);
@@ -20,6 +21,8 @@ const ReportDashboard = () => {
   const [filterType, setFilterType] = useState<ReportType>();
   const [filterUserId, setFilterUserId] = useState<number>();
   const toast = useToast();
+
+  const { isLoading: adminLoading, adminList } = useAdmins();
 
   useEffect(() => {
     setLoading(true);
@@ -79,11 +82,15 @@ const ReportDashboard = () => {
               )
             }
           />
-          {loading ? (
+          {loading || adminLoading ? (
             <Spinner />
           ) : (
             filteredReports.map((report) => (
-              <ReportView key={report.reportId} {...report} />
+              <ReportView
+                adminList={adminList}
+                key={report.reportId}
+                {...report}
+              />
             ))
           )}
         </VStack>
