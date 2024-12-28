@@ -17,12 +17,11 @@ import {
   Link as ChakraLink,
   Divider,
 } from '@chakra-ui/react';
-import { devPrint, resolveName } from '../utils/RandomUtils';
+import { resolveName } from '../utils/RandomUtils';
 import { ReportStatusView } from './ReportStatusView';
 import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
-import { useAdmins } from '../../hooks/admin/useAdmins';
 
 type Props = Report & {
   key: React.Key | null | undefined;
@@ -36,7 +35,6 @@ export const ReportView: React.FC<Props> = ({
   type,
   associatedObject,
   key,
-  adminList,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
