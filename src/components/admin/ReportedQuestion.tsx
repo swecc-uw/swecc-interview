@@ -1,7 +1,6 @@
 import React from 'react';
 import { TechnicalQuestion } from '../../types';
 import { Text, Link as ChakraLink, HStack } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { formatDate } from '../../localization';
 
@@ -14,10 +13,13 @@ export const ReportedQuestion: React.FC<Props> = ({ question }) => {
     <>
       <Text fontWeight={'semibold'}>
         Reported question:{' '}
-        <ChakraLink fontWeight="normal" color={'blue.400'} textAlign={'center'}>
-          <Link to={question.source}>
-            {question.title} <ExternalLinkIcon fontSize={'small'} />
-          </Link>
+        <ChakraLink
+          href={question.source}
+          fontWeight="normal"
+          color={'blue.400'}
+          textAlign={'center'}
+        >
+          {question.title} <ExternalLinkIcon fontSize={'small'} />
         </ChakraLink>
       </Text>
       <HStack gap={1} alignItems={'flex-start'}>

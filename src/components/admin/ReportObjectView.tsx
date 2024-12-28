@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  HydratedInterview,
   Member,
   ReportObject,
   ReportType,
@@ -7,6 +8,7 @@ import {
 } from '../../types';
 import { ReportedMember } from './ReportedMember';
 import { ReportedQuestion } from './ReportedQuestion';
+import { ReportedInterview } from './ReportedInterview';
 
 interface Props {
   type: ReportType;
@@ -19,6 +21,8 @@ export const ReportObjectView: React.FC<Props> = ({ type, object }) => {
       return <ReportedMember member={object as Member} />;
     case ReportType.Question:
       return <ReportedQuestion question={object as TechnicalQuestion} />;
+    case ReportType.Interview:
+      return <ReportedInterview interview={object as HydratedInterview} />;
     default:
       return <></>;
   }
