@@ -116,3 +116,16 @@ export async function isCurrentMemberVerified(): Promise<boolean> {
     )
     .catch(() => false);
 }
+
+export const getAllAdmins = async (): Promise<Member[]> => {
+  const url = `/members/admin/`;
+
+  const res = await api.get(url);
+
+  devPrint('res', res);
+
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to get admin list');
+
+  return res.data.map(deserializeMember);
+};

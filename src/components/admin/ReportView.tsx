@@ -1,5 +1,6 @@
 import React from 'react';
-import { Report } from '../../types';
+
+import { Member, Report } from '../../types';
 import {
   HStack,
   Box,
@@ -14,7 +15,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Link as ChakraLink,
   Divider,
 } from '@chakra-ui/react';
 import { resolveName } from '../utils/RandomUtils';
@@ -23,9 +23,19 @@ import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
 
-export const ReportView: React.FC<
-  Report & { key: React.Key | null | undefined }
-> = ({ reason, reporter, status, type, associatedObject, key }) => {
+type Props = Report & {
+  key: React.Key | null | undefined;
+  adminList: Member[];
+};
+
+export const ReportView: React.FC<Props> = ({
+  reason,
+  reporter,
+  status,
+  type,
+  associatedObject,
+  key,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -59,11 +69,9 @@ export const ReportView: React.FC<
             <HStack fontSize="large">
               <Text>
                 Report filed by{' '}
-                <ChakraLink>
-                  <Link to={`/directory/${reporter.id}`}>
-                    @{reporter.username}
-                  </Link>
-                </ChakraLink>
+                <Link to={`/directory/${reporter.id}`}>
+                  @{reporter.username}
+                </Link>
               </Text>
               <ReportStatusView status={status} />{' '}
               <ReportTypeView type={type} />
