@@ -36,27 +36,27 @@ export const ReportView: React.FC<
         borderRadius="lg"
         p={4}
         boxShadow="md"
-        cursor={'pointer'}
+        cursor="pointer"
         onClick={onOpen}
       >
-        <HStack justifyContent={'space-between'}>
+        <HStack justifyContent="space-between">
           <HStack>
-            <Text fontWeight={'semibold'}>{reason}</Text>
+            <Text fontWeight="semibold">{reason}</Text>
             <ReportStatusView status={status} />
             <ReportTypeView type={type} />
           </HStack>
           <Avatar
-            alignSelf={'flex-end'}
+            alignSelf="flex-end"
             name={resolveName(reporter)}
             src={reporter.profilePictureUrl}
           />
         </HStack>
       </Box>
-      <Modal size={'lg'} isOpen={isOpen} onClose={onClose}>
+      <Modal size="lg" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <HStack fontSize={'large'}>
+            <HStack fontSize="large">
               <Text>
                 Report filed by{' '}
                 <ChakraLink>
@@ -71,7 +71,7 @@ export const ReportView: React.FC<
             <Divider mt={2} />
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
-          <ModalBody fontSize={'medium'}>
+          <ModalBody fontSize="medium">
             <HStack>
               <Text fontWeight="semibold">Reason:</Text>
               <Text>{reason}</Text>

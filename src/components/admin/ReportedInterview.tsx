@@ -14,40 +14,40 @@ export const ReportedInterview: React.FC<Props> = ({ interview }) => {
 
   return (
     <>
-      <Text fontWeight={'semibold'}>
+      <Text fontWeight="semibold">
         Interviewer:{' '}
         <Link to={`/directory/${interview.interviewer.id}`}>
           @{interview.interviewer.username}
         </Link>
       </Text>
-      <Text fontWeight={'semibold'}>
+      <Text fontWeight="semibold">
         Interviewee:{' '}
         <Link to={`/directory/${interview.interviewee.id}`}>
           @{interview.interviewee.username}
         </Link>
       </Text>
       {technicalQuestions.length > 0 && (
-        <Text fontWeight={'semibold'}>
+        <Text fontWeight="semibold">
           Technical Questions:
           <br />
           {technicalQuestions.map((question, idx) => (
             <ChakraLink
               href={question.source}
               fontWeight="normal"
-              color={'blue.400'}
-              textAlign={'center'}
+              color="blue.400"
+              textAlign="center"
               key={idx}
             >
-              {question.title} <ExternalLinkIcon fontSize={'small'} />
+              {question.title} <ExternalLinkIcon fontSize="small" />
             </ChakraLink>
           ))}
         </Text>
       )}
       {behavioralQuestions.length > 0 && (
-        <Text fontWeight={'semibold'}>
+        <Text fontWeight="semibold">
           Behavioral Questions:{' '}
           {behavioralQuestions.map((question, idx) => (
-            <Text fontWeight={'normal'} key={idx}>
+            <Text fontWeight="normal" key={idx}>
               {question.prompt}
             </Text>
           ))}

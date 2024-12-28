@@ -19,7 +19,7 @@ export const ReportStatusView: React.FC<Props> = ({ status }) => {
   };
 
   return (
-    <Badge borderRadius={'md'} colorScheme={getColorScheme(status)}>
+    <Badge borderRadius="md" colorScheme={getColorScheme(status)}>
       {status}
     </Badge>
   );

@@ -19,7 +19,7 @@ export const ReportTypeView: React.FC<Props> = ({ type }) => {
   };
 
   return (
-    <Badge borderRadius={'md'} colorScheme={getColorScheme(type)}>
+    <Badge borderRadius="md" colorScheme={getColorScheme(type)}>
       {type}
     </Badge>
   );

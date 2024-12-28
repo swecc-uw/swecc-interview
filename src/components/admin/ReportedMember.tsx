@@ -9,7 +9,7 @@ interface Props {
 
 export const ReportedMember: React.FC<Props> = ({ member }) => {
   return (
-    <Text fontWeight={'semibold'}>
+    <Text fontWeight="semibold">
       Reported member:{' '}
       <Link to={`/directory/${member.id}`}>@{member.username}</Link>
     </Text>
