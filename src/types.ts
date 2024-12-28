@@ -25,6 +25,17 @@ export interface Interview {
   dateCompleted?: Date;
 }
 
+export interface RawHydratedInterview {
+  interviewId: string;
+  interviewer: Member;
+  technical_questions?: TechnicalQuestion[];
+  behavioral_questions?: BehavioralQuestion[];
+  interviewee: Member;
+  status: Status;
+  date_completed?: Date;
+  date_effective: Date;
+}
+
 export interface HydratedInterview {
   interviewId: string;
   interviewer: Member;
@@ -206,6 +217,12 @@ export interface ReportBody {
   reason: string;
 }
 
+export type ReportObject = TechnicalQuestion | Member | HydratedInterview;
+export type RawReportObject =
+  | RawTechnicalQuestion
+  | RawMemberData
+  | RawHydratedInterview;
+
 export interface RawReport {
   created: string;
   reason: string;
@@ -217,7 +234,7 @@ export interface RawReport {
   admin_id?: string;
   admin_notes?: string;
   associated_id?: string;
-  associated_object?: string;
+  associated_object?: RawReportObject;
 }
 
 export interface Report {
@@ -231,7 +248,7 @@ export interface Report {
   adminId?: string;
   adminNotes?: string;
   associatedId?: string;
-  associatedObject?: string;
+  associatedObject?: ReportObject;
 }
 
 export interface RawInterViewPoolStatus {
