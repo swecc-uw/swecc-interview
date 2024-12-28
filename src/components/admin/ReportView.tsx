@@ -15,7 +15,6 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Link as ChakraLink,
   Divider,
 } from '@chakra-ui/react';
 import { resolveName } from '../utils/RandomUtils';
