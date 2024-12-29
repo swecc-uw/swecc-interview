@@ -114,7 +114,7 @@ export const ReportView: React.FC<Props> = ({
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
           <ModalBody fontSize="medium">
-            <VStack alignItems={'flex-start'} gap={3}>
+            <VStack alignItems="flex-start" gap={3}>
               <HStack>
                 <Text fontWeight="semibold">Reason:</Text>
                 <Text>{reason}</Text>

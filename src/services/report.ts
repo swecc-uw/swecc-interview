@@ -52,7 +52,6 @@ const deserializeAssociatedObject = (
 function deserializedReport({
   report_id: reportId,
   reporter,
-  assignee,
   admin_notes: adminNotes,
   associated_id: associatedId,
   associated_object: associatedObject,
@@ -65,7 +64,6 @@ function deserializedReport({
     ...rest,
     reportId,
     reporter: deserializeMember(reporter),
-    assignee,
     adminNotes,
     associatedId,
     associatedObject: deserializeAssociatedObject(type, associatedObject),
@@ -141,7 +139,6 @@ export async function assignAdmin(reportId: string, adminId: number) {
   const res = await api.patch(url, {
     assignee: adminId,
   });
-  devPrint('Assigned admin response', res);
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to assign admin');
