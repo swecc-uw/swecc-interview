@@ -154,3 +154,4 @@ export async function updateStatus(reportId: string, status: ReportStatus) {
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
     throw new Error('Failed to assign admin');
 }
+
