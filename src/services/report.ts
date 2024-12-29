@@ -12,6 +12,7 @@ import {
   ReportObject,
   RawMemberData,
   RawTechnicalQuestion,
+  ReportStatus,
 } from '../types';
 import api from './api';
 import { deserializeMember } from './member';
@@ -134,10 +135,20 @@ export async function getReportDetail(reportId: string): Promise<Report> {
 
 export async function assignAdmin(reportId: string, adminId: number) {
   const url = `/reports/${reportId}/assign/`;
-  devPrint('called');
 
   const res = await api.patch(url, {
     assignee: adminId,
+  });
+
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to assign admin');
+}
+
+export async function updateStatus(reportId: string, status: ReportStatus) {
+  const url = `/reports/${reportId}/status/`;
+
+  const res = await api.patch(url, {
+    status,
   });
 
   if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
