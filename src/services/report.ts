@@ -134,7 +134,6 @@ export async function getReportDetail(reportId: string): Promise<Report> {
 
 export async function assignAdmin(reportId: string, adminId: number) {
   const url = `/reports/${reportId}/assign/`;
-  devPrint('called');
 
   const res = await api.patch(url, {
     assignee: adminId,
