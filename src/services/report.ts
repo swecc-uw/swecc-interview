@@ -52,7 +52,6 @@ const deserializeAssociatedObject = (
 function deserializedReport({
   report_id: reportId,
   reporter,
-  admin_id: adminId,
   admin_notes: adminNotes,
   associated_id: associatedId,
   associated_object: associatedObject,
@@ -65,7 +64,6 @@ function deserializedReport({
     ...rest,
     reportId,
     reporter: deserializeMember(reporter),
-    adminId,
     adminNotes,
     associatedId,
     associatedObject: deserializeAssociatedObject(type, associatedObject),
@@ -132,4 +130,15 @@ export async function getReportDetail(reportId: string): Promise<Report> {
     throw new Error('Failed to get report');
 
   return deserializedReport(res.data);
+}
+
+export async function assignAdmin(reportId: string, adminId: number) {
+  const url = `/reports/${reportId}/assign/`;
+
+  const res = await api.patch(url, {
+    assignee: adminId,
+  });
+
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to assign admin');
 }

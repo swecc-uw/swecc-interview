@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { useRef } from 'react';
 import { Member, Report } from '../../types';
 import {
   HStack,
@@ -16,12 +15,17 @@ import {
   ModalFooter,
   Button,
   Divider,
+  Select,
+  VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { resolveName } from '../utils/RandomUtils';
 import { ReportStatusView } from './ReportStatusView';
 import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
+import { assignAdmin } from '../../services/report';
+import { useNavigate } from 'react-router-dom';
 
 type Props = Report & {
   key: React.Key | null | undefined;
@@ -35,8 +39,38 @@ export const ReportView: React.FC<Props> = ({
   type,
   associatedObject,
   key,
+  assignee,
+  adminList,
+  reportId,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const assignedAdmin = useRef<HTMLSelectElement>(null);
+
+  const toast = useToast();
+
+  const navigate = useNavigate();
+
+  const save = async () => {
+    if (assignedAdmin.current === undefined) {
+      return;
+    }
+
+    try {
+      await assignAdmin(reportId, parseInt(assignedAdmin.current!.value));
+      navigate(0);
+    } catch (e) {
+      const errorMessage = (e as Error).message;
+
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <>
@@ -80,14 +114,32 @@ export const ReportView: React.FC<Props> = ({
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
           <ModalBody fontSize="medium">
-            <HStack>
-              <Text fontWeight="semibold">Reason:</Text>
-              <Text>{reason}</Text>
-            </HStack>
-            <ReportObjectView type={type} object={associatedObject!} />
+            <VStack alignItems="flex-start" gap={3}>
+              <HStack>
+                <Text fontWeight="semibold">Reason:</Text>
+                <Text>{reason}</Text>
+              </HStack>
+              <ReportObjectView type={type} object={associatedObject!} />
+              <HStack>
+                <Text fontWeight="semibold">Assignee: </Text>
+                <Select
+                  placeholder="Assign Admin"
+                  defaultValue={assignee}
+                  ref={assignedAdmin}
+                >
+                  {adminList.map((admin, idx) => (
+                    <option value={admin.id} key={idx}>
+                      {resolveName(admin)}
+                    </option>
+                  ))}
+                </Select>
+              </HStack>
+            </VStack>
           </ModalBody>
-
           <ModalFooter>
+            <Button mr={3} onClick={save}>
+              Save Changes
+            </Button>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>

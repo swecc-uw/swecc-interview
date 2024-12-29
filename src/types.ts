@@ -231,7 +231,7 @@ export interface RawReport {
   status: ReportStatus;
   type: ReportType;
   updated: string;
-  admin_id?: string;
+  assignee?: number;
   admin_notes?: string;
   associated_id?: string;
   associated_object?: RawReportObject;
@@ -245,7 +245,7 @@ export interface Report {
   status: ReportStatus;
   type: ReportType;
   updated: Date;
-  adminId?: string;
+  assignee?: number;
   adminNotes?: string;
   associatedId?: string;
   associatedObject?: ReportObject;
