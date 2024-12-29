@@ -12,6 +12,7 @@ import {
   ReportObject,
   RawMemberData,
   RawTechnicalQuestion,
+  ReportStatus,
 } from '../types';
 import api from './api';
 import { deserializeMember } from './member';
@@ -52,7 +53,6 @@ const deserializeAssociatedObject = (
 function deserializedReport({
   report_id: reportId,
   reporter,
-  admin_id: adminId,
   admin_notes: adminNotes,
   associated_id: associatedId,
   associated_object: associatedObject,
@@ -65,7 +65,6 @@ function deserializedReport({
     ...rest,
     reportId,
     reporter: deserializeMember(reporter),
-    adminId,
     adminNotes,
     associatedId,
     associatedObject: deserializeAssociatedObject(type, associatedObject),
@@ -133,3 +132,26 @@ export async function getReportDetail(reportId: string): Promise<Report> {
 
   return deserializedReport(res.data);
 }
+
+export async function assignAdmin(reportId: string, adminId: number) {
+  const url = `/reports/${reportId}/assign/`;
+
+  const res = await api.patch(url, {
+    assignee: adminId,
+  });
+
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to assign admin');
+}
+
+export async function updateStatus(reportId: string, status: ReportStatus) {
+  const url = `/reports/${reportId}/status/`;
+
+  const res = await api.patch(url, {
+    status,
+  });
+
+  if (res.status !== 200 || !Object.prototype.hasOwnProperty.call(res, 'data'))
+    throw new Error('Failed to assign admin');
+}
+

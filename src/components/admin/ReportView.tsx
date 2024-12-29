@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { Member, Report } from '../../types';
+import React, { useRef } from 'react';
+import { Member, Report, ReportStatus } from '../../types';
 import {
   HStack,
   Box,
@@ -16,12 +15,17 @@ import {
   ModalFooter,
   Button,
   Divider,
+  Select,
+  VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { resolveName } from '../utils/RandomUtils';
 import { ReportStatusView } from './ReportStatusView';
 import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
+import { assignAdmin, updateStatus } from '../../services/report';
+import { useNavigate } from 'react-router-dom';
 
 type Props = Report & {
   key: React.Key | null | undefined;
@@ -35,8 +39,55 @@ export const ReportView: React.FC<Props> = ({
   type,
   associatedObject,
   key,
+  assignee,
+  adminList,
+  reportId,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const assignedAdmin = useRef<HTMLSelectElement>(null);
+  const statusRef = useRef<HTMLSelectElement>(null);
+
+  const toast = useToast();
+
+  const navigate = useNavigate();
+
+  const saveAdmin = async () => {
+    try {
+      await assignAdmin(reportId, parseInt(assignedAdmin.current!.value));
+    } catch (e) {
+      const errorMessage = (e as Error).message;
+
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const saveStatus = async () => {
+    try {
+      await updateStatus(reportId, statusRef.current!.value as ReportStatus);
+    } catch (e) {
+      const errorMessage = (e as Error).message;
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const save = async () => {
+    await saveAdmin();
+    await saveStatus();
+    navigate(0);
+  };
 
   return (
     <>
@@ -80,14 +131,44 @@ export const ReportView: React.FC<Props> = ({
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
           <ModalBody fontSize="medium">
-            <HStack>
-              <Text fontWeight="semibold">Reason:</Text>
-              <Text>{reason}</Text>
-            </HStack>
-            <ReportObjectView type={type} object={associatedObject!} />
+            <VStack alignItems="flex-start" gap={3}>
+              <HStack>
+                <Text fontWeight="semibold">Reason:</Text>
+                <Text>{reason}</Text>
+              </HStack>
+              <ReportObjectView type={type} object={associatedObject!} />
+              <HStack>
+                <Text fontWeight="semibold">Assignee: </Text>
+                <Select
+                  placeholder="Assign Admin"
+                  defaultValue={assignee}
+                  ref={assignedAdmin}
+                >
+                  {adminList.map((admin, idx) => (
+                    <option value={admin.id} key={idx}>
+                      {resolveName(admin)}
+                    </option>
+                  ))}
+                </Select>
+              </HStack>
+              <HStack>
+                <Text fontWeight="semibold">Status:</Text>
+                <Select
+                  placeholder="Set Status"
+                  defaultValue={status}
+                  ref={statusRef}
+                >
+                  <option value="pending">Pending</option>
+                  <option value="resolving">Resolving</option>
+                  <option value="completed">Completed</option>
+                </Select>
+              </HStack>
+            </VStack>
           </ModalBody>
-
           <ModalFooter>
+            <Button mr={3} onClick={save}>
+              Save Changes
+            </Button>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>

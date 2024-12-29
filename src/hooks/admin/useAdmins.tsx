@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Member } from '../../types';
 import { getAllAdmins } from '../../services/member';
 import { useToast } from '@chakra-ui/react';
-import { devPrint } from '../../components/utils/RandomUtils';
 
 export const useAdmins = () => {
   const [adminList, setAdminList] = useState<Member[]>([]);
@@ -36,7 +35,6 @@ export const useAdmins = () => {
 
   useEffect(() => {
     fetchData();
-    devPrint(adminList);
   }, []);
 
   return { isLoading, adminList, error };
