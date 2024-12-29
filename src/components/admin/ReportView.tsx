@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Member, Report } from '../../types';
+import { Member, Report, ReportStatus } from '../../types';
 import {
   HStack,
   Box,
@@ -24,7 +24,7 @@ import { ReportStatusView } from './ReportStatusView';
 import { ReportTypeView } from './ReportTypeView';
 import { Link } from 'react-router-dom';
 import { ReportObjectView } from './ReportObjectView';
-import { assignAdmin } from '../../services/report';
+import { assignAdmin, updateStatus } from '../../services/report';
 import { useNavigate } from 'react-router-dom';
 
 type Props = Report & {
@@ -46,19 +46,15 @@ export const ReportView: React.FC<Props> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const assignedAdmin = useRef<HTMLSelectElement>(null);
+  const statusRef = useRef<HTMLSelectElement>(null);
 
   const toast = useToast();
 
   const navigate = useNavigate();
 
-  const save = async () => {
-    if (assignedAdmin.current === undefined) {
-      return;
-    }
-
+  const saveAdmin = async () => {
     try {
       await assignAdmin(reportId, parseInt(assignedAdmin.current!.value));
-      navigate(0);
     } catch (e) {
       const errorMessage = (e as Error).message;
 
@@ -70,6 +66,27 @@ export const ReportView: React.FC<Props> = ({
         isClosable: true,
       });
     }
+  };
+
+  const saveStatus = async () => {
+    try {
+      await updateStatus(reportId, statusRef.current!.value as ReportStatus);
+    } catch (e) {
+      const errorMessage = (e as Error).message;
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const save = async () => {
+    await saveAdmin();
+    await saveStatus();
+    navigate(0);
   };
 
   return (
@@ -132,6 +149,18 @@ export const ReportView: React.FC<Props> = ({
                       {resolveName(admin)}
                     </option>
                   ))}
+                </Select>
+              </HStack>
+              <HStack>
+                <Text fontWeight="semibold">Status:</Text>
+                <Select
+                  placeholder="Set Status"
+                  defaultValue={status}
+                  ref={statusRef}
+                >
+                  <option value="pending">Pending</option>
+                  <option value="resolving">Resolving</option>
+                  <option value="completed">Completed</option>
                 </Select>
               </HStack>
             </VStack>
