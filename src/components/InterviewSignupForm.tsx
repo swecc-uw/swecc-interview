@@ -105,7 +105,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
               Cancel
             </Button>
             <Button
-              bgColor={'green.500'}
+              bgColor="green.500"
               color="white"
               size="lg"
               _hover={{
