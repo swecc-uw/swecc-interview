@@ -94,7 +94,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
           <ModalFooter>
             <Button
               mr={3}
-              bgColor={'red.500'}
+              bgColor="red.500"
               size="lg"
               color="white"
               onClick={onClose}
