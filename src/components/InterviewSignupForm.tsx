@@ -122,7 +122,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
         </ModalContent>
       </Modal>
       <VStack spacing={6} align="stretch">
-        <Box position="relative" height="500px" overflowY={'auto'}>
+        <Box position="relative" height="500px" overflowY="auto">
           {isMobile ? (
             <MobileTimeRangeSelector
               title={title}
