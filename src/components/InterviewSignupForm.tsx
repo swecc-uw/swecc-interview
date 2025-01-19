@@ -1,9 +1,20 @@
-import { useState } from 'react';
-import { Box, Button, VStack, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  VStack,
+  useDisclosure,
+  useToast,
+  Text,
+  ModalFooter,
+} from '@chakra-ui/react';
 import ChakaraTimeRangeSelector from './TimeRangeSelector/ChakaraTimeRangeSelector';
 import MobileTimeRangeSelector from './TimeRangeSelector/MobileTimeRangeSelector';
-import { motion, AnimatePresence } from 'framer-motion';
-import ConfirmInterviewSignupStep from './ConfirmInterviewSignupStep';
 import { signupCurrentUserForInterviewPool } from '../services/interview';
 import { InterviewAvailability } from '../types';
 import { devPrint } from './utils/RandomUtils';
@@ -28,19 +39,10 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
 }) => {
   const { member } = useAuth();
   const toast = useToast();
-  const [currentStep, setCurrentStep] = useState(0);
-  const steps = ['Availability', 'Confirmation'];
 
   const isMobile = window.innerWidth < 768;
   devPrint('isMobile', isMobile);
-
-  const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-  };
-
-  const handlePrev = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleConfirm = async () => {
     if (!member) {
@@ -73,80 +75,79 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
     }
   };
 
-  const renderStep = (step: number) => {
-    switch (step) {
-      case 0:
-        return isMobile ? (
-          <MobileTimeRangeSelector
-            title={title}
-            availability={availability}
-            onChange={onChange}
-            dayLabels={dayLabels}
-            timeLabels={timeLabels}
-          />
-        ) : (
-          <ChakaraTimeRangeSelector
-            title={title}
-            availability={availability}
-            onChange={onChange}
-            dayLabels={dayLabels}
-            timeLabels={timeLabels}
-          />
-        );
-      case 1:
-        return (
-          <ConfirmInterviewSignupStep
-            weekOf={formatDate(getThisUpcomingSunday())}
-            _handleConfirm={handleConfirm}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
-    <VStack spacing={6} align="stretch">
-      <Box
-        position="relative"
-        height="500px"
-        overflowY={currentStep === 0 ? 'auto' : 'hidden'}
-      >
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={currentStep}
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -300, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            {renderStep(currentStep)}
-          </motion.div>
-        </AnimatePresence>
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <Button
-          onClick={handlePrev}
-          isDisabled={currentStep === 0}
-          colorScheme="brand"
-        >
-          Previous
-        </Button>
-        <Button
-          colorScheme="brand"
-          onClick={
-            currentStep === steps.length - 1 ? handleConfirm : handleNext
-          }
-        >
-          {currentStep === steps.length - 1 ? 'Submit' : 'Next'}
-        </Button>
-      </Box>
-    </VStack>
+    <>
+      <Modal size="lg" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontSize="1.7vw">Confirm Mock Interview</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize="1vw">
+              You are signing up for a mock interview for the week of{' '}
+              <em>{formatDate(getThisUpcomingSunday())}</em>. Please confirm
+              that you are available for the times selected. We take no shows{' '}
+              <em>very</em> seriously and will ban you from the platform if you
+              do not show up.
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              mr={3}
+              bgColor="red.500"
+              size="lg"
+              color="white"
+              onClick={onClose}
+              _hover={{
+                bgColor: 'red.700',
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              bgColor="green.500"
+              color="white"
+              size="lg"
+              _hover={{
+                bgColor: 'green.700',
+              }}
+              onClick={async () => {
+                await handleConfirm();
+                onClose();
+              }}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <VStack spacing={6} align="stretch">
+        <Box position="relative" height="500px" overflowY="auto">
+          {isMobile ? (
+            <MobileTimeRangeSelector
+              title={title}
+              availability={availability}
+              onChange={onChange}
+              dayLabels={dayLabels}
+              timeLabels={timeLabels}
+            />
+          ) : (
+            <ChakaraTimeRangeSelector
+              title={title}
+              availability={availability}
+              onChange={onChange}
+              dayLabels={dayLabels}
+              timeLabels={timeLabels}
+            />
+          )}
+        </Box>
+        <Box display="flex" justifyContent="center">
+          <Button colorScheme="brand" size="lg" onClick={onOpen}>
+            Submit
+          </Button>
+        </Box>
+      </VStack>
+    </>
   );
 };
 
