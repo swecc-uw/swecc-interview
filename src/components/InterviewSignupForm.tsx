@@ -80,7 +80,7 @@ const InterviewSignupForm: React.FC<InterviewSignupFormProps> = ({
       <Modal size="lg" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize={'1.7vw'}>Confirm Mock Interview</ModalHeader>
+          <ModalHeader fontSize="1.7vw">Confirm Mock Interview</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize="1vw">
