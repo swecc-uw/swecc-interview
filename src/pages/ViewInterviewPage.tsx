@@ -21,15 +21,39 @@ import {
   ModalOverlay,
   Button,
   Flex,
+  Tooltip,
+  IconButton,
+  Stack,
+  useClipboard,
 } from '@chakra-ui/react';
-import { Calendar, Clock, User, Book, Flag } from 'lucide-react';
+import { Calendar, Clock, User, Book, Flag, Check, Copy } from 'lucide-react';
 import { HydratedInterview, Member, ReportType } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
 import ReportPopUp from '../components/ReportPopUp';
 import { useAuth } from '../hooks/useAuth';
 import TechnicalQuestionCard from '../components/TechnicalQuestionCard';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DISABLE_INTERVIEW_STATUS_FLAG } from '../feature-flag';
+
+const CopyableText = ({ text }: { text: string }) => {
+  const { hasCopied, onCopy } = useClipboard(text);
+
+  return (
+    <HStack spacing={2}>
+      <Text flex="1">{text}</Text>
+      <Tooltip label={hasCopied ? 'Copied!' : 'Copy'} placement="top">
+        <IconButton
+          aria-label="Copy text"
+          icon={hasCopied ? <Check size={14} /> : <Copy size={14} />}
+          size="xs"
+          variant="ghost"
+          onClick={onCopy}
+        />
+      </Tooltip>
+    </HStack>
+  );
+};
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -262,23 +286,48 @@ const ParticipantCard = ({
           size="lg"
           name={resolveName(participant)}
           src={participant.profilePictureUrl}
+          borderRadius="xl"
         />
-        <Box>
-          <Text fontWeight="bold" fontSize="lg">
-            {resolveName(participant)}
+        <Stack spacing={1}>
+          <Text
+            fontWeight="bold"
+            fontSize="lg"
+            _hover={{ textDecoration: 'underline', color: 'blue.500' }}
+            transition="all 0.2s"
+          >
+            <Link to={`/directory/${participant.id}`}>
+              {resolveName(participant)}
+            </Link>
           </Text>
-          <Badge colorScheme={role === 'Interviewer' ? 'blue' : 'green'}>
+          <Badge
+            colorScheme={role === 'Interviewer' ? 'blue' : 'green'}
+            borderRadius="full"
+            px={3}
+            py={0.5}
+          >
             {role}
           </Badge>
-        </Box>
+        </Stack>
       </HStack>
     </CardHeader>
-    <CardBody pt={2}>
-      <Grid templateColumns="auto 1fr" gap={2} fontSize="sm">
+    <CardBody pt={3}>
+      <Grid templateColumns="auto 1fr" gap={3} fontSize="sm">
         {participant.role && (
           <>
             <Text color={subtleColor}>role:</Text>
             <Text>{participant.role}</Text>
+          </>
+        )}
+        {participant.email && (
+          <>
+            <Text color={subtleColor}>email:</Text>
+            <CopyableText text={participant.email} />
+          </>
+        )}
+        {participant.discordUsername && (
+          <>
+            <Text color={subtleColor}>discord:</Text>
+            <CopyableText text={participant.discordUsername} />
           </>
         )}
         {participant.major && (
