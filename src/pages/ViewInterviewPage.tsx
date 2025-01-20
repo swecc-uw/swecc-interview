@@ -21,12 +21,9 @@ import {
   ModalOverlay,
   Button,
   Flex,
-  Tooltip,
-  IconButton,
   Stack,
-  useClipboard,
 } from '@chakra-ui/react';
-import { Calendar, Clock, User, Book, Flag, Check, Copy } from 'lucide-react';
+import { Calendar, Clock, User, Book, Flag } from 'lucide-react';
 import { HydratedInterview, Member, ReportType } from '../types';
 import { resolveName } from '../components/utils/RandomUtils';
 import ReportPopUp from '../components/ReportPopUp';
@@ -35,25 +32,7 @@ import TechnicalQuestionCard from '../components/TechnicalQuestionCard';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DISABLE_INTERVIEW_STATUS_FLAG } from '../feature-flag';
-
-const CopyableText = ({ text }: { text: string }) => {
-  const { hasCopied, onCopy } = useClipboard(text);
-
-  return (
-    <HStack spacing={2}>
-      <Text flex="1">{text}</Text>
-      <Tooltip label={hasCopied ? 'Copied!' : 'Copy'} placement="top">
-        <IconButton
-          aria-label="Copy text"
-          icon={hasCopied ? <Check size={14} /> : <Copy size={14} />}
-          size="xs"
-          variant="ghost"
-          onClick={onCopy}
-        />
-      </Tooltip>
-    </HStack>
-  );
-};
+import CopyableText from '../components/utils/CopyableText';
 
 const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -176,7 +155,6 @@ const InterviewView = ({ interview }: { interview: HydratedInterview }) => {
               {status.toUpperCase()}
             </Badge>
           )}
-          <Flag size={20} />
           <Button
             leftIcon={<Flag size={16} />}
             colorScheme="red"
