@@ -1,5 +1,11 @@
-import { Text, useClipboard, HStack, Tooltip, IconButton } from "@chakra-ui/react";
-import { Check, Copy } from "lucide-react";
+import {
+  Text,
+  useClipboard,
+  HStack,
+  Tooltip,
+  IconButton,
+} from '@chakra-ui/react';
+import { Check, Copy } from 'lucide-react';
 
 const CopyableText = ({ text }: { text: string }) => {
   const { hasCopied, onCopy } = useClipboard(text);
