@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -17,21 +17,20 @@ import {
   ModalBody,
   ModalFooter,
   Switch,
-} from "@chakra-ui/react";
-import api from "../../services/api";
-import { InterviewPoolStatus } from "../../types";
+} from '@chakra-ui/react';
+import { InterviewPoolStatus } from '../../types';
 import {
   getInterviewPoolStatus,
   pairCurrentInterviewPool,
-} from "../../services/interview";
-import { ArrowBackIcon, SpinnerIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
-import { devPrint } from "../../components/utils/RandomUtils";
+} from '../../services/interview';
+import { ArrowBackIcon, SpinnerIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
+import { devPrint } from '../../components/utils/RandomUtils';
 
 const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState('');
   const [forceCurrentWeek, setForceCurrentWeek] = useState(false);
 
   const [signupData, setSignUpData] = useState<InterviewPoolStatus>();
@@ -50,9 +49,9 @@ const PairingDashboard = () => {
       .catch((error) => {
         devPrint(error);
         toast({
-          title: "Error",
-          description: "Failed to fetch pool status",
-          status: "error",
+          title: 'Error',
+          description: 'Failed to fetch pool status',
+          status: 'error',
           duration: 3000,
           isClosable: true,
         });
@@ -74,9 +73,9 @@ const PairingDashboard = () => {
         setSignal(!signal);
         getPoolData(forceCurrentWeek);
         toast({
-          title: "Success",
-          description: "Pair interview pool status updated",
-          status: "success",
+          title: 'Success',
+          description: 'Pair interview pool status updated',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
@@ -84,9 +83,9 @@ const PairingDashboard = () => {
       .catch((error) => {
         setResponse(JSON.stringify(error));
         toast({
-          title: "Error",
-          description: "Failed to update pair interview pool status",
-          status: "error",
+          title: 'Error',
+          description: 'Failed to update pair interview pool status',
+          status: 'error',
           duration: 3000,
           isClosable: true,
         });
@@ -155,7 +154,7 @@ const PairingDashboard = () => {
               isLoading={loading}
               loadingText="Processing"
               spinnerPlacement="start"
-              colorScheme={signal ? "red" : "green"}
+              colorScheme={signal ? 'red' : 'green'}
             >
               {loading ? <SpinnerIcon mr={2} /> : null}
               Pair Interview Pool
