@@ -20,7 +20,10 @@ import {
 } from "@chakra-ui/react";
 import api from "../../services/api";
 import { InterviewPoolStatus } from "../../types";
-import { getInterviewPoolStatus } from "../../services/interview";
+import {
+  getInterviewPoolStatus,
+  pairCurrentInterviewPool,
+} from "../../services/interview";
 import { ArrowBackIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { devPrint } from "../../components/utils/RandomUtils";
@@ -65,11 +68,7 @@ const PairingDashboard = () => {
 
   const handleToggle = () => {
     setLoading(true);
-    api
-      .post("/interview/pair/", {
-        signal: !signal,
-        force_current_week: forceCurrentWeek,
-      })
+    pairCurrentInterviewPool(!signal, forceCurrentWeek)
       .then((res) => {
         setResponse(res.data);
         setSignal(!signal);

@@ -137,6 +137,16 @@ export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResp
   return api.delete("/interview/pool/").then((res) => res.data);
 }
 
+export async function pairCurrentInterviewPool(
+  signal: boolean,
+  force_current_week: boolean
+) {
+  return api.post("/interview/pair/", {
+    signal,
+    force_current_week,
+  });
+}
+
 export async function getInterviewPoolStatus(
   forceCurrentWeek: boolean = false
 ): Promise<InterviewPoolStatus> {
