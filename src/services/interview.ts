@@ -137,9 +137,13 @@ export async function deleteCurrentUserFromInterviewPool(): Promise<DetailedResp
   return api.delete("/interview/pool/").then((res) => res.data);
 }
 
-export async function getInterviewPoolStatus(): Promise<InterviewPoolStatus> {
+export async function getInterviewPoolStatus(
+  forceCurrentWeek: boolean = false
+): Promise<InterviewPoolStatus> {
   return api
-    .get("/interview/status")
+    .get("/interview/status", {
+      params: { force_current_week: forceCurrentWeek },
+    })
     .then((res) => serializeInterviewPoolStatus(res.data));
 }
 

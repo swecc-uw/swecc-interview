@@ -16,6 +16,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Switch,
 } from "@chakra-ui/react";
 import api from "../../services/api";
 import { InterviewPoolStatus } from "../../types";
@@ -28,16 +29,16 @@ const PairingDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [signal, setSignal] = useState(false);
   const [response, setResponse] = useState("");
+  const [forceCurrentWeek, setForceCurrentWeek] = useState(false);
 
   const [signupData, setSignUpData] = useState<InterviewPoolStatus>();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    getInterviewPoolStatus()
+  function getPoolData(forceCurrentWeek: boolean = false) {
+    setLoading(true);
+    getInterviewPoolStatus(forceCurrentWeek)
       .then((res) => {
-        setLoading(true);
-        setSignal(!signal);
         devPrint(res);
         if (res) {
           setSignUpData(res);
@@ -45,19 +46,34 @@ const PairingDashboard = () => {
       })
       .catch((error) => {
         devPrint(error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch pool status",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
       })
       .finally(() => {
         setLoading(false);
       });
+  }
+
+  useEffect(() => {
+    getPoolData(false);
   }, []);
 
   const handleToggle = () => {
     setLoading(true);
-    setSignal(!signal);
     api
-      .post("/interview/pair/", { signal: !signal })
+      .post("/interview/pair/", {
+        signal: !signal,
+        force_current_week: forceCurrentWeek,
+      })
       .then((res) => {
         setResponse(res.data);
+        setSignal(!signal);
+        getPoolData(forceCurrentWeek);
         toast({
           title: "Success",
           description: "Pair interview pool status updated",
@@ -81,9 +97,12 @@ const PairingDashboard = () => {
       });
   };
 
-  const handleConfirmToggle = () => {
-    onClose();
-    handleToggle();
+  const handleForceCurrentWeekToggle = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = e.target.checked;
+    setForceCurrentWeek(newValue);
+    getPoolData(newValue);
   };
 
   return (
@@ -125,6 +144,13 @@ const PairingDashboard = () => {
             </Text>
             <Code>{JSON.stringify(signupData?.members, null, 2)}</Code>
 
+            <Switch
+              isChecked={forceCurrentWeek}
+              onChange={handleForceCurrentWeekToggle}
+            >
+              Force Current Week
+            </Switch>
+
             <Button
               onClick={onOpen}
               isLoading={loading}
@@ -158,7 +184,7 @@ const PairingDashboard = () => {
             Are you sure you want to toggle the pair interview pool status?
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleConfirmToggle}>
+            <Button colorScheme="blue" mr={3} onClick={handleToggle}>
               Yes
             </Button>
             <Button variant="ghost" onClick={onClose}>
