@@ -254,11 +254,15 @@ export interface Report {
 export interface RawInterViewPoolStatus {
   number_sign_up: number;
   members: string[];
+  next_cutoff: string;
+  previous_cutoff: string;
 }
 
 export interface InterviewPoolStatus {
   numberSignUp: number;
   members: string[];
+  nextCutoff: Date;
+  previousCutoff: Date;
 }
 
 export interface RawSignup {
