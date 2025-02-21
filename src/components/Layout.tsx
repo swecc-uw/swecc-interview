@@ -58,7 +58,7 @@ interface NavBarProps {
   isVerified: boolean;
 }
 
-const NO_REDIRECT_PATHS = ['/auth', '/join'];
+const NO_REDIRECT_PATHS = ['/auth', '/join', 'password-reset-confirm'];
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated, isAdmin, loading, member, isVerified } = useAuth();
@@ -70,7 +70,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     if (
       !loading &&
       (!isAuthenticated || !isVerified) &&
-      !NO_REDIRECT_PATHS.includes(pathname)
+      !NO_REDIRECT_PATHS.some((path) => pathname.includes(path))
     ) {
       navigate('/auth');
     }
