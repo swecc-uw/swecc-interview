@@ -16,21 +16,25 @@ import {
   IconButton,
   HStack,
   ScaleFade,
+  Input,
 } from '@chakra-ui/react';
 import { Copy, CheckCircle, LogOut, RefreshCw } from 'lucide-react';
 import { devPrint } from './utils/RandomUtils';
 import { useAuth } from '../hooks/useAuth';
+import { updateDiscordUsername } from '../services/member';
 
 interface DiscordVerificationProps {
   checkVerified: () => Promise<boolean>;
   onVerificationSuccess: () => void;
   username: string;
+  discordUsername: string;
 }
 
 const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   checkVerified,
   onVerificationSuccess,
   username,
+  discordUsername,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
@@ -38,6 +42,8 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   const [hasCopied, setHasCopied] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
+  const [currentDiscordUsername, setCurrentDiscordUsername] =
+    useState(discordUsername);
   const toast = useToast();
   const { logout } = useAuth();
 
@@ -52,6 +58,27 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
   const clearIntervals = () => {
     if (checkIntervalRef.current) clearInterval(checkIntervalRef.current);
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+  };
+
+  const changeDiscordUsername = async () => {
+    try {
+      await updateDiscordUsername(
+        currentDiscordUsername.trim()
+          ? currentDiscordUsername.trim()
+          : discordUsername
+      );
+      toast({
+        status: 'success',
+        title: 'Successfully updated discord username!',
+        duration: 2000,
+      });
+    } catch (e) {
+      toast({
+        status: 'error',
+        title: 'Error updating discord username',
+        description: (e as Error).message,
+      });
+    }
   };
 
   useEffect(() => {
@@ -335,8 +362,26 @@ const DiscordVerification: React.FC<DiscordVerificationProps> = ({
             borderColor="gray.200"
           >
             <Text fontSize="sm" fontWeight="medium" mb={2}>
-              Step 3: Start verification check
+              Step 3: Start verification check. We&apos;ll be checking for the
+              discord username below. If it&apos;s incorrect, please correct it.
             </Text>
+            <Input
+              bgColor="gray.200"
+              borderColor="gray.400"
+              value={currentDiscordUsername}
+              onChange={(e) => {
+                setCurrentDiscordUsername(e.target.value);
+              }}
+              marginBottom={2}
+            />
+            <Button
+              width="full"
+              size="md"
+              mb={2}
+              onClick={changeDiscordUsername}
+            >
+              Update Discord Username
+            </Button>
             <Button
               onClick={startChecking}
               colorScheme={verificationFailed ? 'yellow' : 'blue'}
