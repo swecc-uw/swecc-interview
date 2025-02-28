@@ -127,3 +127,19 @@ export const getAllAdmins = async (): Promise<Member[]> => {
 
   return res.data.map(deserializeMember);
 };
+
+export const updateDiscordUsername = async (newDiscordUsername: string) => {
+  const url = `/members/update-discord-username`;
+
+  const res = await api.post(url, {
+    new_discord_username: newDiscordUsername,
+  });
+
+  if (
+    res.status !== 200 ||
+    !Object.prototype.hasOwnProperty.call(res, 'data') ||
+    !res.data.success
+  ) {
+    throw new Error('Failed to update discord username');
+  }
+};
