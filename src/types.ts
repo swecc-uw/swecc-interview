@@ -70,6 +70,13 @@ export interface Member {
   profilePictureUrl?: string;
 }
 
+export type LeetcodeStats = Record<string, number>;
+export type GithubStats = Record<string, number>;
+
+export interface UserStats {
+  leetcode: LeetcodeStats;
+  github: GithubStats;
+}
 export interface QuestionTopic {
   topicId: string;
   created: string;
