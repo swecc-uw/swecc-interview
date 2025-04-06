@@ -142,13 +142,9 @@ const HomePage = () => {
                 src={TECH_PICTURE}
                 alt="Tech Illustration"
                 style={{
-                  scale: 3,
+                  transform: 'scale(2)',
                 }}
               />
-
-              <Heading mt={10}>
-                <em>This could be you!</em>
-              </Heading>
             </Flex>
           </Box>
         </Flex>
