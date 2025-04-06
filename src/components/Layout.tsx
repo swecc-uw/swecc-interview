@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   Box,
+  Image,
   Flex,
   Container,
   VStack,
@@ -40,6 +41,7 @@ import {
   SWECC_EMAIL_LINK,
   SWECC_WEBSITE_LINK,
 } from '../constants';
+import SWECC_LOGO from '../assets/transp-swecc-logo.png';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -144,9 +146,37 @@ const Navbar: React.FC<NavBarProps> = ({
       <Container maxW="container.xl" py={4}>
         <Flex justify="space-between" align="center">
           <Link to="/">
-            <ChakraLink as="span" _hover={{ textDecoration: 'none' }}>
-              <Text fontSize="2xl" fontWeight="bold" color="blue.500">
-                SWECC
+            <ChakraLink
+              as="span"
+              display="flex"
+              alignItems="center"
+              onClick={onClose}
+              _hover={{ textDecoration: 'none' }}
+            >
+              <Box
+                width="5em"
+                display="flex"
+                alignItems="center"
+                flexShrink={0}
+              >
+                <Image
+                  src={SWECC_LOGO}
+                  alt="SWECC Logo"
+                  style={{
+                    objectFit: 'contain',
+                    filter: 'brightness(0.6) contrast(1.5)',
+                    scale: '1',
+                  }}
+                />
+              </Box>
+              <Text
+                fontSize={{ base: 'xl', md: '2xl' }}
+                fontWeight="bold"
+                fontFamily="monospace"
+                ml={3}
+                display={{ base: 'block', md: 'block' }}
+              >
+                <em>Interview</em>
               </Text>
             </ChakraLink>
           </Link>
