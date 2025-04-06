@@ -154,7 +154,7 @@ const Navbar: React.FC<NavBarProps> = ({
               _hover={{ textDecoration: 'none' }}
             >
               <Box
-                width="8em"
+                width="5em"
                 display="flex"
                 alignItems="center"
                 flexShrink={0}
@@ -165,6 +165,7 @@ const Navbar: React.FC<NavBarProps> = ({
                   style={{
                     objectFit: 'contain',
                     filter: 'brightness(0.6) contrast(1.5)',
+                    scale: '1',
                   }}
                 />
               </Box>
